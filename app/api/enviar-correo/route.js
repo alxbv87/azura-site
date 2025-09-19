@@ -12,7 +12,7 @@ export async function POST(req) {
   try {
     // Intentamos enviar el correo usando Resend
     const { data, error } = await resend.emails.send({
-      from: 'Contact Form <noreply@Incorvia.net>', // ¡IMPORTANTE! Usa un correo de tu dominio verificado en Resend
+      from: 'Contact Form <noreply@incorvia.net>', // ¡IMPORTANTE! Usa un correo de tu dominio verificado en Resend
       to: ['sales@incorvia.net'], // El correo donde quieres recibir la notificación
       subject: `Contact Form_New message From: ${name}`,
       html: `
