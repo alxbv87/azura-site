@@ -1,9 +1,9 @@
 export default function About() {
   return (
     <div className="py-20 px-6 max-w-5xl mx-auto">
-      <h1 className="text-4xl font-bold mb-8 text-center">About Azura</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">About Incorvia</h1>
       <p className="text-gray-700 leading-relaxed mb-6">
-        At Azura, we believe global business should be simple, accessible, and
+        At Incorvia, we believe global business should be simple, accessible, and
         secure. Our mission is to empower entrepreneurs and organizations with
         seamless offshore incorporation, banking solutions, and compliance
         services.
