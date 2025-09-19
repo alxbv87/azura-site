@@ -12,30 +12,30 @@ export async function POST(req) {
   try {
     // Intentamos enviar el correo usando Resend
     const { data, error } = await resend.emails.send({
-      from: 'Formulario Web <noreply@tudominioverificado.com>', // ¡IMPORTANTE! Usa un correo de tu dominio verificado en Resend
-      to: ['correo-donde-recibes@tuempresa.com'], // El correo donde quieres recibir la notificación
-      subject: `Nuevo mensaje de contacto de: ${name}`,
+      from: 'Contact Form <noreply@Incorvia.net>', // ¡IMPORTANTE! Usa un correo de tu dominio verificado en Resend
+      to: ['sales@incorvia.net'], // El correo donde quieres recibir la notificación
+      subject: `Contact Form_New message From: ${name}`,
       html: `
-        <h1>Nuevo Mensaje del Formulario de Contacto</h1>
-        <p><strong>Nombre:</strong> ${name}</p>
-        <p><strong>Email del contacto:</strong> ${email}</p>
-        <p><strong>Teléfono:</strong> ${phone || 'No proporcionado'}</p>
-        <p><strong>Servicio de interés:</strong> ${service}</p>
-        <p><strong>Mensaje:</strong></p>
-        <p>${message || 'No proporcionado'}</p>
+        <h1>New message,Contact Form</h1>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || 'Undisclosed'}</p>
+        <p><strong>interested in:</strong> ${service}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message || 'Undisclosed'}</p>
       `,
     });
 
     if (error) {
       console.error({ error });
-      return NextResponse.json({ message: 'Error al enviar el correo.', error }, { status: 500 });
+      return NextResponse.json({ message: 'Error sending email.', error }, { status: 500 });
     }
 
     console.log({ data });
-    return NextResponse.json({ message: 'Correo enviado exitosamente.' }, { status: 200 });
+    return NextResponse.json({ message: 'Thank you email sent, We will contact asap!' }, { status: 200 });
 
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: 'Error al procesar la solicitud.', error }, { status: 500 });
+    return NextResponse.json({ message: 'Error processing your request.', error }, { status: 500 });
   }
 }
