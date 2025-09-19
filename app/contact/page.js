@@ -1,3 +1,5 @@
+// Archivo: page.js (versión actualizada)
+
 "use client";
 
 import { useState } from "react";
@@ -11,21 +13,44 @@ export default function Contact() {
     message: "",
   });
 
+  // Nuevo estado para manejar el feedback al usuario
+  const [submissionStatus, setSubmissionStatus] = useState(null); // null | 'sending' | 'success' | 'error'
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  // ----- FUNCIÓN MODIFICADA -----
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Thank you for contacting us! We'll get back to you shortly.");
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      service: "",
-      message: "",
-    });
+    setSubmissionStatus('sending'); // Empezamos el envío
+
+    try {
+      const response = await fetch('/api/enviar-correo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('La respuesta del servidor no fue exitosa.');
+      }
+
+      // Si todo sale bien
+      setSubmissionStatus('success');
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        service: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error);
+      setSubmissionStatus('error');
+    }
   };
 
   return (
@@ -40,7 +65,7 @@ export default function Contact() {
         </p>
 
         <form onSubmit={handleSubmit} className="grid gap-6">
-          {/* Name */}
+          {/* Inputs del formulario (sin cambios) */}
           <div>
             <label className="block text-gray-700 mb-2">Full Name</label>
             <input
@@ -52,8 +77,6 @@ export default function Contact() {
               className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand outline-none"
             />
           </div>
-
-          {/* Email */}
           <div>
             <label className="block text-gray-700 mb-2">Email Address</label>
             <input
@@ -65,8 +88,6 @@ export default function Contact() {
               className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand outline-none"
             />
           </div>
-
-          {/* Phone */}
           <div>
             <label className="block text-gray-700 mb-2">Phone Number</label>
             <input
@@ -77,8 +98,6 @@ export default function Contact() {
               className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand outline-none"
             />
           </div>
-
-          {/* Service Selection */}
           <div>
             <label className="block text-gray-700 mb-2">
               Type of Service Needed
@@ -98,8 +117,6 @@ export default function Contact() {
               <option value="other">Other</option>
             </select>
           </div>
-
-          {/* Message */}
           <div>
             <label className="block text-gray-700 mb-2">
               Additional Information
@@ -113,13 +130,22 @@ export default function Contact() {
             ></textarea>
           </div>
 
-          {/* Submit */}
+          {/* ----- BOTÓN Y MENSAJES DE ESTADO ----- */}
           <button
             type="submit"
-            className="bg-brand text-white py-3 rounded-lg text-lg font-semibold hover:bg-brand-dark transition"
+            disabled={submissionStatus === 'sending'} // Deshabilitamos el botón mientras se envía
+            className="bg-brand text-white py-3 rounded-lg text-lg font-semibold hover:bg-brand-dark transition disabled:bg-gray-400"
           >
-            Submit Inquiry
+            {submissionStatus === 'sending' ? 'Sending...' : 'Submit Inquiry'}
           </button>
+
+          {/* Mensajes de éxito o error */}
+          {submissionStatus === 'success' && (
+            <p className="text-green-600 text-center">Thank you for your message! We will get back to you shortly.</p>
+          )}
+          {submissionStatus === 'error' && (
+            <p className="text-red-600 text-center">Something went wrong. Please try again later.</p>
+          )}
         </form>
       </div>
     </main>
