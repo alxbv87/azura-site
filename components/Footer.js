@@ -27,22 +27,26 @@ export default function Footer() {
 
         {/* Social Media */}
         <div>
-          <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-          <div className="flex space-x-4">
-            <a href="#" target="_blank" className="hover:text-brand-light">
-              <Facebook size={24} />
-            </a>
-            <a href="#" target="_blank" className="hover:text-brand-light">
-              <Twitter size={24} />
-            </a>
-            <a href="#" target="_blank" className="hover:text-brand-light">
-              <Linkedin size={24} />
-            </a>
-            <a href="#" target="_blank" className="hover:text-brand-light">
-              <Instagram size={24} />
-            </a>
-          </div>
-        </div>
+  <h3 className="text-xl font-bold mb-4">Follow Us</h3>
+  <div className="flex space-x-4">
+    {/* Facebook */}
+    <a href="https://www.facebook.com/profile.php?id=61581075455757" target="_blank" rel="noopener noreferrer" className="hover:text-brand-light">
+      <Facebook size={24} />
+    </a>
+    {/* X */}
+    <a href="https://www.twitter.com/your-handle" target="_blank" rel="noopener noreferrer" className="hover:text-brand-light">
+      <Twitter size={24} />
+    </a>
+    {/* LinkedIn */}
+    <a href="https://www.linkedin.com/in/incorvia-ltd-3aa098384/" target="_blank" rel="noopener noreferrer" className="hover:text-brand-light">
+      <Linkedin size={24} />
+    </a>
+    {/* Instagram */}
+    <a href="https://www.instagram.com/incorvia.cr?igsh=c3RqZ2cweWRpZDV2&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-brand-light">
+      <Instagram size={24} />
+    </a>
+  </div>
+</div>
       </div>
 
       <div className="text-center mt-10 text-gray-200 text-sm">
