@@ -34,7 +34,7 @@ export default function Footer() {
       <Facebook size={24} />
     </a>
     {/* X */}
-    <a href="https://www.twitter.com/your-handle" target="_blank" rel="noopener noreferrer" className="hover:text-brand-light">
+    <a href="https://x.com/incorviacr?s=11" target="_blank" rel="noopener noreferrer" className="hover:text-brand-light">
       <Twitter size={24} />
     </a>
     {/* LinkedIn */}
