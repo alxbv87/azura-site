@@ -8,7 +8,7 @@ export default function Home() {
       <section className="bg-gradient-to-r from-brand to-brand-dark text-white py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Timely & Reliable Incorporations
+            Swift & Reliable Incorporations
           </h1>
           <p className="text-lg md:text-xl mb-8 text-gray-100">
             Simplify your business setup in Costa Rica and beyond with Incorvia.
