@@ -29,6 +29,75 @@ export default function Home() {
           </div>
         </div>
       </section>
+  {/* Why Costa Rica Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">
+            Why Costa Rica?
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Reason 1 */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
+              <h3 className="text-xl font-semibold text-brand mb-4">
+                Stable Democracy
+              </h3>
+              <p className="text-gray-600">
+                Costa Rica has enjoyed over 70 years of uninterrupted democracy with a stable political environment, making it one of the safest investment destinations in Latin America.
+              </p>
+            </div>
+
+            {/* Reason 2 */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
+              <h3 className="text-xl font-semibold text-brand mb-4">
+                Business-Friendly Environment
+              </h3>
+              <p className="text-gray-600">
+                Ranked among the top countries in Latin America for ease of doing business, with streamlined processes for foreign investors and favorable tax structures.
+              </p>
+            </div>
+
+            {/* Reason 3 */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
+              <h3 className="text-xl font-semibold text-brand mb-4">
+                Strategic Location
+              </h3>
+              <p className="text-gray-600">
+                Perfectly positioned between North and South America with excellent connectivity to Europe and Asia through modern airports and shipping routes.
+              </p>
+            </div>
+
+            {/* Reason 4 */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
+              <h3 className="text-xl font-semibold text-brand mb-4">
+                Highly Educated Workforce
+              </h3>
+              <p className="text-gray-600">
+                Costa Rica boasts one of the highest literacy rates in Latin America (97.8%) and a multilingual workforce fluent in English, Spanish, and other languages.
+              </p>
+            </div>
+
+            {/* Reason 5 */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
+              <h3 className="text-xl font-semibold text-brand mb-4">
+                Free Trade Zones & Tax Incentives
+              </h3>
+              <p className="text-gray-600">
+                Attractive tax benefits including corporate tax exemptions, duty-free imports, and special incentives for companies operating in Free Trade Zones.
+              </p>
+            </div>
+
+            {/* Reason 6 */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
+              <h3 className="text-xl font-semibold text-brand mb-4">
+                High Quality of Life
+              </h3>
+              <p className="text-gray-600">
+                Consistently ranked among the happiest countries in the world, with excellent healthcare, beautiful natural surroundings, and a welcoming culture for expatriates.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Services Section */}
       <section className="py-20 bg-gray-50">
