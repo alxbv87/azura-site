@@ -21,10 +21,10 @@ export default function Home() {
               Get Started
             </Link>
             <Link
-              href="/why-costa-rica"
+              href="/services"
               className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-light transition"
             >
-              Why Costa Rica?
+              Learn More
             </Link>
           </div>
         </div>
@@ -40,6 +40,54 @@ export default function Home() {
             {/* Service 1 */}
             <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
               <h3 className="text-xl font-semibold text-brand mb-4">
+                Company Formation
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Quick and compliant incorporation services tailored to your needs.
+              </p>
+              <Link
+                href="/services/company-formation"
+                className="text-brand font-semibold hover:underline"
+              >
+                Learn More →
+              </Link>
+            </div>
+
+            {/* Service 2 */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
+              <h3 className="text-xl font-semibold text-brand mb-4">
+                Legal Support
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Access expert guidance to ensure your business runs smoothly.
+              </p>
+              <Link
+                href="/services/legal-support"
+                className="text-brand font-semibold hover:underline"
+              >
+                Learn More →
+              </Link>
+            </div>
+
+            {/* Service 3 */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
+              <h3 className="text-xl font-semibold text-brand mb-4">
+                Tax & Compliance
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Stay compliant with local regulations without the stress.
+              </p>
+              <Link
+                href="/services/tax-compliance"
+                className="text-brand font-semibold hover:underline"
+              >
+                Learn More →
+              </Link>
+            </div>
+
+            {/* Extra Service 4 */}
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
+              <h3 className="text-xl font-semibold text-brand mb-4">
                 Residency & Work Permits
               </h3>
               <p className="text-gray-600 mb-4">
@@ -53,7 +101,7 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* Service 2 */}
+            {/* Extra Service 5 */}
             <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
               <h3 className="text-xl font-semibold text-brand mb-4">
                 Virtual Office Solutions
@@ -69,7 +117,7 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* Service 3 */}
+            {/* Extra Service 6 */}
             <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition">
               <h3 className="text-xl font-semibold text-brand mb-4">
                 Business Consulting
