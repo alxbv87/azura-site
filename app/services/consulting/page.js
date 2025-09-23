@@ -7,7 +7,7 @@ export default function BusinessConsultingPage() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-24">
+      <section className="bg-gradient-to-r from-brand to-brand-dark text-white py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Business Consulting
@@ -17,7 +17,7 @@ export default function BusinessConsultingPage() {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-500 transition"
+            className="inline-flex items-center border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-light transition"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
@@ -41,26 +41,26 @@ export default function BusinessConsultingPage() {
               </p>
             </div>
             <div className="bg-gray-100 p-8 rounded-xl">
-              <h3 className="text-xl font-semibold text-blue-600 mb-4">Our Expertise:</h3>
+              <h3 className="text-xl font-semibold text-brand mb-4">Our Expertise:</h3>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start">
-                  <span className="text-blue-600 mr-3">•</span>
+                  <span className="text-brand mr-3">•</span>
                   Market entry strategy and feasibility studies
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-600 mr-3">•</span>
+                  <span className="text-brand mr-3">•</span>
                   Regulatory compliance and legal requirements
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-600 mr-3">•</span>
+                  <span className="text-brand mr-3">•</span>
                   Partnership and acquisition opportunities
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-600 mr-3">•</span>
+                  <span className="text-brand mr-3">•</span>
                   Tax optimization and financial planning
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-600 mr-3">•</span>
+                  <span className="text-brand mr-3">•</span>
                   Talent acquisition and HR best practices
                 </li>
               </ul>
@@ -74,7 +74,7 @@ export default function BusinessConsultingPage() {
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-gray-50 p-6 rounded-xl shadow-md">
-                <h3 className="text-xl font-semibold text-blue-600 mb-4">Market Entry Consulting</h3>
+                <h3 className="text-xl font-semibold text-brand mb-4">Market Entry Consulting</h3>
                 <p className="text-gray-600 mb-4">
                   Comprehensive analysis and strategy for entering the Costa Rican market.
                 </p>
@@ -84,11 +84,11 @@ export default function BusinessConsultingPage() {
                   <li>• Entry strategy development</li>
                   <li>• Risk assessment and mitigation</li>
                 </ul>
-                <div className="text-lg font-bold text-blue-600">Starting at $1,500</div>
+                <div className="text-lg font-bold text-brand">Starting at $1,500</div>
               </div>
               
               <div className="bg-gray-50 p-6 rounded-xl shadow-md">
-                <h3 className="text-xl font-semibold text-blue-600 mb-4">Business Setup Consulting</h3>
+                <h3 className="text-xl font-semibold text-brand mb-4">Business Setup Consulting</h3>
                 <p className="text-gray-600 mb-4">
                   Guidance through the entire business establishment process.
                 </p>
@@ -98,11 +98,11 @@ export default function BusinessConsultingPage() {
                   <li>• Banking and financial setup</li>
                   <li>• Tax registration and compliance</li>
                 </ul>
-                <div className="text-lg font-bold text-blue-600">Starting at $1,200</div>
+                <div className="text-lg font-bold text-brand">Starting at $1,200</div>
               </div>
               
               <div className="bg-gray-50 p-6 rounded-xl shadow-md">
-                <h3 className="text-xl font-semibold text-blue-600 mb-4">Growth Strategy Consulting</h3>
+                <h3 className="text-xl font-semibold text-brand mb-4">Growth Strategy Consulting</h3>
                 <p className="text-gray-600 mb-4">
                   Strategic planning to expand and scale your existing business.
                 </p>
@@ -112,11 +112,11 @@ export default function BusinessConsultingPage() {
                   <li>• Operational efficiency improvements</li>
                   <li>• Financial optimization</li>
                 </ul>
-                <div className="text-lg font-bold text-blue-600">Starting at $2,000</div>
+                <div className="text-lg font-bold text-brand">Starting at $2,000</div>
               </div>
               
               <div className="bg-gray-50 p-6 rounded-xl shadow-md">
-                <h3 className="text-xl font-semibold text-blue-600 mb-4">Ongoing Advisory Services</h3>
+                <h3 className="text-xl font-semibold text-brand mb-4">Ongoing Advisory Services</h3>
                 <p className="text-gray-600 mb-4">
                   Continuous support and guidance as your business grows.
                 </p>
@@ -126,14 +126,14 @@ export default function BusinessConsultingPage() {
                   <li>• Performance monitoring and KPIs</li>
                   <li>• Crisis management and problem solving</li>
                 </ul>
-                <div className="text-lg font-bold text-blue-600">Starting at $800/month</div>
+                <div className="text-lg font-bold text-brand">Starting at $800/month</div>
               </div>
             </div>
           </div>
 
           {/* Industries We Serve */}
-          <div className="mb-16 bg-blue-50 p-8 rounded-xl">
-            <h2 className="text-3xl font-bold text-blue-600 mb-6 text-center">
+          <div className="mb-16 bg-brand-light/10 p-8 rounded-xl">
+            <h2 className="text-3xl font-bold text-brand mb-6 text-center">
               Industries We Specialize In
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
@@ -171,14 +171,14 @@ export default function BusinessConsultingPage() {
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-gray-50 p-6 rounded-xl">
-                <h3 className="text-lg font-semibold text-blue-600 mb-3">European Software Company</h3>
+                <h3 className="text-lg font-semibold text-brand mb-3">European Software Company</h3>
                 <p className="text-gray-600 mb-4">
                   &quot;Incorvia helped us establish our Latin American headquarters in Costa Rica. Their market insights and regulatory guidance saved us months of research and potential missteps.&quot;
                 </p>
                 <p className="text-sm font-medium text-gray-800">- Thomas Müller, CEO of TechFlow GmbH</p>
               </div>
               <div className="bg-gray-50 p-6 rounded-xl">
-                <h3 className="text-lg font-semibold text-blue-600 mb-3">Asian Manufacturing Firm</h3>
+                <h3 className="text-lg font-semibold text-brand mb-3">Asian Manufacturing Firm</h3>
                 <p className="text-gray-600 mb-4">
                   &quot;From identifying the perfect Free Trade Zone location to navigating customs regulations, Incorvia&apos;s consulting services were invaluable to our successful Costa Rican expansion.&quot;
                 </p>
@@ -197,7 +197,7 @@ export default function BusinessConsultingPage() {
             </p>
             <Link
               href="/contact"
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition inline-block"
+              className="bg-brand text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-dark transition inline-block"
             >
               Book Your Free Consultation
             </Link>
