@@ -1,17 +1,19 @@
+'use client';
+
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export default function CompanyFormationService() {
+export default function BusinessConsultingPage() {
   return (
     <main>
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-brand to-brand-dark text-white py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Company Formation
+            Business Consulting
           </h1>
           <p className="text-lg md:text-xl mb-8 text-gray-100 max-w-3xl mx-auto">
-            Quick and compliant incorporation services tailored to your needs.
+            Strategic advice on market entry, partnerships, and growth in Costa Rica.
           </p>
           <Link
             href="/"
@@ -29,103 +31,158 @@ export default function CompanyFormationService() {
           <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
             <div>
               <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                Streamlined Company Formation in Costa Rica
+                Navigate the Costa Rican Market with Confidence
               </h2>
               <p className="text-gray-600 mb-6">
-                We handle all aspects of company formation in Costa Rica, ensuring your business is established quickly, efficiently, and in full compliance with local regulations.
+                Entering a new market can be challenging. Our business consulting services provide you with the local knowledge, strategic insights, and practical guidance you need to succeed in Costa Rica.
               </p>
               <p className="text-gray-600">
-                Whether you&apos;re an individual entrepreneur or an international corporation, our tailored approach ensures your company structure aligns with your business goals and tax optimization strategy.
+                With decades of combined experience helping international businesses establish and grow in Costa Rica, our team will help you avoid common pitfalls and capitalize on unique opportunities.
               </p>
             </div>
             <div className="bg-gray-100 p-8 rounded-xl">
-              <h3 className="text-xl font-semibold text-brand mb-4">Our Process:</h3>
-              <ol className="space-y-3 text-gray-700">
+              <h3 className="text-xl font-semibold text-brand mb-4">Our Expertise:</h3>
+              <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start">
-                  <span className="bg-brand text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-1">1</span>
-                  <span>Consultation to determine optimal company structure</span>
+                  <span className="text-brand mr-3">•</span>
+                  Market entry strategy &amp; feasibility studies
                 </li>
                 <li className="flex items-start">
-                  <span className="bg-brand text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-1">2</span>
-                  <span>Preparation of articles of incorporation and bylaws</span>
+                  <span className="text-brand mr-3">•</span>
+                  Regulatory compliance &amp; legal requirements
                 </li>
                 <li className="flex items-start">
-                  <span className="bg-brand text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-1">3</span>
-                  <span>Notarization and registration with Public Registry</span>
+                  <span className="text-brand mr-3">•</span>
+                  Partnership &amp; acquisition opportunities
                 </li>
                 <li className="flex items-start">
-                  <span className="bg-brand text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-1">4</span>
-                  <span>Tax ID registration and compliance setup</span>
+                  <span className="text-brand mr-3">•</span>
+                  Tax optimization &amp; financial planning
                 </li>
-              </ol>
+                <li className="flex items-start">
+                  <span className="text-brand mr-3">•</span>
+                  Talent acquisition &amp; HR best practices
+                </li>
+              </ul>
             </div>
           </div>
 
-          {/* Company Types */}
+          {/* Consulting Services */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-              Company Structures We Form
+              Our Consulting Services
             </h2>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-gray-50 p-6 rounded-xl shadow-md">
-                <h3 className="text-xl font-semibold text-brand mb-3">S.A. (Sociedad Anónima)</h3>
+                <h3 className="text-xl font-semibold text-brand mb-4">Market Entry Consulting</h3>
                 <p className="text-gray-600 mb-4">
-                  The most common corporate structure in Costa Rica, similar to a corporation.
+                  Comprehensive analysis and strategy for entering the Costa Rican market.
                 </p>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• Limited liability protection</li>
-                  <li>• Requires board of directors</li>
-                  <li>• Ideal for medium to large businesses</li>
+                <ul className="text-sm text-gray-700 space-y-2 mb-4">
+                  <li>• Market research &amp; competitive analysis</li>
+                  <li>• Regulatory landscape assessment</li>
+                  <li>• Entry strategy development</li>
+                  <li>• Risk assessment &amp; mitigation</li>
                 </ul>
+                <div className="text-lg font-bold text-brand">Starting at $1,500</div>
               </div>
+              
               <div className="bg-gray-50 p-6 rounded-xl shadow-md">
-                <h3 className="text-xl font-semibold text-brand mb-3">S.R.L. (Sociedad de Responsabilidad Limitada)</h3>
+                <h3 className="text-xl font-semibold text-brand mb-4">Business Setup Consulting</h3>
                 <p className="text-gray-600 mb-4">
-                  Similar to an LLC, perfect for small to medium businesses.
+                  Guidance through the entire business establishment process.
                 </p>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• Limited liability protection</li>
-                  <li>• More flexible management structure</li>
-                  <li>• Fewer formal requirements</li>
+                <ul className="text-sm text-gray-700 space-y-2 mb-4">
+                  <li>• Entity selection &amp; structure</li>
+                  <li>• Licensing &amp; permit requirements</li>
+                  <li>• Banking &amp; financial setup</li>
+                  <li>• Tax registration &amp; compliance</li>
                 </ul>
+                <div className="text-lg font-bold text-brand">Starting at $1,200</div>
               </div>
+              
               <div className="bg-gray-50 p-6 rounded-xl shadow-md">
-                <h3 className="text-xl font-semibold text-brand mb-3">Free Zone Entity</h3>
+                <h3 className="text-xl font-semibold text-brand mb-4">Growth Strategy Consulting</h3>
                 <p className="text-gray-600 mb-4">
-                  Special structure for businesses operating in Costa Rica&apos;s Free Trade Zones.
+                  Strategic planning to expand and scale your existing business.
                 </p>
-                <ul className="text-sm text-gray-700 space-y-2">
-                  <li>• Significant tax advantages</li>
-                  <li>• Import/export benefits</li>
-                  <li>• Ideal for export-oriented businesses</li>
+                <ul className="text-sm text-gray-700 space-y-2 mb-4">
+                  <li>• Market expansion strategies</li>
+                  <li>• Partnership &amp; acquisition opportunities</li>
+                  <li>• Operational efficiency improvements</li>
+                  <li>• Financial optimization</li>
                 </ul>
+                <div className="text-lg font-bold text-brand">Starting at $2,000</div>
+              </div>
+              
+              <div className="bg-gray-50 p-6 rounded-xl shadow-md">
+                <h3 className="text-xl font-semibold text-brand mb-4">Ongoing Advisory Services</h3>
+                <p className="text-gray-600 mb-4">
+                  Continuous support and guidance as your business grows.
+                </p>
+                <ul className="text-sm text-gray-700 space-y-2 mb-4">
+                  <li>• Monthly strategy sessions</li>
+                  <li>• Regulatory updates &amp; compliance</li>
+                  <li>• Performance monitoring &amp; KPIs</li>
+                  <li>• Crisis management &amp; problem solving</li>
+                </ul>
+                <div className="text-lg font-bold text-brand">Starting at $800/month</div>
               </div>
             </div>
           </div>
 
-          {/* Timeline & Pricing */}
+          {/* Industries We Serve */}
           <div className="mb-16 bg-brand-light/10 p-8 rounded-xl">
             <h2 className="text-3xl font-bold text-brand mb-6 text-center">
-              Formation Timeline & Investment
+              Industries We Specialize In
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="text-center p-4">
+                <h3 className="font-semibold text-gray-800 mb-2">Technology &amp; Software</h3>
+                <p className="text-sm text-gray-600">IT services, software development, SaaS companies</p>
+              </div>
+              <div className="text-center p-4">
+                <h3 className="font-semibold text-gray-800 mb-2">Tourism &amp; Hospitality</h3>
+                <p className="text-sm text-gray-600">Hotels, tour operators, eco-tourism, restaurants</p>
+              </div>
+              <div className="text-center p-4">
+                <h3 className="font-semibold text-gray-800 mb-2">Health &amp; Wellness</h3>
+                <p className="text-sm text-gray-600">Medical tourism, wellness centers, yoga retreats</p>
+              </div>
+              <div className="text-center p-4">
+                <h3 className="font-semibold text-gray-800 mb-2">Manufacturing</h3>
+                <p className="text-sm text-gray-600">Light manufacturing, food processing, textiles</p>
+              </div>
+              <div className="text-center p-4">
+                <h3 className="font-semibold text-gray-800 mb-2">Agriculture &amp; Sustainability</h3>
+                <p className="text-sm text-gray-600">Organic farming, sustainable products, exports</p>
+              </div>
+              <div className="text-center p-4">
+                <h3 className="font-semibold text-gray-800 mb-2">Professional Services</h3>
+                <p className="text-sm text-gray-600">Consulting, legal, accounting, marketing agencies</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Success Stories */}
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+              Success Stories
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="text-center p-6 bg-white rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">Typical Timeline</h3>
-                <div className="space-y-2 text-gray-700">
-                  <p><strong>1-2 weeks:</strong> Document preparation</p>
-                  <p><strong>2-3 weeks:</strong> Notarization & registration</p>
-                  <p><strong>1 week:</strong> Tax ID & bank account setup</p>
-                  <p><strong>Total:</strong> 4-6 weeks on average</p>
-                </div>
+              <div className="bg-gray-50 p-6 rounded-xl">
+                <h3 className="text-lg font-semibold text-brand mb-3">European Software Company</h3>
+                <p className="text-gray-600 mb-4">
+                  &quot;Incorvia helped us establish our Latin American headquarters in Costa Rica. Their market insights and regulatory guidance saved us months of research and potential missteps.&quot;
+                </p>
+                <p className="text-sm font-medium text-gray-800">- Thomas Müller, CEO of TechFlow GmbH</p>
               </div>
-              <div className="text-center p-6 bg-white rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">Investment Required</h3>
-                <div className="space-y-2 text-gray-700">
-                  <p><strong>Legal fees:</strong> Starting at $1,500</p>
-                  <p><strong>Registration fees:</strong> $300-$500</p>
-                  <p><strong>Minimum capital:</strong> No legal minimum</p>
-                  <p><strong>Bank account:</strong> $1,000+ deposit</p>
-                </div>
+              <div className="bg-gray-50 p-6 rounded-xl">
+                <h3 className="text-lg font-semibold text-brand mb-3">Asian Manufacturing Firm</h3>
+                <p className="text-gray-600 mb-4">
+                  &quot;From identifying the perfect Free Trade Zone location to navigating customs regulations, Incorvia&apos;s consulting services were invaluable to our successful Costa Rican expansion.&quot;
+                </p>
+                <p className="text-sm font-medium text-gray-800">- Yuki Tanaka, Director of Pacific Manufacturing</p>
               </div>
             </div>
           </div>
@@ -133,16 +190,16 @@ export default function CompanyFormationService() {
           {/* CTA */}
           <div className="text-center">
             <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              Ready to Form Your Company in Costa Rica?
+              Ready to Grow Your Business in Costa Rica?
             </h3>
             <p className="text-gray-600 mb-8">
-              Let our experts handle the entire incorporation process for you.
+              Schedule a free consultation with our business experts.
             </p>
             <Link
               href="/contact"
               className="bg-brand text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-dark transition inline-block"
             >
-              Get Started Today
+              Book Your Free Consultation
             </Link>
           </div>
         </div>
