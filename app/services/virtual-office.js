@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
 
 export default function VirtualOfficeService() {
   return (
@@ -35,14 +36,16 @@ export default function VirtualOfficeService() {
                 Our virtual office solutions provide your business with a prestigious Costa Rican address without the overhead costs of a physical office. Perfect for international entrepreneurs who want to establish a local presence.
               </p>
               <p className="text-gray-600">
-                Whether you're testing the market, running a remote business, or need a legal address for incorporation, our virtual office services have you covered.
+                Whether you&apos;re testing the market, running a remote business, or need a legal address for incorporation, our virtual office services have you covered.
               </p>
             </div>
             <div className="bg-gray-100 p-8 rounded-xl">
-              <img 
+              <Image 
                 src="https://placehold.co/400x300/brand/white?text=Virtual+Office" 
                 alt="Virtual Office" 
                 className="w-full h-auto rounded-lg mb-4"
+                width={400}
+                height={300}
               />
               <p className="text-center text-gray-600 text-sm">
                 Professional business address in prime locations
@@ -196,7 +199,7 @@ export default function VirtualOfficeService() {
                   </svg>
                 </div>
                 <h3 className="font-semibold text-gray-800 mb-2">Mail Forwarding</h3>
-                <p className="text-sm text-gray-600">We'll forward your mail anywhere in the world on your schedule</p>
+                <p className="text-sm text-gray-600">We&apos;ll forward your mail anywhere in the world on your schedule</p>
               </div>
             </div>
           </div>
