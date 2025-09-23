@@ -32,7 +32,7 @@ export default function ResidencyService() {
                 Why Choose Costa Rica for Residency?
               </h2>
               <p className="text-gray-600 mb-6">
-                Costa Rica offers one of the most accessible residency programs in Latin America for entrepreneurs and investors. With a stable democracy, excellent healthcare, and a high quality of life, it's the perfect destination for international professionals.
+                Costa Rica offers one of the most accessible residency programs in Latin America for entrepreneurs and investors. With a stable democracy, excellent healthcare, and a high quality of life, it&apos;s the perfect destination for international professionals.
               </p>
               <p className="text-gray-600">
                 Our team guides you through every step of the process, ensuring a smooth transition for you and your family.
