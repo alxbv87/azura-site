@@ -92,7 +92,7 @@ export default function CompanyFormationService() {
               <div className="bg-gray-50 p-6 rounded-xl shadow-md">
                 <h3 className="text-xl font-semibold text-brand mb-3">Free Zone Entity</h3>
                 <p className="text-gray-600 mb-4">
-                  Special structure for businesses operating in Costa Rica's Free Trade Zones.
+                  Special structure for businesses operating in Costa Rica&apos;s Free Trade Zones.
                 </p>
                 <ul className="text-sm text-gray-700 space-y-2">
                   <li>• Significant tax advantages</li>
