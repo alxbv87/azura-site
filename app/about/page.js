@@ -142,6 +142,7 @@ export default function About() {
                 alt="Juan J. Acuna Leandro - Professional Photo 4"
                 width={300}
                 height={300}
+                className="rounded-xl"
               />
             </div>
           </div>
