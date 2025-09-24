@@ -61,14 +61,13 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Photo 1 (Top Left) */}
           <div className="lg:col-span-3">
-            <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-md">
-              <Image
-                src="/images/JJ1.jpg"
-                alt="Juan J. Acuna Leandro - Professional Photo 1"
-                width={300}
-                height={300}
-              />
-            </div>
+            <Image
+              src="/JJ1.jpg"
+              alt="Juan J. Acuna Leandro - Professional Photo 1"
+              width={300}
+              height={300}
+              className="w-full h-auto rounded-xl shadow-md"
+            />
           </div>
 
           {/* Bio (Center) */}
@@ -109,42 +108,38 @@ export default function About() {
 
           {/* Photo 2 (Top Right) */}
           <div className="lg:col-span-3">
-            <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-md">
-              <Image
-                src="/images/JJ2.jpg"
-                alt="Juan J. Acuna Leandro - Professional Photo 2"
-                width={300}
-                height={300}
-              />
-            </div>
+            <Image
+              src="/JJ2.jpg"
+              alt="Juan J. Acuna Leandro - Professional Photo 2"
+              width={300}
+              height={300}
+              className="w-full h-auto rounded-xl shadow-md"
+            />
           </div>
 
           {/* Photo 3 (Bottom Left) */}
-          <div className="lg:col-span-3 mt-4 lg:mt-0">
-            <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-md">
-              <Image
-                src="/images/JJ3.jpg"
-                alt="Juan J. Acuna Leandro - Professional Photo 3"
-                width={300}
-                height={300}
-              />
-            </div>
+          <div className="lg:col-span-3 mt-8 lg:mt-0">
+            <Image
+              src="/JJ3.jpg"
+              alt="Juan J. Acuna Leandro - Professional Photo 3"
+              width={300}
+              height={300}
+              className="w-full h-auto rounded-xl shadow-md"
+            />
           </div>
 
-          {/* Empty spacer to center bottom photo */}
+          {/* Spacer */}
           <div className="lg:col-span-6"></div>
 
           {/* Photo 4 (Bottom Right) */}
-          <div className="lg:col-span-3 mt-4 lg:mt-0">
-            <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-md">
-              <Image
-                src="/images/JJ4.jpg"
-                alt="Juan J. Acuna Leandro - Professional Photo 4"
-                width={300}
-                height={300}
-                className="rounded-xl"
-              />
-            </div>
+          <div className="lg:col-span-3 mt-8 lg:mt-0">
+            <Image
+              src="/JJ4.jpg"
+              alt="Juan J. Acuna Leandro - Professional Photo 4"
+              width={300}
+              height={300}
+              className="w-full h-auto rounded-xl shadow-md"
+            />
           </div>
         </div>
       </section>
