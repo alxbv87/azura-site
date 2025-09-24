@@ -1,14 +1,13 @@
-"use client";
+'use client';
 
 import Image from "next/image";
-import { FaBullseye, FaEye, FaHandshake } from "react-icons/fa"; // 👈 icons
+import { FaBullseye, FaEye, FaHandshake } from "react-icons/fa";
 
 export default function About() {
   return (
     <main className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
- <section className="relative bg-gradient-to-r from-brand to-brand-dark text-white py-24">
-
+      <section className="relative bg-gradient-to-r from-brand to-brand-dark text-white py-24">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-5xl font-bold mb-6">About Incorvia</h1>
           <p className="text-lg max-w-2xl mx-auto text-white/90">
@@ -41,7 +40,7 @@ export default function About() {
         </div>
         <div className="relative h-80 w-full">
           <Image
-            src="/about.jpg" // 👈 Place your image in /public/about.jpg
+            src="/about.jpg"
             alt="About Incorvia"
             fill
             className="object-cover rounded-2xl shadow-lg"
@@ -49,8 +48,90 @@ export default function About() {
         </div>
       </section>
 
+      {/* Leadership Profile */}
+      <section className="max-w-7xl mx-auto px-6 py-20 bg-white">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-800">Meet Our Legal Lead</h2>
+          <p className="text-gray-600 max-w-3xl mx-auto">
+            Our team is led by seasoned professionals with deep expertise in Costa Rican law and international business.
+          </p>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-10 items-center">
+          {/* Photo */}
+          <div className="flex-shrink-0">
+            <div className="relative w-64 h-64 rounded-2xl overflow-hidden shadow-xl border-4 border-brand/10">
+              <Image
+                src="/images/JJ1.jpg"
+                alt="Msc Juan J. Acuna Leandro – Attorney Specialist & Notary Public"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
+
+          {/* Bio */}
+          <div className="flex-1">
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              Msc Juan J. Acuna Leandro
+            </h3>
+            <p className="text-lg text-brand font-semibold mb-4">
+              Attorney Specialist & Notary Public
+            </p>
+
+            <div className="space-y-4 text-gray-600">
+              <p>
+                With extensive international training and over a decade of professional experience, Msc Juan J. Acuna Leandro offers trusted legal counsel backed by advanced specialization in Criminal Law, Notarial and Registry Law, and Real Estate.
+              </p>
+
+              <p>
+                He holds a Master’s Degree in Criminal Law from Universidad Latina de Costa Rica, and has pursued advanced postgraduate studies across Latin America and Europe, including:
+              </p>
+
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Criminal Evidence Law (Universidad Castilla-La Mancha, Toledo, Spain)</li>
+                <li>Advanced Criminal Law (Universidad Nacional de Mar del Plata, Argentina)</li>
+                <li>Notarial and Registry Law (Universidad Internacional de las Américas)</li>
+              </ul>
+
+              <p>
+                Recognized as an international speaker, he has shared his expertise on organized crime, anti-corruption, compliance, and anti-money laundering in global forums. His professional contributions have earned him the honor of serving as a member of several commissions of the Judiciary of Costa Rica.
+              </p>
+
+              <p>
+                In addition to his legal practice, Msc Juan J. Acuna Leandro is a trusted television contributor and legal analyst, frequently invited to provide expert commentary on high-profile legal matters. His comprehensive knowledge of real estate law further enhances his ability to protect clients’ interests with precision and integrity.
+              </p>
+
+              <p>
+                A results-driven attorney and notary public, Msc Juan J. Acuna Leandro is committed to providing clients with strategic, ethical, and effective legal solutions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Photo Gallery */}
+      <section className="max-w-7xl mx-auto px-6 py-12 bg-white">
+        <h3 className="text-2xl font-bold text-gray-800 text-center mb-8">
+          Professional Highlights
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {['JJ1', 'JJ2', 'JJ3', 'JJ4'].map((img) => (
+            <div key={img} className="relative aspect-square rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
+              <Image
+                src={`/images/${img}.jpg`}
+                alt={`Professional photo ${img}`}
+                fill
+                className="object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Mission / Vision / Values */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-20 border-t border-gray-200">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-12">
             Our Core Principles
