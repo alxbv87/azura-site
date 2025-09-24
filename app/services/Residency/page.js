@@ -1,14 +1,16 @@
+'use client';
+
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export default function ResidencyService() {
+export default function ResidencyPermitsPage() {
   return (
     <main>
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-brand to-brand-dark text-white py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Residency & Work Permits
+            Residency &amp; Work Permits
           </h1>
           <p className="text-lg md:text-xl mb-8 text-gray-100 max-w-3xl mx-auto">
             We help you and your team secure legal residency and work permits with ease.
@@ -137,6 +139,31 @@ export default function ResidencyService() {
                     1-2 year processing time
                   </li>
                 </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Benefits of Costa Rican Residency */}
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+              Benefits of Costa Rican Residency
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="text-center p-4 bg-gray-50 rounded-lg">
+                <h3 className="font-semibold text-gray-800 mb-2">Stable Democracy</h3>
+                <p className="text-sm text-gray-600">Over 70 years of peaceful democratic governance</p>
+              </div>
+              <div className="text-center p-4 bg-gray-50 rounded-lg">
+                <h3 className="font-semibold text-gray-800 mb-2">Healthcare System</h3>
+                <p className="text-sm text-gray-600">Universal healthcare with high-quality private options</p>
+              </div>
+              <div className="text-center p-4 bg-gray-50 rounded-lg">
+                <h3 className="font-semibold text-gray-800 mb-2">Natural Beauty</h3>
+                <p className="text-sm text-gray-600">Beaches, mountains, rainforests, and volcanoes</p>
+              </div>
+              <div className="text-center p-4 bg-gray-50 rounded-lg">
+                <h3 className="font-semibold text-gray-800 mb-2">Expat Community</h3>
+                <p className="text-sm text-gray-600">Large international community for easy integration</p>
               </div>
             </div>
           </div>
