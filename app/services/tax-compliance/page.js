@@ -10,7 +10,7 @@ export default function TaxCompliancePage() {
       <section className="bg-gradient-to-r from-brand to-brand-dark text-white py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Tax & Compliance
+            Tax &amp; Compliance
           </h1>
           <p className="text-lg md:text-xl mb-8 text-gray-100 max-w-3xl mx-auto">
             Stay compliant with local regulations without the stress.
@@ -70,7 +70,7 @@ export default function TaxCompliancePage() {
           {/* Costa Rican Tax System */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-              Understanding Costa Rica's Tax System
+              Understanding Costa Rica&apos;s Tax System
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-gray-50 p-6 rounded-xl shadow-md">
@@ -92,7 +92,7 @@ export default function TaxCompliancePage() {
                 </p>
                 <ul className="text-sm text-gray-700 space-y-2">
                   <li>• <strong>Standard rate:</strong> 13%</li>
-                  <li>• <strong>Registration threshold:</strong> ₡10 million annual sales</li>
+                  <li>• <strong>Registration threshold:</strong> &#8353;10 million annual sales</li>
                   <li>• <strong>Filing:</strong> Monthly declarations and payments</li>
                 </ul>
               </div>
@@ -116,7 +116,7 @@ export default function TaxCompliancePage() {
                 </p>
                 <ul className="text-sm text-gray-700 space-y-2">
                   <li>• <strong>Social Security:</strong> 26.33% of salary (employer portion)</li>
-                  <li>• <strong>Workmen's Compensation:</strong> 1.5-3.75% depending on industry</li>
+                  <li>• <strong>Workmen&apos;s Compensation:</strong> 1.5-3.75% depending on industry</li>
                   <li>• <strong>Annual Bonus:</strong> Mandatory 13th-month payment</li>
                 </ul>
               </div>
@@ -126,7 +126,7 @@ export default function TaxCompliancePage() {
           {/* Compliance Packages */}
           <div className="mb-16 bg-brand-light/10 p-8 rounded-xl">
             <h2 className="text-3xl font-bold text-brand mb-6 text-center">
-              Tax & Compliance Packages
+              Tax &amp; Compliance Packages
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center p-6 bg-white rounded-lg shadow-md">
@@ -168,7 +168,7 @@ export default function TaxCompliancePage() {
           {/* Tax Benefits */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-              Tax Benefits & Incentives
+              Tax Benefits &amp; Incentives
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-gray-50 p-6 rounded-xl">
@@ -197,7 +197,7 @@ export default function TaxCompliancePage() {
                 <ul className="text-gray-700 space-y-3">
                   <li className="flex items-start">
                     <span className="text-brand mr-2">✓</span>
-                    R&D tax credits for innovative companies
+                    R&amp;D tax credits for innovative companies
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand mr-2">✓</span>
