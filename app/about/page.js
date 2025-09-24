@@ -65,8 +65,8 @@ export default function About() {
               <Image
                 src="/images/JJ1.jpg"
                 alt="Juan J. Acuna Leandro - Professional Photo 1"
-                fill
-                className="object-cover"
+                width={300}
+                height={300}
               />
             </div>
           </div>
@@ -113,8 +113,8 @@ export default function About() {
               <Image
                 src="/images/JJ2.jpg"
                 alt="Juan J. Acuna Leandro - Professional Photo 2"
-                fill
-                className="object-cover"
+                width={300}
+                height={300}
               />
             </div>
           </div>
@@ -125,8 +125,8 @@ export default function About() {
               <Image
                 src="/images/JJ3.jpg"
                 alt="Juan J. Acuna Leandro - Professional Photo 3"
-                fill
-                className="object-cover"
+                width={300}
+                height={300}
               />
             </div>
           </div>
@@ -140,8 +140,8 @@ export default function About() {
               <Image
                 src="/images/JJ4.jpg"
                 alt="Juan J. Acuna Leandro - Professional Photo 4"
-                fill
-                className="object-cover"
+                width={300}
+                height={300}
               />
             </div>
           </div>
