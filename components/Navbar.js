@@ -52,6 +52,7 @@ export default function Navbar() {
         <button
           className="md:hidden text-gray-700 hover:text-brand focus:outline-none"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
         >
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             {isMenuOpen ? (
