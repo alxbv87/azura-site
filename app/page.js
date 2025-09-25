@@ -58,7 +58,7 @@ const ThreeGlobe = () => {
     // Globe (wireframe sphere)
     const geometry = new THREE.SphereGeometry(2.2, 64, 64);
     const material = new THREE.MeshBasicMaterial({
-      color: 0x0a2540, // dark navy
+      color: 0x1e3a8a, // deep blue
       wireframe: true,
     });
     const sphere = new THREE.Mesh(geometry, material);
@@ -67,7 +67,7 @@ const ThreeGlobe = () => {
     // Glow Effect (slightly larger transparent sphere)
     const glowGeometry = new THREE.SphereGeometry(2.4, 64, 64);
     const glowMaterial = new THREE.MeshBasicMaterial({
-      color: 0xc5a15a, // muted gold
+      color: 0xd4af37, // gold glow
       transparent: true,
       opacity: 0.15,
     });
@@ -84,7 +84,7 @@ const ThreeGlobe = () => {
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particlesMaterial = new THREE.PointsMaterial({
       size: 0.01,
-      color: 0xc5a15a,
+      color: 0xd4af37,
     });
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
@@ -141,25 +141,25 @@ export default function Home() {
   const [activeTeamMember, setActiveTeamMember] = useState(0);
 
   return (
-    <main className="bg-gray-50">
-      {/* Header with brand name */}
-      <header className="fixed top-4 left-6 z-100">
-        <h1 className="text-xl md:text-2xl font-bold font-sans text-gray-800">
-          Incorvia
-        </h1>
-      </header>
+    <main className="bg-brand-light">
+  {/* Header with brand name */}
+    <header className="fixed top-4 left-6 z-50">
+    <h1 className="text-xl md:text-2xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
+      Incorvia
+    </h1>
+  </header>
 
-      {/* Hero */}
-      <section
-        id="home"
-        className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-gray-900 via-gray-700/40 to-gray-900"
-      >
-        <ThreeGlobe />
+  {/* Hero */}
+  <section
+    id="home"
+    className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-brand-dark via-brand-accent/40 to-brand-dark"
+  >
+    <ThreeGlobe />
         <div className="relative z-10 p-6">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-display text-gray-100 leading-tight drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-display text-brand-light leading-tight drop-shadow-lg">
             Seamless Business Incorporation <br /> in Costa Rica.
           </h1>
-          <p className="mt-6 text-lg md:text-xl text-gray-200/90 max-w-3xl mx-auto">
+          <p className="mt-6 text-lg md:text-xl text-brand-light/90 max-w-3xl mx-auto">
             Your strategic partners for navigating the complexities of company formation and achieving ambitious growth in Costa Rica.
           </p>
         </div>
@@ -169,13 +169,13 @@ export default function Home() {
       <section id="about" className="py-20 md:py-32">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
           <div>
-            <p className="text-sm font-bold text-camber tracking-widest uppercase mb-4 text-gray-600">
+            <p className="text-sm font-bold text-brand-accent tracking-widest uppercase mb-4">
               Our Company
             </p>
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold font-display text-brand-dark mb-6">
               Local Expertise, Global Vision
             </h2>
-            <p className="text-lg text-gray-700 leading-relaxed mb-8">
+            <p className="text-lg text-brand-muted leading-relaxed mb-8">
               Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country. Our proactive approach ensures you are always ahead of regulatory changes and positioned for long-term success.
             </p>
           </div>
@@ -191,33 +191,164 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section id="services" className="py-20 md:py-32 bg-gray-100/5">
+      <section id="services" className="py-20 md:py-32 bg-brand-accent/5">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-gray-900">
+            <h2 className="text-4xl md:text-5xl font-bold font-display text-brand-dark">
               Our Core Services
             </h2>
-            <p className="mt-4 text-lg text-gray-700">
+            <p className="mt-4 text-lg text-brand-muted">
               A comprehensive suite of services for establishing and managing your business in Costa Rica.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...].map((service) => (
+            {[
+              {
+                title: "Company Formation (S.A. & S.R.L.)",
+                desc: "Seamless incorporation of Costa Rican entities, tailored for liability protection and tax efficiency.",
+              },
+              {
+                title: "Regulatory & Tax Compliance",
+                desc: "Ensuring your business adheres to all national regulations, including annual filings and tax obligations.",
+              },
+              {
+                title: "Residency & Work Permits",
+                desc: "Expert guidance for executives and investors seeking legal residency and work authorization.",
+              },
+            ].map((service) => (
               <div
                 key={service.title}
                 className="p-8 rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow"
               >
-                <h3 className="text-2xl font-semibold font-display text-gray-900 mb-3">
+                <h3 className="text-2xl font-semibold font-display text-brand-accent mb-3">
                   {service.title}
                 </h3>
-                <p className="text-gray-700">{service.desc}</p>
+                <p className="text-brand-muted">{service.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Continue for Process, Team, Contact sections, replacing colors only similarly */}
+      {/* Process */}
+      <section id="process" className="py-20 md:py-32">
+        <div className="container mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold font-display text-brand-dark">
+              Our Streamlined Process
+            </h2>
+            <p className="mt-4 text-lg text-brand-muted">
+              A structured and transparent approach to ensure your objectives are met with precision and efficiency at every stage.
+            </p>
+          </div>
+          <div className="relative process-timeline max-w-3xl mx-auto">
+            {[
+              {
+                step: "1",
+                title: "Initial Consultation",
+                desc: "We begin with a confidential discussion to understand your unique situation and business goals in Costa Rica.",
+              },
+              {
+                step: "2",
+                title: "Strategic Plan",
+                desc: "Our team develops a bespoke incorporation strategy, outlining a clear roadmap and a transparent fee structure.",
+              },
+              {
+                step: "3",
+                title: "Execution & Filing",
+                desc: "We meticulously handle all necessary filings and interactions with Costa Rican government agencies on your behalf.",
+              },
+              {
+                step: "4",
+                title: "Ongoing Compliance",
+                desc: "Beyond formation, we provide continuous support to ensure your business remains in good standing with all local regulations.",
+              },
+            ].map((item) => (
+              <div key={item.step} className="relative pl-12 pb-16">
+                <div className="process-item-dot">{item.step}</div>
+                <h3 className="text-2xl font-bold font-display text-brand-accent">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-brand-muted">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section id="team" className="py-20 md:py-32 bg-brand-accent/5">
+        <div className="container mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold font-display text-brand-dark">
+              Meet Our Leadership
+            </h2>
+            <p className="mt-4 text-lg text-brand-muted">
+              A collective of seasoned experts dedicated to your success in Costa Rica.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+            <div className="md:col-span-1">
+              <ul className="space-y-2">
+                {teamData.map((member, index) => (
+                  <li
+                    key={member.name}
+                    onClick={() => setActiveTeamMember(index)}
+                  >
+                    <div
+                      className={`p-6 border-l-4 text-brand-muted hover:text-brand-dark cursor-pointer transition-all duration-300 ${
+                        activeTeamMember === index
+                          ? 'active border-brand-accent bg-brand-light/50'
+                          : 'border-transparent'
+                      }`}
+                    >
+                      <h4 className="text-2xl font-bold">{member.name}</h4>
+                      <p>{member.title}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="md:col-span-2">
+              <div className="transition-opacity duration-500">
+                <div className="relative w-full h-96 mb-6">
+                  <Image
+                    src={teamData[activeTeamMember].img}
+                    alt={teamData[activeTeamMember].name}
+                    fill
+                    className="rounded-lg object-cover shadow-lg"
+                  />
+                </div>
+                <h3 className="text-3xl font-bold font-display text-brand-dark">
+                  {teamData[activeTeamMember].name}
+                </h3>
+                <p className="text-xl text-brand-accent mt-1">
+                  {teamData[activeTeamMember].title}
+                </p>
+                <p className="text-brand-muted mt-4 leading-relaxed">
+                  {teamData[activeTeamMember].bio}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section id="contact" className="py-28 text-center bg-gradient-to-r from-brand-accent/90 to-brand-dark">
+        <h2 className="text-4xl md:text-6xl font-bold font-display text-brand-light drop-shadow-lg">
+          Begin Your Costa Rican Venture
+        </h2>
+        <p className="text-lg text-brand-light/90 max-w-2xl mx-auto my-8">
+          Contact us to schedule a confidential consultation and discover how our strategic guidance can empower your business&apos;s success.
+        </p>
+        <a
+          href="#"
+          className="inline-block border-2 border-brand-gold text-brand-light px-10 py-4 rounded-md font-bold hover:bg-brand-gold hover:text-brand-dark transition duration-300 text-lg"
+        >
+          Let&apos;s Talk
+        </a>
+      </section>
     </main>
   );
 }
