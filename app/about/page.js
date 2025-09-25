@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
-import { FaBullseye, FaEye, FaHandshake } from 'react-icons/fa';
+import Image from "next/image";
+import { FaBullseye, FaEye, FaHandshake } from "react-icons/fa";
 import * as THREE from 'three';
 
-// Particle Network Animation
-const ParticleNetwork = () => {
+// Particle Background Component
+const ParticleBackground = () => {
   const mountRef = useRef(null);
 
   useEffect(() => {
@@ -14,12 +14,7 @@ const ParticleNetwork = () => {
     if (!currentMount) return;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      currentMount.clientWidth / currentMount.clientHeight,
-      0.1,
-      1000
-    );
+    const camera = new THREE.PerspectiveCamera(75, currentMount.clientWidth / currentMount.clientHeight, 0.1, 1000);
     camera.position.z = 5;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -29,9 +24,7 @@ const ParticleNetwork = () => {
     const particleCount = 600;
     const particlesGeometry = new THREE.BufferGeometry();
     const posArray = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 10;
-    }
+    for (let i = 0; i < particleCount * 3; i++) posArray[i] = (Math.random() - 0.5) * 10;
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
     const particlesMaterial = new THREE.PointsMaterial({ color: 0xD4AF37, size: 0.03 });
@@ -44,19 +37,10 @@ const ParticleNetwork = () => {
     const lineMesh = new THREE.LineSegments(geometryLines, linesMaterial);
     scene.add(lineMesh);
 
-    let mouseX = 0, mouseY = 0;
-
-    const onMouseMove = (event) => {
-      mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-      mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-    };
-
-    window.addEventListener('mousemove', onMouseMove);
-
     const animate = () => {
       requestAnimationFrame(animate);
-      particles.rotation.y += 0.001 + mouseX * 0.01;
-      particles.rotation.x += 0.0005 + mouseY * 0.01;
+      particles.rotation.y += 0.001;
+      particles.rotation.x += 0.0005;
 
       const positions = [];
       const p = particles.geometry.attributes.position.array;
@@ -65,10 +49,10 @@ const ParticleNetwork = () => {
           const dx = p[i * 3] - p[j * 3];
           const dy = p[i * 3 + 1] - p[j * 3 + 1];
           const dz = p[i * 3 + 2] - p[j * 3 + 2];
-          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-          if (dist < maxDistance) {
-            positions.push(p[i * 3], p[i * 3 + 1], p[i * 3 + 2]);
-            positions.push(p[j * 3], p[j * 3 + 1], p[j * 3 + 2]);
+          const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+          if(dist < maxDistance){
+            positions.push(p[i*3], p[i*3+1], p[i*3+2]);
+            positions.push(p[j*3], p[j*3+1], p[j*3+2]);
           }
         }
       }
@@ -87,131 +71,118 @@ const ParticleNetwork = () => {
     window.addEventListener('resize', onResize);
 
     return () => {
-      window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('resize', onResize);
-      if (currentMount) currentMount.removeChild(renderer.domElement);
+      if(currentMount) currentMount.removeChild(renderer.domElement);
       renderer.dispose();
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute top-0 left-0 w-full h-full z-0" />;
+  return <div ref={mountRef} className="fixed top-0 left-0 w-full h-full z-0" />;
 };
 
 export default function About() {
   return (
-    <main className="relative bg-[#F7F9FB] font-sans text-[#2E3B4E] min-h-screen overflow-x-hidden">
-      
-      {/* Particle Background */}
-      <ParticleNetwork />
+    <main className="relative font-sans text-[#2E3B4E] bg-[#1B263B]">
+      <ParticleBackground />
 
       {/* Hero Section */}
-      <section className="relative z-10 flex items-center justify-center h-screen text-center px-6">
-        <div className="bg-black/40 backdrop-blur-md rounded-2xl shadow-xl p-10 max-w-3xl">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">About Incorvia</h1>
-          <p className="text-lg md:text-xl text-white/90">
-            We specialize in fast, reliable, and professional incorporation services for entrepreneurs and companies expanding into Costa Rica.
-            Our mission is to simplify the process and ensure full compliance every step of the way.
-          </p>
-        </div>
+      <section className="relative z-10 py-32 text-center text-white px-6">
+        <h1 className="text-5xl md:text-6xl font-bold mb-6">About Incorvia</h1>
+        <p className="text-lg md:text-xl max-w-3xl mx-auto text-white/90">
+          We specialize in fast, reliable, and professional incorporation services for entrepreneurs and companies expanding into Costa Rica. Our mission is to simplify the process and ensure full compliance every step of the way.
+        </p>
       </section>
 
-      {/* Who We Are */}
-      <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center relative z-10">
+      {/* Company Story */}
+      <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 z-10 relative text-[#F7F9FB]">
         <div>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B] mb-4">Who We Are</h2>
-          <p className="text-[#2E3B4E] mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Who We Are</h2>
+          <p className="mb-4">
             Incorvia was founded with the vision of providing streamlined, transparent, and cost-effective incorporation services. We understand that starting a business in a new country can feel overwhelming — that’s why we’re here to make it simple.
           </p>
-          <p className="text-[#2E3B4E]">
+          <p>
             Our experienced team of legal experts, accountants, and business consultants have helped hundreds of companies establish their presence in Costa Rica. From the moment you contact us, you’ll have a dedicated partner guiding you through every step.
           </p>
         </div>
-        <div className="relative h-80 w-full">
-          <Image src="/about.jpg" alt="About Incorvia" fill className="object-cover rounded-2xl shadow-2xl"/>
+        <div className="relative h-80 w-full rounded-2xl overflow-hidden shadow-2xl">
+          <Image src="/about.jpg" alt="About Incorvia" fill className="object-cover"/>
         </div>
       </section>
 
       {/* Legal Lead */}
-      <section className="max-w-7xl mx-auto px-6 py-20 relative z-10">
+      <section className="max-w-7xl mx-auto px-6 py-20 grid gap-12 z-10 relative text-[#F7F9FB]">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B]">Meet Our Legal Lead</h2>
-          <p className="text-[#2E3B4E] max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold">Meet Our Legal Lead</h2>
+          <p className="max-w-3xl mx-auto">
             Our team is led by seasoned professionals with deep expertise in Costa Rican law and international business.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Photo 1 */}
           <div className="lg:col-span-3">
-            <Image src="/JJ1.jpg" alt="Juan J. Acuna Leandro" width={300} height={300} className="rounded-xl shadow-lg w-full h-auto"/>
+            <Image src="/JJ1.jpg" alt="Juan J. Acuna Leandro - Photo 1" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/>
           </div>
+
+          {/* Bio */}
           <div className="lg:col-span-6 space-y-4">
-            <h3 className="text-2xl font-bold text-[#1B263B]">Msc Juan J. Acuna Leandro</h3>
+            <h3 className="text-2xl font-bold">Msc Juan J. Acuna Leandro</h3>
             <p className="text-[#D4AF37] font-semibold">Attorney Specialist & Notary Public</p>
-            <p className="text-[#2E3B4E]">
-              With extensive international training and over a decade of professional experience, Msc Juan J. Acuna Leandro offers trusted legal counsel backed by advanced specialization in Criminal Law, Notarial and Registry Law, and Real Estate.
-            </p>
-            <p className="text-[#2E3B4E]">He holds a Master’s Degree in Criminal Law from Universidad Latina de Costa Rica, and has pursued advanced postgraduate studies across Latin America and Europe, including:</p>
-            <ul className="list-disc pl-5 space-y-1 text-[#2E3B4E]">
+            <p>With extensive international training and over a decade of professional experience, Msc Juan J. Acuna Leandro offers trusted legal counsel backed by advanced specialization in Criminal Law, Notarial and Registry Law, and Real Estate.</p>
+            <p>He holds a Master’s Degree in Criminal Law from Universidad Latina de Costa Rica, and has pursued advanced postgraduate studies across Latin America and Europe, including:</p>
+            <ul className="list-disc pl-5 space-y-1">
               <li>Criminal Evidence Law (Universidad Castilla-La Mancha, Toledo, Spain)</li>
               <li>Advanced Criminal Law (Universidad Nacional de Mar del Plata, Argentina)</li>
               <li>Notarial and Registry Law (Universidad Internacional de las Américas)</li>
             </ul>
-            <p className="text-[#2E3B4E]">
-              Recognized as an international speaker, he has shared his expertise on organized crime, anti-corruption, compliance, and anti-money laundering in global forums. His professional contributions have earned him the honor of serving as a member of several commissions of the Judiciary of Costa Rica.
-            </p>
-            <p className="text-[#2E3B4E]">
-              In addition to his legal practice, Msc Juan J. Acuna Leandro is a trusted television contributor and legal analyst, frequently invited to provide expert commentary on high-profile legal matters. His comprehensive knowledge of real estate law further enhances his ability to protect clients’ interests with precision and integrity.
-            </p>
-            <p className="text-[#2E3B4E]">
-              A results-driven attorney and notary public, Msc Juan J. Acuna Leandro is committed to providing clients with strategic, ethical, and effective legal solutions.
-            </p>
+            <p>Recognized as an international speaker, he has shared his expertise on organized crime, anti-corruption, compliance, and anti-money laundering in global forums. His professional contributions have earned him the honor of serving as a member of several commissions of the Judiciary of Costa Rica.</p>
+            <p>In addition to his legal practice, Msc Juan J. Acuna Leandro is a trusted television contributor and legal analyst, frequently invited to provide expert commentary on high-profile legal matters. His comprehensive knowledge of real estate law further enhances his ability to protect clients’ interests with precision and integrity.</p>
+            <p>A results-driven attorney and notary public, Msc Juan J. Acuna Leandro is committed to providing clients with strategic, ethical, and effective legal solutions.</p>
           </div>
-          <div className="lg:col-span-3"><Image src="/JJ2.jpg" alt="Photo 2" width={300} height={300} className="rounded-xl shadow-lg w-full h-auto"/></div>
-          <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ3.jpg" alt="Photo 3" width={300} height={300} className="rounded-xl shadow-lg w-full h-auto"/></div>
+
+          {/* Remaining Photos */}
+          <div className="lg:col-span-3"><Image src="/JJ2.jpg" alt="Photo 2" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
+          <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ3.jpg" alt="Photo 3" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
           <div className="lg:col-span-6"></div>
-          <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ4.jpg" alt="Photo 4" width={300} height={300} className="rounded-xl shadow-lg w-full h-auto"/></div>
+          <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ4.jpg" alt="Photo 4" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
         </div>
       </section>
 
       {/* Core Principles */}
-      <section className="bg-[#F7F9FB] py-20 border-t border-[#D4AF37]/20 relative z-10">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B] mb-12">Our Core Principles</h2>
-          <div className="grid md:grid-cols-3 gap-10">
-            <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
-              <FaBullseye className="text-[#D4AF37] text-5xl mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Mission</h3>
-              <p className="text-[#2E3B4E]">To empower entrepreneurs and companies by providing seamless, professional incorporation and compliance solutions in Costa Rica.</p>
-            </div>
-            <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
-              <FaEye className="text-[#D4AF37] text-5xl mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Vision</h3>
-              <p className="text-[#2E3B4E]">To be the most trusted and innovative partner for business incorporation and corporate services in the region.</p>
-            </div>
-            <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
-              <FaHandshake className="text-[#D4AF37] text-5xl mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Values</h3>
-              <p className="text-[#2E3B4E]">Integrity, transparency, efficiency, and customer-centric service are at the heart of everything we do.</p>
-            </div>
+      <section className="py-20 z-10 relative max-w-6xl mx-auto px-6 text-center text-[#F7F9FB]">
+        <h2 className="text-3xl md:text-4xl font-bold mb-12">Our Core Principles</h2>
+        <div className="grid md:grid-cols-3 gap-10">
+          <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
+            <FaBullseye className="text-[#D4AF37] text-5xl mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-3">Mission</h3>
+            <p>To empower entrepreneurs and companies by providing seamless, professional incorporation and compliance solutions in Costa Rica.</p>
+          </div>
+          <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
+            <FaEye className="text-[#D4AF37] text-5xl mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-3">Vision</h3>
+            <p>To be the most trusted and innovative partner for business incorporation and corporate services in the region.</p>
+          </div>
+          <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
+            <FaHandshake className="text-[#D4AF37] text-5xl mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-3">Values</h3>
+            <p>Integrity, transparency, efficiency, and customer-centric service are at the heart of everything we do.</p>
           </div>
         </div>
       </section>
 
       {/* Trust Stats */}
-      <section className="py-20 bg-[#E0E6ED] relative z-10">
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
-          <div>
-            <h3 className="text-4xl font-bold text-[#D4AF37]">10+</h3>
-            <p className="text-[#2E3B4E] mt-2">Years of Experience</p>
-          </div>
-          <div>
-            <h3 className="text-4xl font-bold text-[#D4AF37]">500+</h3>
-            <p className="text-[#2E3B4E] mt-2">Companies Incorporated</p>
-          </div>
-          <div>
-            <h3 className="text-4xl font-bold text-[#D4AF37]">100%</h3>
-            <p className="text-[#2E3B4E] mt-2">Client Satisfaction Rate</p>
-          </div>
+      <section className="py-20 z-10 relative max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center text-[#F7F9FB]">
+        <div>
+          <h3 className="text-4xl font-bold text-[#D4AF37]">10+</h3>
+          <p className="mt-2">Years of Experience</p>
+        </div>
+        <div>
+          <h3 className="text-4xl font-bold text-[#D4AF37]">500+</h3>
+          <p className="mt-2">Companies Incorporated</p>
+        </div>
+        <div>
+          <h3 className="text-4xl font-bold text-[#D4AF37]">100%</h3>
+          <p className="mt-2">Client Satisfaction Rate</p>
         </div>
       </section>
 
