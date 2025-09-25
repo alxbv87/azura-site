@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from "next/image";
 import { FaBullseye, FaEye, FaHandshake } from "react-icons/fa";
 import * as THREE from 'three';
 
+// Particle Network Animation
 const ParticleNetwork = () => {
   const mountRef = useRef(null);
 
@@ -32,18 +33,14 @@ const ParticleNetwork = () => {
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
 
-    // Lines connecting close particles
     const maxDistance = 1.5;
     const linesMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.3 });
-    const positions = new Float32Array(particleCount * particleCount * 3);
     const geometryLines = new THREE.BufferGeometry();
     const lineMesh = new THREE.LineSegments(geometryLines, linesMaterial);
     scene.add(lineMesh);
 
-    // Animation
     const animate = () => {
       requestAnimationFrame(animate);
-
       particles.rotation.y += 0.001;
       particles.rotation.x += 0.0005;
 
@@ -68,7 +65,6 @@ const ParticleNetwork = () => {
     };
     animate();
 
-    // Resize
     const onResize = () => {
       camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
       camera.updateProjectionMatrix();
@@ -131,7 +127,97 @@ export default function About() {
         </div>
       </section>
 
-      {/* ...rest of your content remains unchanged, including Lawyer Profile, Mission/Vision/Values, Trust Stats... */}
+      {/* Lawyer Profile with Photos Around Text */}
+      <section className="max-w-7xl mx-auto px-6 py-20 bg-[#F7F9FB]">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B]">Meet Our Legal Lead</h2>
+          <p className="text-[#2E3B4E] max-w-3xl mx-auto">
+            Our team is led by seasoned professionals with deep expertise in Costa Rican law and international business.
+          </p>
+        </div>
+
+        {/* Full Lawyer Bio + Photos */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Photo 1 */}
+          <div className="lg:col-span-3">
+            <Image src="/JJ1.jpg" alt="Juan J. Acuna Leandro - Photo 1" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/>
+          </div>
+
+          {/* Bio */}
+          <div className="lg:col-span-6 space-y-4">
+            <h3 className="text-2xl font-bold text-[#1B263B]">Msc Juan J. Acuna Leandro</h3>
+            <p className="text-[#D4AF37] font-semibold">Attorney Specialist & Notary Public</p>
+            <p className="text-[#2E3B4E]">
+              With extensive international training and over a decade of professional experience, Msc Juan J. Acuna Leandro offers trusted legal counsel backed by advanced specialization in Criminal Law, Notarial and Registry Law, and Real Estate.
+            </p>
+            <p className="text-[#2E3B4E]">
+              He holds a Master’s Degree in Criminal Law from Universidad Latina de Costa Rica, and has pursued advanced postgraduate studies across Latin America and Europe, including:
+            </p>
+            <ul className="list-disc pl-5 space-y-1 text-[#2E3B4E]">
+              <li>Criminal Evidence Law (Universidad Castilla-La Mancha, Toledo, Spain)</li>
+              <li>Advanced Criminal Law (Universidad Nacional de Mar del Plata, Argentina)</li>
+              <li>Notarial and Registry Law (Universidad Internacional de las Américas)</li>
+            </ul>
+            <p className="text-[#2E3B4E]">
+              Recognized as an international speaker, he has shared his expertise on organized crime, anti-corruption, compliance, and anti-money laundering in global forums. His professional contributions have earned him the honor of serving as a member of several commissions of the Judiciary of Costa Rica.
+            </p>
+            <p className="text-[#2E3B4E]">
+              In addition to his legal practice, Msc Juan J. Acuna Leandro is a trusted television contributor and legal analyst, frequently invited to provide expert commentary on high-profile legal matters. His comprehensive knowledge of real estate law further enhances his ability to protect clients’ interests with precision and integrity.
+            </p>
+            <p className="text-[#2E3B4E]">
+              A results-driven attorney and notary public, Msc Juan J. Acuna Leandro is committed to providing clients with strategic, ethical, and effective legal solutions.
+            </p>
+          </div>
+
+          {/* Remaining Photos */}
+          <div className="lg:col-span-3"><Image src="/JJ2.jpg" alt="Photo 2" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
+          <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ3.jpg" alt="Photo 3" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
+          <div className="lg:col-span-6"></div>
+          <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ4.jpg" alt="Photo 4" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
+        </div>
+      </section>
+
+      {/* Mission / Vision / Values */}
+      <section className="bg-[#F7F9FB] py-20 border-t border-[#D4AF37]/20">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B] mb-12">Our Core Principles</h2>
+          <div className="grid md:grid-cols-3 gap-10">
+            <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
+              <FaBullseye className="text-[#D4AF37] text-5xl mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Mission</h3>
+              <p className="text-[#2E3B4E]">To empower entrepreneurs and companies by providing seamless, professional incorporation and compliance solutions in Costa Rica.</p>
+            </div>
+            <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
+              <FaEye className="text-[#D4AF37] text-5xl mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Vision</h3>
+              <p className="text-[#2E3B4E]">To be the most trusted and innovative partner for business incorporation and corporate services in the region.</p>
+            </div>
+            <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
+              <FaHandshake className="text-[#D4AF37] text-5xl mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Values</h3>
+              <p className="text-[#2E3B4E]">Integrity, transparency, efficiency, and customer-centric service are at the heart of everything we do.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Stats */}
+      <section className="py-20 bg-[#E0E6ED]">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
+          <div>
+            <h3 className="text-4xl font-bold text-[#D4AF37]">10+</h3>
+            <p className="text-[#2E3B4E] mt-2">Years of Experience</p>
+          </div>
+          <div>
+            <h3 className="text-4xl font-bold text-[#D4AF37]">500+</h3>
+            <p className="text-[#2E3B4E] mt-2">Companies Incorporated</p>
+          </div>
+          <div>
+            <h3 className="text-4xl font-bold text-[#D4AF37]">100%</h3>
+            <p className="text-[#2E3B4E] mt-2">Client Satisfaction Rate</p>
+          </div>
+        </div>
+      </section>
 
     </main>
   );
