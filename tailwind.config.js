@@ -6,17 +6,16 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        'brand-blue': '#0A2342',
-        'brand-navy': '#031424',
-        'brand-accent': '#C0A062', // A sophisticated gold
-        'brand-light-bg': '#F7F9FB',
-        'brand-text-dark': '#1D242B',
-        'brand-text-light': '#5A6470',
+      colors: { 
+        'brand-dark': '#101D35', 
+        'brand-accent': '#D4AF37', 
+        'brand-light': '#F0F0F0', 
+        'brand-muted': '#A9B4C7', 
+        'brand-border': 'rgba(255, 255, 255, 0.15)', 
       },
-      fontFamily: {
-        'sans': ['var(--font-inter)'],
-        'serif': ['var(--font-lora)'],
+      fontFamily: { 
+        'sans': ['Lato', 'sans-serif'], 
+        'display': ['Playfair Display', 'serif'], 
       },
     },
   },
