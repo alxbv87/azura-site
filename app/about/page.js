@@ -1,7 +1,10 @@
 'use client';
 
+
+import React, { useState, useEffect } from "react"; // <-- MUST import React
 import Image from "next/image";
 import { FaBullseye, FaEye, FaHandshake } from "react-icons/fa";
+
 
 export default function About() {
   const [currentIndex, setCurrentIndex] = React.useState(0);
