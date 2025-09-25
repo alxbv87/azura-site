@@ -11,81 +11,73 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
+    { href: "/about", label: "Our Company" },
     { href: "/services", label: "Services" },
-    { href: "/contact", label: "Contact" },
+    { href: "/process", label: "Process" },
+    { href: "/team", label: "Our Team" },
   ];
 
   return (
-    <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <Link href="/" className="flex items-center space-x-3">
-          <Image
-            src="/logo.png"
-            alt="Incorvia Logo"
-            width={160}
-            height={60}
-            priority
-          />
-        </Link>
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex space-x-2">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`px-5 py-2.5 rounded-xl font-semibold transition-all duration-300 border-2
-                ${
-                  pathname === link.href
-                    ? 'bg-brand text-white border-brand shadow-lg transform -translate-y-0.5'
-                    : 'text-gray-700 border-transparent hover:border-brand hover:bg-brand/5 hover:text-brand'
-                }`}
-            >
-              {link.label}
+    <header className="sticky top-0 z-50 py-4 px-6 md:px-10 bg-brand-dark/80 backdrop-blur-md border-b border-brand-border">
+        <div className="container mx-auto flex justify-between items-center">
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logo.png"
+                alt="Incorvia Logo"
+                width={140}
+                height={40}
+                className="invert"
+                priority
+              />
             </Link>
-          ))}
+            
+            <nav className="hidden md:flex items-center space-x-8">
+                {navLinks.map(link => {
+                    const isActive = pathname === link.href;
+                    return (
+                        <Link key={link.href} href={link.href} className={`relative font-medium transition-colors ${isActive ? 'text-brand-light' : 'text-brand-muted hover:text-brand-light'}`}>
+                            {link.label}
+                            {isActive && (
+                                <span className="absolute bottom-[-8px] left-0 w-full h-0.5 bg-brand-accent"></span>
+                            )}
+                        </Link>
+                    );
+                })}
+            </nav>
+
+            <div className="flex items-center">
+                <Link href="/contact" className="hidden md:inline-block bg-brand-accent text-brand-dark px-6 py-2.5 rounded-md font-bold text-sm hover:bg-opacity-90 transition duration-300">
+                    Schedule Consultation
+                </Link>
+                {/* Mobile Menu Button */}
+                <button className="md:hidden text-brand-light ml-4" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
+                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        {isMenuOpen ? (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        ) : (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                        )}
+                      </svg>
+                </button>
+            </div>
         </div>
 
-        {/* Mobile menu button */}
-        <button
-          className="md:hidden text-gray-700 hover:text-brand focus:outline-none"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            {isMenuOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200">
-          <div className="container mx-auto px-6 py-4 flex flex-col space-y-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-5 py-3.5 rounded-xl font-semibold transition-all duration-300 border-2 text-left
-                  ${
-                    pathname === link.href
-                      ? 'bg-brand text-white border-brand'
-                      : 'text-gray-700 border-transparent hover:border-brand hover:bg-brand/5 hover:text-brand'
-                  }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </nav>
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+            <div className="md:hidden mt-4">
+                <nav className="flex flex-col items-center space-y-4 py-4">
+                     {navLinks.map((link) => (
+                        <Link key={link.href} href={link.href} className="font-medium text-brand-muted hover:text-brand-light transition-colors" onClick={() => setIsMenuOpen(false)}>
+                            {link.label}
+                        </Link>
+                    ))}
+                     <Link href="/contact" className="bg-brand-accent text-brand-dark px-6 py-2.5 rounded-md font-bold text-sm hover:bg-opacity-90 transition duration-300 mt-2" onClick={() => setIsMenuOpen(false)}>
+                        Schedule Consultation
+                    </Link>
+                </nav>
+            </div>
+        )}
+    </header>
   );
 }
+

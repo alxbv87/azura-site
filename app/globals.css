@@ -3,7 +3,20 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: white;
-  color: #111827;
+  background-color: theme('colors.brand-dark');
+  color: theme('colors.brand-light');
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: theme('colors.brand-dark');
+}
+
+::-webkit-scrollbar-thumb {
+  background: theme('colors.brand-accent');
+  border-radius: 4px;
+}
+

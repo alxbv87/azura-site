@@ -3,55 +3,52 @@ import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-brand text-white py-10 mt-20">
-      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-        {/* About */}
-        <div>
-          <h3 className="text-xl font-bold mb-4">Incorvia</h3>
-          <p className="text-gray-100">
-            Helping businesses incorporate quickly and securely in Costa Rica
-            and worldwide.
-          </p>
+    <footer className="border-t border-brand-border mt-20">
+         <div className="container mx-auto px-6 py-16">
+            <div className="grid md:grid-cols-4 gap-8">
+                <div className="md:col-span-2">
+                    <Link href="/" className="text-2xl font-bold font-display text-brand-light">
+                        INCORVIA
+                    </Link>
+                    <p className="mt-4 text-brand-muted max-w-sm">Your strategic partners for navigating the complexities of company formation and achieving ambitious growth in Costa Rica.</p>
+                </div>
+                 <div>
+                    <h3 className="text-lg font-bold text-brand-light mb-4">Navigate</h3>
+                    <ul className="space-y-3">
+                        <li><Link href="/" className="text-brand-muted hover:text-brand-light transition-colors">Home</Link></li>
+                        <li><Link href="/about" className="text-brand-muted hover:text-brand-light transition-colors">Our Company</Link></li>
+                        <li><Link href="/services" className="text-brand-muted hover:text-brand-light transition-colors">Services</Link></li>
+                        <li><Link href="/contact" className="text-brand-muted hover:text-brand-light transition-colors">Contact</Link></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 className="text-lg font-bold text-brand-light mb-4">Contact</h3>
+                    <ul className="space-y-3 text-brand-muted">
+                        <li>Avenida Escazú, San José, Costa Rica</li>
+                        <li>+506 2208-8888</li>
+                        <li>contact@incorvia.cr</li>
+                    </ul>
+                </div>
+            </div>
+             <div className="mt-16 border-t border-brand-border pt-8 flex flex-col sm:flex-row justify-between items-center text-sm text-brand-muted">
+                <p>&copy; {new Date().getFullYear()} Incorvia. All Rights Reserved.</p>
+                <div className="flex space-x-4 mt-4 sm:mt-0">
+                    <a href="https://www.facebook.com/profile.php?id=61581075455757" target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors">
+                      <Facebook size={20} />
+                    </a>
+                    <a href="https://x.com/incorviacr?s=11" target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors">
+                      <Twitter size={20} />
+                    </a>
+                    <a href="https://www.linkedin.com/in/incorvia-ltd-3aa098384/" target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors">
+                      <Linkedin size={20} />
+                    </a>
+                    <a href="https://www.instagram.com/incorvia.cr?igsh=c3RqZ2cweWRpZDV2&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors">
+                      <Instagram size={20} />
+                    </a>
+                </div>
+            </div>
         </div>
-
-        {/* Quick Links */}
-        <div>
-          <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-          <ul className="space-y-2">
-            <li><Link href="/" className="hover:text-brand-light">Home</Link></li>
-            <li><Link href="/services" className="hover:text-brand-light">Services</Link></li>
-            <li><Link href="/about" className="hover:text-brand-light">About</Link></li>
-            <li><Link href="/contact" className="hover:text-brand-light">Contact</Link></li>
-          </ul>
-        </div>
-
-        {/* Social Media */}
-        <div>
-  <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-  <div className="flex space-x-4">
-    {/* Facebook */}
-    <a href="https://www.facebook.com/profile.php?id=61581075455757" target="_blank" rel="noopener noreferrer" className="hover:text-brand-light">
-      <Facebook size={24} />
-    </a>
-    {/* X */}
-    <a href="https://x.com/incorviacr?s=11" target="_blank" rel="noopener noreferrer" className="hover:text-brand-light">
-      <Twitter size={24} />
-    </a>
-    {/* LinkedIn */}
-    <a href="https://www.linkedin.com/in/incorvia-ltd-3aa098384/" target="_blank" rel="noopener noreferrer" className="hover:text-brand-light">
-      <Linkedin size={24} />
-    </a>
-    {/* Instagram */}
-    <a href="https://www.instagram.com/incorvia.cr?igsh=c3RqZ2cweWRpZDV2&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-brand-light">
-      <Instagram size={24} />
-    </a>
-  </div>
-</div>
-      </div>
-
-      <div className="text-center mt-10 text-gray-200 text-sm">
-        © {new Date().getFullYear()} Incorvia. All rights reserved.
-      </div>
     </footer>
   );
 }
+
