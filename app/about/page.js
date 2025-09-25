@@ -181,6 +181,70 @@ const LegalLead = () => {
   );
 };
 
+// Redesigned Core Principles + Trust Stats
+const CorePrinciples = () => {
+  const principles = [
+    {
+      icon: <FaBullseye />,
+      title: "Mission",
+      text: "To empower entrepreneurs and companies by providing seamless, professional incorporation and compliance solutions in Costa Rica."
+    },
+    {
+      icon: <FaEye />,
+      title: "Vision",
+      text: "To be the most trusted and innovative partner for business incorporation and corporate services in the region."
+    },
+    {
+      icon: <FaHandshake />,
+      title: "Values",
+      text: "Integrity, transparency, efficiency, and customer-centric service are at the heart of everything we do."
+    }
+  ];
+
+  const stats = [
+    { value: "10+", label: "Years of Experience" },
+    { value: "500+", label: "Companies Incorporated" },
+    { value: "100%", label: "Client Satisfaction Rate" },
+  ];
+
+  return (
+    <section className="bg-[#F7F9FB] py-20 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B] mb-12">Our Core Principles</h2>
+
+        <div className="grid md:grid-cols-3 gap-10 mb-16">
+          {principles.map((p, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+              className="p-8 rounded-2xl shadow-md hover:shadow-lg bg-white"
+            >
+              <div className="text-[#D4AF37] text-5xl mb-4">{p.icon}</div>
+              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">{p.title}</h3>
+              <p className="text-[#2E3B4E]">{p.text}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-10 text-center">
+          {stats.map((s, i) => (
+            <motion.div
+              key={i}
+              whileInView={{ y: [50, 0], opacity: [0, 1] }}
+              transition={{ duration: 0.8, delay: i * 0.2 }}
+              className="p-6 bg-white rounded-xl shadow-md"
+            >
+              <h3 className="text-4xl font-bold text-[#D4AF37]">{s.value}</h3>
+              <p className="text-[#2E3B4E] mt-2">{s.label}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export default function About() {
   return (
     <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E] relative z-0">
@@ -226,50 +290,11 @@ export default function About() {
         </div>
       </section>
 
-      {/* Redesigned Legal Lead */}
+      {/* Legal Lead */}
       <LegalLead />
 
-      {/* Core Principles */}
-      <section className="bg-[#F7F9FB] py-20 border-t border-[#D4AF37]/20 z-10 relative">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B] mb-12">Our Core Principles</h2>
-          <div className="grid md:grid-cols-3 gap-10">
-            <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
-              <FaBullseye className="text-[#D4AF37] text-5xl mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Mission</h3>
-              <p className="text-[#2E3B4E]">To empower entrepreneurs and companies by providing seamless, professional incorporation and compliance solutions in Costa Rica.</p>
-            </div>
-            <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
-              <FaEye className="text-[#D4AF37] text-5xl mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Vision</h3>
-              <p className="text-[#2E3B4E]">To be the most trusted and innovative partner for business incorporation and corporate services in the region.</p>
-            </div>
-            <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition">
-              <FaHandshake className="text-[#D4AF37] text-5xl mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Values</h3>
-              <p className="text-[#2E3B4E]">Integrity, transparency, efficiency, and customer-centric service are at the heart of everything we do.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Stats */}
-      <section className="py-20 bg-[#E0E6ED] relative z-10">
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
-          <div>
-            <h3 className="text-4xl font-bold text-[#D4AF37]">10+</h3>
-            <p className="text-[#2E3B4E] mt-2">Years of Experience</p>
-          </div>
-          <div>
-            <h3 className="text-4xl font-bold text-[#D4AF37]">500+</h3>
-            <p className="text-[#2E3B4E] mt-2">Companies Incorporated</p>
-          </div>
-          <div>
-            <h3 className="text-4xl font-bold text-[#D4AF37]">100%</h3>
-            <p className="text-[#2E3B4E] mt-2">Client Satisfaction Rate</p>
-          </div>
-        </div>
-      </section>
+      {/* Redesigned Core Principles + Stats */}
+      <CorePrinciples />
     </main>
   );
 }
