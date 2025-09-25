@@ -7,20 +7,21 @@ import * as THREE from 'three';
 
 // Particle Network Animation
 const ParticleNetwork = () => {
-  const mountRef = useRef(null);
+  const mountRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const currentMount = mountRef.current;
-    if (!currentMount) return;
+    const mount = mountRef.current;
+    if (!mount) return;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, currentMount.clientWidth / currentMount.clientHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, mount.clientWidth / mount.clientHeight, 0.1, 1000);
     camera.position.z = 5;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
-    currentMount.appendChild(renderer.domElement);
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
+    mount.appendChild(renderer.domElement);
 
+    // Particles
     const particleCount = 600;
     const particlesGeometry = new THREE.BufferGeometry();
     const posArray = new Float32Array(particleCount * 3);
@@ -33,19 +34,29 @@ const ParticleNetwork = () => {
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
 
+    // Lines
     const maxDistance = 1.5;
     const linesMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.3 });
     const geometryLines = new THREE.BufferGeometry();
     const lineMesh = new THREE.LineSegments(geometryLines, linesMaterial);
     scene.add(lineMesh);
 
+    // Mouse interactivity
+    let mouseX = 0, mouseY = 0;
+    const onMouseMove = (event: MouseEvent) => {
+      mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+      mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener('mousemove', onMouseMove);
+
+    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
       particles.rotation.y += 0.001;
       particles.rotation.x += 0.0005;
 
-      const positions = [];
-      const p = particles.geometry.attributes.position.array;
+      const positions: number[] = [];
+      const p = particles.geometry.attributes.position.array as Float32Array;
       for (let i = 0; i < particleCount; i++) {
         for (let j = i + 1; j < particleCount; j++) {
           const dx = p[i * 3] - p[j * 3];
@@ -61,36 +72,44 @@ const ParticleNetwork = () => {
       geometryLines.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
       geometryLines.computeBoundingSphere();
 
+      camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+      camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
+      camera.lookAt(scene.position);
+
       renderer.render(scene, camera);
     };
     animate();
 
+    // Resize
     const onResize = () => {
-      camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
+      camera.aspect = mount.clientWidth / mount.clientHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
+      renderer.setSize(mount.clientWidth, mount.clientHeight);
     };
     window.addEventListener('resize', onResize);
 
+    // Cleanup
     return () => {
       window.removeEventListener('resize', onResize);
-      if (currentMount) currentMount.removeChild(renderer.domElement);
+      window.removeEventListener('mousemove', onMouseMove);
+      if (mount) mount.removeChild(renderer.domElement);
       renderer.dispose();
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute top-0 left-0 right-0 bottom-0 z-0" />;
+  return <div ref={mountRef} className="fixed top-0 left-0 w-full h-full -z-10" />;
 };
 
 export default function About() {
   return (
-    <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E]">
+    <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E] relative overflow-hidden">
+      {/* Particle Background */}
+      <ParticleNetwork />
 
-      {/* Hero Section with Particle Network */}
-      <section className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-r from-[#1B263B] via-[#2E3B4E]/80 to-[#1B263B] text-white py-24">
-        <ParticleNetwork />
-        <div className="relative z-10 px-6 max-w-3xl">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">About Incorvia</h1>
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center text-center px-6">
+        <div className="relative z-10 max-w-3xl">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">About Incorvia</h1>
           <p className="text-lg md:text-xl text-white/90">
             We specialize in fast, reliable, and professional incorporation
             services for entrepreneurs and companies expanding into Costa Rica.
@@ -107,8 +126,7 @@ export default function About() {
           <p className="text-[#2E3B4E] mb-4">
             Incorvia was founded with the vision of providing streamlined,
             transparent, and cost-effective incorporation services. We understand
-            that starting a business in a new country can feel overwhelming —
-            that’s why we’re here to make it simple.
+            that starting a business in a new country can feel overwhelming — that’s why we’re here to make it simple.
           </p>
           <p className="text-[#2E3B4E]">
             Our experienced team of legal experts, accountants, and business
@@ -138,38 +156,23 @@ export default function About() {
 
         {/* Full Lawyer Bio + Photos */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Photo 1 */}
           <div className="lg:col-span-3">
             <Image src="/JJ1.jpg" alt="Juan J. Acuna Leandro - Photo 1" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/>
           </div>
-
-          {/* Bio */}
           <div className="lg:col-span-6 space-y-4">
             <h3 className="text-2xl font-bold text-[#1B263B]">Msc Juan J. Acuna Leandro</h3>
             <p className="text-[#D4AF37] font-semibold">Attorney Specialist & Notary Public</p>
-            <p className="text-[#2E3B4E]">
-              With extensive international training and over a decade of professional experience, Msc Juan J. Acuna Leandro offers trusted legal counsel backed by advanced specialization in Criminal Law, Notarial and Registry Law, and Real Estate.
-            </p>
-            <p className="text-[#2E3B4E]">
-              He holds a Master’s Degree in Criminal Law from Universidad Latina de Costa Rica, and has pursued advanced postgraduate studies across Latin America and Europe, including:
-            </p>
+            <p className="text-[#2E3B4E]">With extensive international training and over a decade of professional experience, Msc Juan J. Acuna Leandro offers trusted legal counsel backed by advanced specialization in Criminal Law, Notarial and Registry Law, and Real Estate.</p>
+            <p className="text-[#2E3B4E]">He holds a Master’s Degree in Criminal Law from Universidad Latina de Costa Rica, and has pursued advanced postgraduate studies across Latin America and Europe, including:</p>
             <ul className="list-disc pl-5 space-y-1 text-[#2E3B4E]">
               <li>Criminal Evidence Law (Universidad Castilla-La Mancha, Toledo, Spain)</li>
               <li>Advanced Criminal Law (Universidad Nacional de Mar del Plata, Argentina)</li>
               <li>Notarial and Registry Law (Universidad Internacional de las Américas)</li>
             </ul>
-            <p className="text-[#2E3B4E]">
-              Recognized as an international speaker, he has shared his expertise on organized crime, anti-corruption, compliance, and anti-money laundering in global forums. His professional contributions have earned him the honor of serving as a member of several commissions of the Judiciary of Costa Rica.
-            </p>
-            <p className="text-[#2E3B4E]">
-              In addition to his legal practice, Msc Juan J. Acuna Leandro is a trusted television contributor and legal analyst, frequently invited to provide expert commentary on high-profile legal matters. His comprehensive knowledge of real estate law further enhances his ability to protect clients’ interests with precision and integrity.
-            </p>
-            <p className="text-[#2E3B4E]">
-              A results-driven attorney and notary public, Msc Juan J. Acuna Leandro is committed to providing clients with strategic, ethical, and effective legal solutions.
-            </p>
+            <p className="text-[#2E3B4E]">Recognized as an international speaker, he has shared his expertise on organized crime, anti-corruption, compliance, and anti-money laundering in global forums. His professional contributions have earned him the honor of serving as a member of several commissions of the Judiciary of Costa Rica.</p>
+            <p className="text-[#2E3B4E]">In addition to his legal practice, Msc Juan J. Acuna Leandro is a trusted television contributor and legal analyst, frequently invited to provide expert commentary on high-profile legal matters. His comprehensive knowledge of real estate law further enhances his ability to protect clients’ interests with precision and integrity.</p>
+            <p className="text-[#2E3B4E]">A results-driven attorney and notary public, Msc Juan J. Acuna Leandro is committed to providing clients with strategic, ethical, and effective legal solutions.</p>
           </div>
-
-          {/* Remaining Photos */}
           <div className="lg:col-span-3"><Image src="/JJ2.jpg" alt="Photo 2" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
           <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ3.jpg" alt="Photo 3" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
           <div className="lg:col-span-6"></div>
@@ -218,7 +221,6 @@ export default function About() {
           </div>
         </div>
       </section>
-
     </main>
   );
 }
