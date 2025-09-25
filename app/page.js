@@ -21,7 +21,7 @@ const teamData = [
   {
     name: "Michael Chen",
     title: "Lead, Real Estate & FTZ",
-    bio: "Michael&apos;s expertise lies in navigating the complexities of Costa Rican real estate transactions and advising clients on leveraging the benefits of the country's Free Trade Zone (FTZ) regime.",
+    bio: "Michael's expertise lies in navigating the complexities of Costa Rican real estate transactions and advising clients on leveraging the benefits of the country's Free Trade Zone (FTZ) regime.",
     img: "https://images.unsplash.com/photo-1590650516494-0c8e4a4dd67e?q=80&w=2071&auto=format&fit=crop",
   },
   {
@@ -85,7 +85,7 @@ const ThreeGlobe = () => {
 
     let mouseX = 0,
       mouseY = 0;
-    const onMouseMove = (event) =>  {
+    const onMouseMove = (event) => {
       mouseX = (event.clientX / window.innerWidth) * 2 - 1;
       mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
     };
@@ -106,10 +106,7 @@ const ThreeGlobe = () => {
       if (!currentMount) return;
       camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(
-        currentMount.clientWidth,
-        currentMount.clientHeight
-      );
+      renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     };
     window.addEventListener("resize", onWindowResize);
 
@@ -201,7 +198,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="card p-8 rounded-lg bg-white/5">
               <h3 className="text-2xl font-semibold font-display text-brand-light mb-3">
-                Company Formation (S.A. & S.R.L.)
+                Company Formation (S.A. &amp; S.R.L.)
               </h3>
               <p className="text-brand-muted">
                 Seamless incorporation of Costa Rican entities, tailored for
@@ -210,7 +207,7 @@ export default function Home() {
             </div>
             <div className="card p-8 rounded-lg bg-white/5">
               <h3 className="text-2xl font-semibold font-display text-brand-light mb-3">
-                Regulatory & Tax Compliance
+                Regulatory &amp; Tax Compliance
               </h3>
               <p className="text-brand-muted">
                 Ensuring your business adheres to all national regulations,
@@ -219,7 +216,7 @@ export default function Home() {
             </div>
             <div className="card p-8 rounded-lg bg-white/5">
               <h3 className="text-2xl font-semibold font-display text-brand-light mb-3">
-                Residency & Work Permits
+                Residency &amp; Work Permits
               </h3>
               <p className="text-brand-muted">
                 Expert guidance for executives and investors seeking legal
@@ -256,7 +253,7 @@ export default function Home() {
               },
               {
                 step: "3",
-                title: "Execution & Filing",
+                title: "Execution &amp; Filing",
                 desc: "We meticulously handle all necessary filings and interactions with Costa Rican government agencies on your behalf.",
               },
               {
@@ -295,7 +292,10 @@ export default function Home() {
             <div className="md:col-span-1">
               <ul className="space-y-2">
                 {teamData.map((member, index) => (
-                  <li key={member.name} onClick={() => setActiveTeamMember(index)}>
+                  <li
+                    key={member.name}
+                    onClick={() => setActiveTeamMember(index)}
+                  >
                     <div
                       className={`p-6 border-l-4 text-brand-muted hover:text-brand-light cursor-pointer transition-all duration-300 ${
                         activeTeamMember === index
@@ -348,7 +348,7 @@ export default function Home() {
         </p>
         <a
           href="#"
-          className="inline-block bg-brand-accent text-brand-dark px-10 py-4 rounded-md font-bold hover:bg-opacity-90 transition duration-300 text-lg"
+          className="inline-block bg-brand-accent text-brand-light px-10 py-4 rounded-md font-bold hover:bg-opacity-90 transition duration-300 text-lg"
         >
           Let&apos;s Talk
         </a>
