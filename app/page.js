@@ -142,12 +142,19 @@ export default function Home() {
 
   return (
     <main className="bg-brand-light">
-      {/* Hero */}
-      <section
-        id="home"
-        className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-brand-dark via-brand-accent/40 to-brand-dark"
-      >
-        <ThreeGlobe />
+  {/* Header with brand name */}
+  <header className="fixed top-4 left-6 z-50">
+    <h1 className="text-2xl md:text-3xl font-extrabold font-display text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-gold drop-shadow-lg animate-pulse">
+      Incorvia
+    </h1>
+  </header>
+
+  {/* Hero */}
+  <section
+    id="home"
+    className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-brand-dark via-brand-accent/40 to-brand-dark"
+  >
+    <ThreeGlobe />
         <div className="relative z-10 p-6">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-display text-brand-light leading-tight drop-shadow-lg">
             Seamless Business Incorporation <br /> in Costa Rica.
