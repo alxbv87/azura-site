@@ -174,7 +174,7 @@ export default function Home() {
           </div>
           <div className="relative h-[600px] w-full">
             <Image
-              src="https://images.unsplash.com/photo-1533167523448-420684094212?q=80&w=2070&auto=format&fit=crop"
+              src="/beach.jpg"
               alt="Beautiful Costa Rican beach representing a prime location for business"
               fill
               className="object-cover rounded-lg shadow-2xl"
