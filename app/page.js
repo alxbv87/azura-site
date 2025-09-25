@@ -86,7 +86,7 @@ const ThreeGlobe = () => {
     // Globe (wireframe sphere)
     const geometry = new THREE.SphereGeometry(2.2, 64, 64);
     const material = new THREE.MeshBasicMaterial({
-      color: 0x1e293b, // slate navy
+      color: 0x1B263B, // dark blue
       wireframe: true,
     });
     const sphere = new THREE.Mesh(geometry, material);
@@ -95,7 +95,7 @@ const ThreeGlobe = () => {
     // Glow Effect
     const glowGeometry = new THREE.SphereGeometry(2.4, 64, 64);
     const glowMaterial = new THREE.MeshBasicMaterial({
-      color: 0xfacc15, // muted gold
+      color: 0xD4AF37, // gold
       transparent: true,
       opacity: 0.15,
     });
@@ -109,20 +109,16 @@ const ThreeGlobe = () => {
     for (let i = 0; i < particlesCnt * 3; i++) {
       posArray[i] = (Math.random() - 0.5) * 12;
     }
-    particlesGeometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(posArray, 3)
-    );
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particlesMaterial = new THREE.PointsMaterial({
       size: 0.01,
-      color: 0xfacc15, // gold
+      color: 0x218380, // teal accent
     });
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
 
     // Mouse interactivity
-    let mouseX = 0,
-      mouseY = 0;
+    let mouseX = 0, mouseY = 0;
     const onMouseMove = (event) => {
       mouseX = (event.clientX / window.innerWidth) * 2 - 1;
       mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -181,10 +177,10 @@ export default function Home() {
   const [activeTeamMember, setActiveTeamMember] = useState(0);
 
   return (
-    <main className="bg-slate-50 font-sans">
+    <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E]">
       {/* Header */}
       <header className="fixed top-4 left-6 z-50">
-        <h1 className="text-xl md:text-2xl font-bold text-slate-800">
+        <h1 className="text-xl md:text-2xl font-bold text-[#1B263B]">
           Incorvia
         </h1>
       </header>
@@ -192,14 +188,14 @@ export default function Home() {
       {/* Hero */}
       <section
         id="home"
-        className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800/40 to-slate-900"
+        className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
       >
         <ThreeGlobe />
         <div className="relative z-10 p-6">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-slate-100 leading-tight drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight drop-shadow-lg">
             Seamless Business Incorporation <br /> in Costa Rica.
           </h1>
-          <p className="mt-6 text-lg md:text-xl text-slate-200/90 max-w-3xl mx-auto">
+          <p className="mt-6 text-lg md:text-xl text-[#F7F9FB]/90 max-w-3xl mx-auto">
             Your strategic partners for navigating the complexities of company
             formation and achieving ambitious growth in Costa Rica.
           </p>
@@ -210,13 +206,13 @@ export default function Home() {
       <section id="about" className="py-20 md:py-32">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
           <div>
-            <p className="text-sm font-bold tracking-widest uppercase mb-4 text-slate-500">
+            <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">
               Our Company
             </p>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B] mb-6">
               Local Expertise, Global Vision
             </h2>
-            <p className="text-lg text-slate-700 leading-relaxed mb-8">
+            <p className="text-lg leading-relaxed mb-8">
               Incorvia is a premier incorporation services company based in San
               José, dedicated to providing sophisticated solutions for
               international businesses and investors. We combine our deep-rooted
@@ -239,13 +235,13 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section id="services" className="py-20 md:py-32 bg-slate-100/50">
+      <section id="services" className="py-20 md:py-32 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B]">
               Our Core Services
             </h2>
-            <p className="mt-4 text-lg text-slate-700">
+            <p className="mt-4 text-lg text-[#2E3B4E]">
               A comprehensive suite of services for establishing and managing
               your business in Costa Rica.
             </p>
@@ -254,17 +250,19 @@ export default function Home() {
             {services.map((service) => (
               <div
                 key={service.title}
-                className="p-8 rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow"
+                className="p-8 rounded-lg bg-[#F7F9FB] border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-shadow"
               >
-                <h3 className="text-2xl font-semibold text-slate-900 mb-3">
+                <h3 className="text-2xl font-semibold text-[#1B263B] mb-3">
                   {service.title}
                 </h3>
-                <p className="text-slate-700">{service.desc}</p>
+                <p className="text-[#2E3B4E]">{service.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* Additional sections... */}
     </main>
   );
 }
