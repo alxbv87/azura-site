@@ -174,7 +174,7 @@ export default function Home() {
           </div>
           <div className="relative h-[600px] w-full">
             <Image
-              src="/beach.jpg"
+              src="/city.jpeg"
               alt="Beautiful Costa Rican beach representing a prime location for business"
               fill
               className="object-cover rounded-lg shadow-2xl"
