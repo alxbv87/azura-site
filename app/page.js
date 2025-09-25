@@ -59,6 +59,14 @@ const services = [
   },
 ];
 
+// Images for About slideshow
+const aboutImages = [
+  "/city.jpg",
+  "/business.jpg",
+  "/teamwork.jpg",
+  "/skyline.jpg",
+];
+
 // Globe Component
 const ThreeGlobe = () => {
   const mountRef = useRef(null);
@@ -83,7 +91,7 @@ const ThreeGlobe = () => {
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
-    // Globe (wireframe sphere)
+    // Globe
     const geometry = new THREE.SphereGeometry(2.2, 64, 64);
     const material = new THREE.MeshBasicMaterial({
       color: 0x1B263B, // dark blue
@@ -92,7 +100,7 @@ const ThreeGlobe = () => {
     const sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
 
-    // Glow Effect
+    // Glow
     const glowGeometry = new THREE.SphereGeometry(2.4, 64, 64);
     const glowMaterial = new THREE.MeshBasicMaterial({
       color: 0xD4AF37, // gold
@@ -102,7 +110,7 @@ const ThreeGlobe = () => {
     const glow = new THREE.Mesh(glowGeometry, glowMaterial);
     scene.add(glow);
 
-    // Orbiting particles
+    // Particles
     const particlesGeometry = new THREE.BufferGeometry();
     const particlesCnt = 1000;
     const posArray = new Float32Array(particlesCnt * 3);
@@ -112,7 +120,7 @@ const ThreeGlobe = () => {
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particlesMaterial = new THREE.PointsMaterial({
       size: 0.01,
-      color: 0x218380, // teal accent
+      color: 0x218380, // teal
     });
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
@@ -175,6 +183,15 @@ const ThreeGlobe = () => {
 
 export default function Home() {
   const [activeTeamMember, setActiveTeamMember] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Slideshow logic for About images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % aboutImages.length);
+    }, 4000); // 4s per image
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E]">
@@ -202,9 +219,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About */}
-      <section id="about" className="py-20 md:py-32">
+      {/* About with slideshow */}
+      <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
+          {/* Text */}
           <div>
             <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">
               Our Company
@@ -212,24 +230,31 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B] mb-6">
               Local Expertise, Global Vision
             </h2>
-            <p className="text-lg leading-relaxed mb-8">
+            <p className="text-lg leading-relaxed mb-8 text-[#2E3B4E]">
               Incorvia is a premier incorporation services company based in San
               José, dedicated to providing sophisticated solutions for
               international businesses and investors. We combine our deep-rooted
               understanding of Costa Rican corporate regulations with a global
               perspective, offering a strategic advantage to clients looking to
-              establish, operate, and thrive in this dynamic country. Our
-              proactive approach ensures you are always ahead of regulatory
-              changes and positioned for long-term success.
+              establish, operate, and thrive in this dynamic country. Our proactive
+              approach ensures you are always ahead of regulatory changes and
+              positioned for long-term success.
             </p>
           </div>
-          <div className="relative h-[300px] w-full">
-            <Image
-              src="/city.jpg"
-              alt="San José Cityscape"
-              fill
-              className="object-cover rounded-lg shadow-2xl"
-            />
+
+          {/* Slideshow */}
+          <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-lg shadow-2xl">
+            {aboutImages.map((src, idx) => (
+              <Image
+                key={idx}
+                src={src}
+                alt="About Incorvia"
+                fill
+                className={`object-cover transition-opacity duration-1000 ${
+                  idx === currentIndex ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -261,8 +286,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Additional sections... */}
     </main>
   );
 }
