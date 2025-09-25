@@ -20,7 +20,7 @@ const teamData = [
   {
     name: "Michael Chen",
     title: "Lead, Real Estate & FTZ",
-    bio: "Michael's expertise lies in navigating the complexities of Costa Rican real estate transactions and advising clients on leveraging the benefits of the country's Free Trade Zone (FTZ) regime.",
+    bio: "Michael&apos;s expertise lies in navigating the complexities of Costa Rican real estate transactions and advising clients on leveraging the benefits of the country&apos;s Free Trade Zone (FTZ) regime.",
     img: "/team3.jpg",
   },
   {
@@ -333,7 +333,7 @@ export default function Home() {
           Begin Your Costa Rican Venture
         </h2>
         <p className="text-lg text-brand-light/90 max-w-2xl mx-auto my-8">
-          Contact us to schedule a confidential consultation and discover how our strategic guidance can empower your business's success.
+          Contact us to schedule a confidential consultation and discover how our strategic guidance can empower your business&apos;s success.
         </p>
         <a
           href="#"
