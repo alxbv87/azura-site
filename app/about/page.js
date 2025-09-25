@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from "next/image";
-import { FaBullseye, FaEye, FaHandshake } from "react-icons/fa";
+import Image from 'next/image';
+import { FaBullseye, FaEye, FaHandshake } from 'react-icons/fa';
 import * as THREE from 'three';
 
 // Particle Network Animation
@@ -16,23 +16,21 @@ const ParticleNetwork = () => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       75,
-      window.innerWidth / window.innerHeight,
+      currentMount.clientWidth / currentMount.clientHeight,
       0.1,
       1000
     );
     camera.position.z = 5;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
-    // Particles
     const particleCount = 600;
     const particlesGeometry = new THREE.BufferGeometry();
     const posArray = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 20;
+      posArray[i] = (Math.random() - 0.5) * 10;
     }
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
@@ -40,26 +38,25 @@ const ParticleNetwork = () => {
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
 
-    // Lines
     const maxDistance = 1.5;
     const linesMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.3 });
     const geometryLines = new THREE.BufferGeometry();
     const lineMesh = new THREE.LineSegments(geometryLines, linesMaterial);
     scene.add(lineMesh);
 
-    // Mouse interactivity
     let mouseX = 0, mouseY = 0;
+
     const onMouseMove = (event) => {
       mouseX = (event.clientX / window.innerWidth) * 2 - 1;
       mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
     };
+
     window.addEventListener('mousemove', onMouseMove);
 
-    // Animate
     const animate = () => {
       requestAnimationFrame(animate);
-      particles.rotation.y += 0.001;
-      particles.rotation.x += 0.0005;
+      particles.rotation.y += 0.001 + mouseX * 0.01;
+      particles.rotation.x += 0.0005 + mouseY * 0.01;
 
       const positions = [];
       const p = particles.geometry.attributes.position.array;
@@ -78,82 +75,64 @@ const ParticleNetwork = () => {
       geometryLines.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
       geometryLines.computeBoundingSphere();
 
-      camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
-      camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
-      camera.lookAt(scene.position);
-
       renderer.render(scene, camera);
     };
     animate();
 
-    // Resize
     const onResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     };
     window.addEventListener('resize', onResize);
 
     return () => {
-      window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('resize', onResize);
       if (currentMount) currentMount.removeChild(renderer.domElement);
       renderer.dispose();
     };
   }, []);
 
-  return <div ref={mountRef} className="fixed top-0 left-0 w-full h-full z-0" />;
+  return <div ref={mountRef} className="absolute top-0 left-0 w-full h-full z-0" />;
 };
 
 export default function About() {
   return (
-    <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E] relative">
-
-      {/* Particle Network Background */}
+    <main className="relative bg-[#F7F9FB] font-sans text-[#2E3B4E] min-h-screen overflow-x-hidden">
+      
+      {/* Particle Background */}
       <ParticleNetwork />
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center text-center overflow-hidden py-24">
-        <div className="relative z-10 px-6 max-w-3xl">
+      <section className="relative z-10 flex items-center justify-center h-screen text-center px-6">
+        <div className="bg-black/40 backdrop-blur-md rounded-2xl shadow-xl p-10 max-w-3xl">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">About Incorvia</h1>
           <p className="text-lg md:text-xl text-white/90">
-            We specialize in fast, reliable, and professional incorporation
-            services for entrepreneurs and companies expanding into Costa Rica.
-            Our mission is to simplify the process and ensure full compliance
-            every step of the way.
+            We specialize in fast, reliable, and professional incorporation services for entrepreneurs and companies expanding into Costa Rica.
+            Our mission is to simplify the process and ensure full compliance every step of the way.
           </p>
         </div>
       </section>
 
-      {/* Company Story */}
+      {/* Who We Are */}
       <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center relative z-10">
         <div>
           <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B] mb-4">Who We Are</h2>
           <p className="text-[#2E3B4E] mb-4">
-            Incorvia was founded with the vision of providing streamlined,
-            transparent, and cost-effective incorporation services. We understand
-            that starting a business in a new country can feel overwhelming —
-            that’s why we’re here to make it simple.
+            Incorvia was founded with the vision of providing streamlined, transparent, and cost-effective incorporation services. We understand that starting a business in a new country can feel overwhelming — that’s why we’re here to make it simple.
           </p>
           <p className="text-[#2E3B4E]">
-            Our experienced team of legal experts, accountants, and business
-            consultants have helped hundreds of companies establish their
-            presence in Costa Rica. From the moment you contact us, you’ll have
-            a dedicated partner guiding you through every step.
+            Our experienced team of legal experts, accountants, and business consultants have helped hundreds of companies establish their presence in Costa Rica. From the moment you contact us, you’ll have a dedicated partner guiding you through every step.
           </p>
         </div>
         <div className="relative h-80 w-full">
-          <Image
-            src="/about.jpg"
-            alt="About Incorvia"
-            fill
-            className="object-cover rounded-2xl shadow-2xl"
-          />
+          <Image src="/about.jpg" alt="About Incorvia" fill className="object-cover rounded-2xl shadow-2xl"/>
         </div>
       </section>
 
-      {/* Lawyer Profile */}
-      <section className="max-w-7xl mx-auto px-6 py-20 bg-[#F7F9FB] relative z-10">
+      {/* Legal Lead */}
+      <section className="max-w-7xl mx-auto px-6 py-20 relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B]">Meet Our Legal Lead</h2>
           <p className="text-[#2E3B4E] max-w-3xl mx-auto">
@@ -163,7 +142,7 @@ export default function About() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-3">
-            <Image src="/JJ1.jpg" alt="Juan J. Acuna Leandro - Photo 1" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/>
+            <Image src="/JJ1.jpg" alt="Juan J. Acuna Leandro" width={300} height={300} className="rounded-xl shadow-lg w-full h-auto"/>
           </div>
           <div className="lg:col-span-6 space-y-4">
             <h3 className="text-2xl font-bold text-[#1B263B]">Msc Juan J. Acuna Leandro</h3>
@@ -171,9 +150,7 @@ export default function About() {
             <p className="text-[#2E3B4E]">
               With extensive international training and over a decade of professional experience, Msc Juan J. Acuna Leandro offers trusted legal counsel backed by advanced specialization in Criminal Law, Notarial and Registry Law, and Real Estate.
             </p>
-            <p className="text-[#2E3B4E]">
-              He holds a Master’s Degree in Criminal Law from Universidad Latina de Costa Rica, and has pursued advanced postgraduate studies across Latin America and Europe, including:
-            </p>
+            <p className="text-[#2E3B4E]">He holds a Master’s Degree in Criminal Law from Universidad Latina de Costa Rica, and has pursued advanced postgraduate studies across Latin America and Europe, including:</p>
             <ul className="list-disc pl-5 space-y-1 text-[#2E3B4E]">
               <li>Criminal Evidence Law (Universidad Castilla-La Mancha, Toledo, Spain)</li>
               <li>Advanced Criminal Law (Universidad Nacional de Mar del Plata, Argentina)</li>
@@ -189,14 +166,14 @@ export default function About() {
               A results-driven attorney and notary public, Msc Juan J. Acuna Leandro is committed to providing clients with strategic, ethical, and effective legal solutions.
             </p>
           </div>
-          <div className="lg:col-span-3"><Image src="/JJ2.jpg" alt="Photo 2" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
-          <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ3.jpg" alt="Photo 3" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
+          <div className="lg:col-span-3"><Image src="/JJ2.jpg" alt="Photo 2" width={300} height={300} className="rounded-xl shadow-lg w-full h-auto"/></div>
+          <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ3.jpg" alt="Photo 3" width={300} height={300} className="rounded-xl shadow-lg w-full h-auto"/></div>
           <div className="lg:col-span-6"></div>
-          <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ4.jpg" alt="Photo 4" width={300} height={300} className="w-full h-auto rounded-xl shadow-lg"/></div>
+          <div className="lg:col-span-3 mt-8 lg:mt-0"><Image src="/JJ4.jpg" alt="Photo 4" width={300} height={300} className="rounded-xl shadow-lg w-full h-auto"/></div>
         </div>
       </section>
 
-      {/* Mission / Vision / Values */}
+      {/* Core Principles */}
       <section className="bg-[#F7F9FB] py-20 border-t border-[#D4AF37]/20 relative z-10">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B] mb-12">Our Core Principles</h2>
