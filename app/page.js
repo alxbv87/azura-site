@@ -1,9 +1,10 @@
 'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import * as THREE from 'three';
 
-// Team Data (using local /public images)
+// Team Data
 const teamData = [
   {
     name: "Johnathan Hayes",
@@ -41,7 +42,6 @@ const ThreeGlobe = () => {
 
     const scene = new THREE.Scene();
 
-    // Camera
     const camera = new THREE.PerspectiveCamera(
       75,
       currentMount.clientWidth / currentMount.clientHeight,
@@ -50,31 +50,30 @@ const ThreeGlobe = () => {
     );
     camera.position.z = 6;
 
-    // Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
-    // Globe (wireframe sphere)
+    // Globe
     const geometry = new THREE.SphereGeometry(2.2, 64, 64);
     const material = new THREE.MeshBasicMaterial({
-      color: 0x1e3a8a, // deep blue
+      color: 0xD4AF37, // gold wireframe
       wireframe: true,
     });
     const sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
 
-    // Glow Effect (slightly larger transparent sphere)
+    // Glow
     const glowGeometry = new THREE.SphereGeometry(2.4, 64, 64);
     const glowMaterial = new THREE.MeshBasicMaterial({
-      color: 0xd4af37, // gold glow
+      color: 0xD4AF37,
       transparent: true,
       opacity: 0.15,
     });
     const glow = new THREE.Mesh(glowGeometry, glowMaterial);
     scene.add(glow);
 
-    // Orbiting particles
+    // Particles
     const particlesGeometry = new THREE.BufferGeometry();
     const particlesCnt = 1000;
     const posArray = new Float32Array(particlesCnt * 3);
@@ -84,24 +83,20 @@ const ThreeGlobe = () => {
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particlesMaterial = new THREE.PointsMaterial({
       size: 0.01,
-      color: 0xd4af37,
+      color: 0xD4AF37,
     });
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
 
-    // Mouse interactivity
-    let mouseX = 0,
-      mouseY = 0;
+    let mouseX = 0, mouseY = 0;
     const onMouseMove = (event) => {
       mouseX = (event.clientX / window.innerWidth) * 2 - 1;
       mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
     };
     window.addEventListener('mousemove', onMouseMove);
 
-    // Animate
     const animate = () => {
       requestAnimationFrame(animate);
-
       sphere.rotation.y += 0.001;
       particlesMesh.rotation.y += 0.0005;
 
@@ -113,7 +108,6 @@ const ThreeGlobe = () => {
     };
     animate();
 
-    // Resize
     const onWindowResize = () => {
       camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
       camera.updateProjectionMatrix();
@@ -129,11 +123,7 @@ const ThreeGlobe = () => {
   }, []);
 
   return (
-    <div
-      ref={mountRef}
-      id="hero-canvas-container"
-      className="absolute top-0 left-0 right-0 bottom-0 z-0"
-    />
+    <div ref={mountRef} className="absolute top-0 left-0 right-0 bottom-0 z-0" />
   );
 };
 
@@ -141,25 +131,22 @@ export default function Home() {
   const [activeTeamMember, setActiveTeamMember] = useState(0);
 
   return (
-    <main className="bg-brand-light">
-  {/* Header with brand name */}
-    <header className="fixed top-4 left-6 z-100">
-    <h1 className="text-xl md:text-2xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
-      Incorvia
-    </h1>
-  </header>
+    <main className="bg-[#0A1F44] text-white font-sans">
+      {/* Header */}
+      <header className="fixed top-4 left-6 z-50">
+        <h1 className="text-xl md:text-2xl font-bold border-b-2 border-[#D4AF37] pb-1">
+          Incorvia
+        </h1>
+      </header>
 
-  {/* Hero */}
-  <section
-    id="home"
-    className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-brand-dark via-brand-accent/40 to-brand-dark"
-  >
-    <ThreeGlobe />
+      {/* Hero */}
+      <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <ThreeGlobe />
         <div className="relative z-10 p-6">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-display text-brand-light leading-tight drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold drop-shadow-lg">
             Seamless Business Incorporation <br /> in Costa Rica.
           </h1>
-          <p className="mt-6 text-lg md:text-xl text-brand-light/90 max-w-3xl mx-auto">
+          <p className="mt-6 text-lg md:text-xl text-[#B0B0B0] max-w-3xl mx-auto">
             Your strategic partners for navigating the complexities of company formation and achieving ambitious growth in Costa Rica.
           </p>
         </div>
@@ -169,61 +156,47 @@ export default function Home() {
       <section id="about" className="py-20 md:py-32">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
           <div>
-            <p className="text-sm font-bold text-brand-accent tracking-widest uppercase mb-4">
+            <p className="text-sm font-bold text-[#D4AF37] tracking-widest uppercase mb-4">
               Our Company
             </p>
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-brand-dark mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Local Expertise, Global Vision
             </h2>
-            <p className="text-lg text-brand-muted leading-relaxed mb-8">
-              Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country. Our proactive approach ensures you are always ahead of regulatory changes and positioned for long-term success.
+            <p className="text-lg text-[#B0B0B0] leading-relaxed mb-8">
+              Incorvia is a premier incorporation services company based in San José, providing sophisticated solutions for international businesses and investors.
             </p>
           </div>
-          <div className="relative h-[300px] w-full">
+          <div className="relative h-[600px] w-full">
             <Image
               src="/city.jpg"
               alt="San Jose"
               fill
-              className="object-cover rounded-lg shadow-2xl"
+              className="object-cover rounded-lg shadow-lg"
             />
           </div>
         </div>
       </section>
 
       {/* Services */}
-      <section id="services" className="py-20 md:py-32 bg-brand-accent/5">
+      <section id="services" className="py-20 md:py-32">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-brand-dark">
+            <h2 className="text-4xl md:text-5xl font-bold text-white">
               Our Core Services
             </h2>
-            <p className="mt-4 text-lg text-brand-muted">
-              A comprehensive suite of services for establishing and managing your business in Costa Rica.
+            <p className="mt-4 text-lg text-[#B0B0B0]">
+              Comprehensive services for establishing and managing your business in Costa Rica.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              {
-                title: "Company Formation (S.A. & S.R.L.)",
-                desc: "Seamless incorporation of Costa Rican entities, tailored for liability protection and tax efficiency.",
-              },
-              {
-                title: "Regulatory & Tax Compliance",
-                desc: "Ensuring your business adheres to all national regulations, including annual filings and tax obligations.",
-              },
-              {
-                title: "Residency & Work Permits",
-                desc: "Expert guidance for executives and investors seeking legal residency and work authorization.",
-              },
-            ].map((service) => (
-              <div
-                key={service.title}
-                className="p-8 rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow"
-              >
-                <h3 className="text-2xl font-semibold font-display text-brand-accent mb-3">
-                  {service.title}
-                </h3>
-                <p className="text-brand-muted">{service.desc}</p>
+              { title: "Company Formation", desc: "Seamless incorporation of Costa Rican entities, tailored for liability protection and tax efficiency." },
+              { title: "Regulatory & Tax Compliance", desc: "Ensuring your business adheres to all national regulations, including annual filings and tax obligations." },
+              { title: "Residency & Work Permits", desc: "Expert guidance for executives and investors seeking legal residency and work authorization." },
+            ].map(service => (
+              <div key={service.title} className="p-8 rounded-lg bg-[#1A2B55] shadow-md hover:shadow-xl transition-shadow">
+                <h3 className="text-2xl font-semibold text-[#D4AF37] mb-3">{service.title}</h3>
+                <p className="text-[#B0B0B0]">{service.desc}</p>
               </div>
             ))}
           </div>
@@ -234,42 +207,22 @@ export default function Home() {
       <section id="process" className="py-20 md:py-32">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-brand-dark">
-              Our Streamlined Process
-            </h2>
-            <p className="mt-4 text-lg text-brand-muted">
-              A structured and transparent approach to ensure your objectives are met with precision and efficiency at every stage.
+            <h2 className="text-4xl md:text-5xl font-bold text-white">Our Streamlined Process</h2>
+            <p className="mt-4 text-lg text-[#B0B0B0]">
+              A structured and transparent approach to ensure your objectives are met with precision and efficiency.
             </p>
           </div>
           <div className="relative process-timeline max-w-3xl mx-auto">
             {[
-              {
-                step: "1",
-                title: "Initial Consultation",
-                desc: "We begin with a confidential discussion to understand your unique situation and business goals in Costa Rica.",
-              },
-              {
-                step: "2",
-                title: "Strategic Plan",
-                desc: "Our team develops a bespoke incorporation strategy, outlining a clear roadmap and a transparent fee structure.",
-              },
-              {
-                step: "3",
-                title: "Execution & Filing",
-                desc: "We meticulously handle all necessary filings and interactions with Costa Rican government agencies on your behalf.",
-              },
-              {
-                step: "4",
-                title: "Ongoing Compliance",
-                desc: "Beyond formation, we provide continuous support to ensure your business remains in good standing with all local regulations.",
-              },
-            ].map((item) => (
+              { step: "1", title: "Initial Consultation", desc: "Confidential discussion to understand your goals." },
+              { step: "2", title: "Strategic Plan", desc: "Bespoke incorporation strategy and roadmap." },
+              { step: "3", title: "Execution & Filing", desc: "Handling all necessary filings with government agencies." },
+              { step: "4", title: "Ongoing Compliance", desc: "Continuous support for regulatory compliance." },
+            ].map(item => (
               <div key={item.step} className="relative pl-12 pb-16">
-                <div className="process-item-dot">{item.step}</div>
-                <h3 className="text-2xl font-bold font-display text-brand-accent">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-brand-muted">{item.desc}</p>
+                <div className="process-item-dot text-[#D4AF37]">{item.step}</div>
+                <h3 className="text-2xl font-bold text-[#D4AF37]">{item.title}</h3>
+                <p className="mt-2 text-[#B0B0B0]">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -277,31 +230,18 @@ export default function Home() {
       </section>
 
       {/* Team */}
-      <section id="team" className="py-20 md:py-32 bg-brand-accent/5">
+      <section id="team" className="py-20 md:py-32">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-brand-dark">
-              Meet Our Leadership
-            </h2>
-            <p className="mt-4 text-lg text-brand-muted">
-              A collective of seasoned experts dedicated to your success in Costa Rica.
-            </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-white">Meet Our Leadership</h2>
+            <p className="mt-4 text-lg text-[#B0B0B0]">A collective of seasoned experts dedicated to your success in Costa Rica.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
             <div className="md:col-span-1">
               <ul className="space-y-2">
                 {teamData.map((member, index) => (
-                  <li
-                    key={member.name}
-                    onClick={() => setActiveTeamMember(index)}
-                  >
-                    <div
-                      className={`p-6 border-l-4 text-brand-muted hover:text-brand-dark cursor-pointer transition-all duration-300 ${
-                        activeTeamMember === index
-                          ? 'active border-brand-accent bg-brand-light/50'
-                          : 'border-transparent'
-                      }`}
-                    >
+                  <li key={member.name} onClick={() => setActiveTeamMember(index)}>
+                    <div className={`p-6 border-l-4 cursor-pointer transition-all duration-300 ${activeTeamMember === index ? 'border-[#D4AF37] bg-[#1A2B55]' : 'border-transparent'} hover:bg-[#1A2B55]`}>
                       <h4 className="text-2xl font-bold">{member.name}</h4>
                       <p>{member.title}</p>
                     </div>
@@ -312,22 +252,11 @@ export default function Home() {
             <div className="md:col-span-2">
               <div className="transition-opacity duration-500">
                 <div className="relative w-full h-96 mb-6">
-                  <Image
-                    src={teamData[activeTeamMember].img}
-                    alt={teamData[activeTeamMember].name}
-                    fill
-                    className="rounded-lg object-cover shadow-lg"
-                  />
+                  <Image src={teamData[activeTeamMember].img} alt={teamData[activeTeamMember].name} fill className="rounded-lg object-cover shadow-lg"/>
                 </div>
-                <h3 className="text-3xl font-bold font-display text-brand-dark">
-                  {teamData[activeTeamMember].name}
-                </h3>
-                <p className="text-xl text-brand-accent mt-1">
-                  {teamData[activeTeamMember].title}
-                </p>
-                <p className="text-brand-muted mt-4 leading-relaxed">
-                  {teamData[activeTeamMember].bio}
-                </p>
+                <h3 className="text-3xl font-bold text-white">{teamData[activeTeamMember].name}</h3>
+                <p className="text-xl text-[#D4AF37] mt-1">{teamData[activeTeamMember].title}</p>
+                <p className="text-[#B0B0B0] mt-4 leading-relaxed">{teamData[activeTeamMember].bio}</p>
               </div>
             </div>
           </div>
@@ -335,17 +264,12 @@ export default function Home() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="py-28 text-center bg-gradient-to-r from-brand-accent/90 to-brand-dark">
-        <h2 className="text-4xl md:text-6xl font-bold font-display text-brand-light drop-shadow-lg">
-          Begin Your Costa Rican Venture
-        </h2>
-        <p className="text-lg text-brand-light/90 max-w-2xl mx-auto my-8">
+      <section id="contact" className="py-28 text-center bg-[#0A1F44]">
+        <h2 className="text-4xl md:text-6xl font-bold text-white">Begin Your Costa Rican Venture</h2>
+        <p className="text-lg text-[#B0B0B0] max-w-2xl mx-auto my-8">
           Contact us to schedule a confidential consultation and discover how our strategic guidance can empower your business&apos;s success.
         </p>
-        <a
-          href="#"
-          className="inline-block border-2 border-brand-gold text-brand-light px-10 py-4 rounded-md font-bold hover:bg-brand-gold hover:text-brand-dark transition duration-300 text-lg"
-        >
+        <a href="#" className="inline-block border-2 border-[#D4AF37] text-white px-10 py-4 rounded-md font-bold hover:bg-[#D4AF37] hover:text-[#0A1F44] transition duration-300 text-lg">
           Let&apos;s Talk
         </a>
       </section>
