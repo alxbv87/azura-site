@@ -67,7 +67,7 @@ const aboutImages = [
   "/skyline.jpg",
 ];
 
-// Realistic Globe Component
+// Globe Component
 const ThreeGlobe = () => {
   const mountRef = useRef(null);
 
@@ -79,97 +79,117 @@ const ThreeGlobe = () => {
 
     // Camera
     const camera = new THREE.PerspectiveCamera(
-      45,
+      75,
       currentMount.clientWidth / currentMount.clientHeight,
       0.1,
       1000
     );
-    camera.position.z = 10;
+    camera.position.z = 6;
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-    scene.add(ambientLight);
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(5, 3, 5);
-    scene.add(directionalLight);
-
-    // Textures
-    const loader = new THREE.TextureLoader();
-    const earthTexture = loader.load("/textures/earth_daymap.jpg");
-    const earthBump = loader.load("/textures/earth_bump.jpg");
-    const earthSpecular = loader.load("/textures/earth_specular.jpg");
-    const cloudTexture = loader.load("/textures/earth_clouds.png");
-
-    // Earth mesh
-    const earthGeometry = new THREE.SphereGeometry(3, 64, 64);
-    const earthMaterial = new THREE.MeshPhongMaterial({
-      map: earthTexture,
-      bumpMap: earthBump,
-      bumpScale: 0.05,
-      specularMap: earthSpecular,
-      specular: new THREE.Color("grey"),
+    // Globe
+    const geometry = new THREE.SphereGeometry(2.2, 64, 64);
+    const material = new THREE.MeshBasicMaterial({
+      color: 0x1B263B, // dark blue
+      wireframe: true,
     });
-    const earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
-    scene.add(earthMesh);
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
 
-    // Cloud mesh
-    const cloudGeometry = new THREE.SphereGeometry(3.05, 64, 64);
-    const cloudMaterial = new THREE.MeshPhongMaterial({
-      map: cloudTexture,
+    // Glow
+    const glowGeometry = new THREE.SphereGeometry(2.4, 64, 64);
+    const glowMaterial = new THREE.MeshBasicMaterial({
+      color: 0xD4AF37, // gold
       transparent: true,
-      opacity: 0.4,
-      depthWrite: false,
+      opacity: 0.15,
     });
-    const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
-    scene.add(cloudMesh);
+    const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+    scene.add(glow);
+
+    // Particles
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCnt = 1000;
+    const posArray = new Float32Array(particlesCnt * 3);
+    for (let i = 0; i < particlesCnt * 3; i++) {
+      posArray[i] = (Math.random() - 0.5) * 12;
+    }
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 0.01,
+      color: 0x218380, // teal
+    });
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    // Mouse interactivity
+    let mouseX = 0, mouseY = 0;
+    const onMouseMove = (event) => {
+      mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+      mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener('mousemove', onMouseMove);
 
     // Animate
     const animate = () => {
       requestAnimationFrame(animate);
-      earthMesh.rotation.y += 0.001;
-      cloudMesh.rotation.y += 0.0012;
+
+      sphere.rotation.y += 0.001;
+      particlesMesh.rotation.y += 0.0005;
+
+      camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+      camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
+      camera.lookAt(scene.position);
+
       renderer.render(scene, camera);
     };
     animate();
 
     // Resize
-    const onResize = () => {
+    const onWindowResize = () => {
       camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     };
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onWindowResize);
 
     // Cleanup
     return () => {
-      window.removeEventListener("resize", onResize);
-      currentMount.removeChild(renderer.domElement);
+      window.removeEventListener('resize', onWindowResize);
+      window.removeEventListener('mousemove', onMouseMove);
+      if (currentMount) currentMount.removeChild(renderer.domElement);
+
+      geometry.dispose();
+      material.dispose();
+      glowGeometry.dispose();
+      glowMaterial.dispose();
+      particlesGeometry.dispose();
+      particlesMaterial.dispose();
       renderer.dispose();
-      earthGeometry.dispose();
-      earthMaterial.dispose();
-      cloudGeometry.dispose();
-      cloudMaterial.dispose();
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute inset-0 z-0" />;
+  return (
+    <div
+      ref={mountRef}
+      id="hero-canvas-container"
+      className="absolute top-0 left-0 right-0 bottom-0 z-0"
+    />
+  );
 };
 
-// Home Page
 export default function Home() {
   const [activeTeamMember, setActiveTeamMember] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Slideshow logic
+  // Slideshow logic for About images
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % aboutImages.length);
-    }, 4000);
+    }, 4000); // 2s per image
     return () => clearInterval(interval);
   }, []);
 
@@ -199,9 +219,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About */}
+      {/* About with slideshow */}
       <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
+          {/* Text */}
           <div>
             <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">
               Our Company
