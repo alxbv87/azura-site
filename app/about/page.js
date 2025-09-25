@@ -181,86 +181,31 @@ const LegalLead = () => {
   );
 };
 
-// Redesigned Core Principles + Trust Stats
-const CorePrinciples = () => {
-  const principles = [
-    {
-      icon: <FaBullseye />,
-      title: "Mission",
-      text: "To empower entrepreneurs and companies by providing seamless, professional incorporation and compliance solutions in Costa Rica."
-    },
-    {
-      icon: <FaEye />,
-      title: "Vision",
-      text: "To be the most trusted and innovative partner for business incorporation and corporate services in the region."
-    },
-    {
-      icon: <FaHandshake />,
-      title: "Values",
-      text: "Integrity, transparency, efficiency, and customer-centric service are at the heart of everything we do."
-    }
-  ];
-
-  const stats = [
-    { value: "10+", label: "Years of Experience" },
-    { value: "500+", label: "Companies Incorporated" },
-    { value: "100%", label: "Client Satisfaction Rate" },
-  ];
-
-  return (
-    <section className="bg-[#F7F9FB] py-20 relative z-10">
-      <div className="max-w-6xl mx-auto px-6 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B] mb-12">Our Core Principles</h2>
-
-        <div className="grid md:grid-cols-3 gap-10 mb-16">
-          {principles.map((p, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-              className="p-8 rounded-2xl shadow-md hover:shadow-lg bg-white"
-            >
-              <div className="text-[#D4AF37] text-5xl mb-4">{p.icon}</div>
-              <h3 className="text-xl font-semibold text-[#1B263B] mb-3">{p.title}</h3>
-              <p className="text-[#2E3B4E]">{p.text}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-10 text-center">
-          {stats.map((s, i) => (
-            <motion.div
-              key={i}
-              whileInView={{ y: [50, 0], opacity: [0, 1] }}
-              transition={{ duration: 0.8, delay: i * 0.2 }}
-              className="p-6 bg-white rounded-xl shadow-md"
-            >
-              <h3 className="text-4xl font-bold text-[#D4AF37]">{s.value}</h3>
-              <p className="text-[#2E3B4E] mt-2">{s.label}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
 export default function About() {
   return (
     <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E] relative z-0">
       {/* Particle Background */}
       <ParticleNetwork />
 
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-r from-[#1B263B] via-[#2E3B4E]/80 to-[#1B263B] text-white py-24 z-10">
-        <div className="relative z-10 px-6 max-w-3xl">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">About Incorvia</h1>
-          <p className="text-lg md:text-xl text-white/90">
-            We specialize in fast, reliable, and professional incorporation
-            services for entrepreneurs and companies expanding into Costa Rica.
-            Our mission is to simplify the process and ensure full compliance
-            every step of the way.
-          </p>
+      {/* Hero Section (Redesigned) */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-r from-[#1B263B] via-[#2E3B4E]/80 to-[#1B263B] text-white py-12 z-10">
+        <div className="relative z-10 px-6 max-w-6xl grid md:grid-cols-2 gap-8 items-center">
+          
+          {/* Left Column */}
+          <div className="space-y-4">
+            <h1 className="text-4xl md:text-5xl font-bold">About Incorvia</h1>
+            <p className="text-lg md:text-xl text-white/90">
+              We specialize in fast, reliable, and professional incorporation services for entrepreneurs and companies expanding into Costa Rica.
+            </p>
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-2">
+            <p className="text-md md:text-lg text-white/80 border-l-4 border-[#D4AF37] pl-4">
+              Our mission is to simplify the process and ensure full compliance every step of the way.
+            </p>
+          </div>
+
         </div>
       </section>
 
@@ -269,32 +214,67 @@ export default function About() {
         <div>
           <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B] mb-4">Who We Are</h2>
           <p className="text-[#2E3B4E] mb-4">
-            Incorvia was founded with the vision of providing streamlined,
-            transparent, and cost-effective incorporation services. We understand
-            that starting a business in a new country can feel overwhelming — that’s why we’re here to make it simple.
+            Incorvia was founded with the vision of providing streamlined, transparent, and cost-effective incorporation services. We understand that starting a business in a new country can feel overwhelming — that’s why we’re here to make it simple.
           </p>
           <p className="text-[#2E3B4E]">
-            Our experienced team of legal experts, accountants, and business
-            consultants have helped hundreds of companies establish their
-            presence in Costa Rica. From the moment you contact us, you’ll have
-            a dedicated partner guiding you through every step.
-          </p>
-        </div>
-        <div className="relative h-80 w-full">
-          <Image
-            src="/about.jpg"
-            alt="About Incorvia"
-            fill
-            className="object-cover rounded-2xl shadow-2xl"
-          />
-        </div>
-      </section>
+            Our experienced team of legal experts, accountants, and business consultants have helped
+ </p>
+      </div>
+      <div className="relative h-80 w-full">
+        <Image
+          src="/about.jpg"
+          alt="About Incorvia"
+          fill
+          className="object-cover rounded-2xl shadow-2xl"
+        />
+      </div>
+    </section>
 
-      {/* Legal Lead */}
-      <LegalLead />
+    {/* Redesigned Legal Lead Section */}
+    <LegalLead />
 
-      {/* Redesigned Core Principles + Stats */}
-      <CorePrinciples />
-    </main>
-  );
+    {/* Core Principles (Improved Design) */}
+    <section className="bg-[#F7F9FB] py-20 border-t border-[#D4AF37]/20 z-10 relative">
+      <div className="max-w-6xl mx-auto px-6 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#1B263B] mb-12">Our Core Principles</h2>
+        <div className="grid md:grid-cols-3 gap-10">
+          <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition bg-white/60 backdrop-blur-md">
+            <FaBullseye className="text-[#D4AF37] text-5xl mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Mission</h3>
+            <p className="text-[#2E3B4E]">To empower entrepreneurs and companies by providing seamless, professional incorporation and compliance solutions in Costa Rica.</p>
+          </div>
+          <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition bg-white/60 backdrop-blur-md">
+            <FaEye className="text-[#D4AF37] text-5xl mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Vision</h3>
+            <p className="text-[#2E3B4E]">To be the most trusted and innovative partner for business incorporation and corporate services in the region.</p>
+          </div>
+          <div className="p-8 rounded-2xl shadow-md hover:shadow-lg transition bg-white/60 backdrop-blur-md">
+            <FaHandshake className="text-[#D4AF37] text-5xl mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-[#1B263B] mb-3">Values</h3>
+            <p className="text-[#2E3B4E]">Integrity, transparency, efficiency, and customer-centric service are at the heart of everything we do.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Trust Stats Section */}
+    <section className="py-20 bg-[#E0E6ED] relative z-10">
+      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
+        <div className="p-6 bg-white/60 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg transition">
+          <h3 className="text-4xl font-bold text-[#D4AF37]">10+</h3>
+          <p className="text-[#2E3B4E] mt-2">Years of Experience</p>
+        </div>
+        <div className="p-6 bg-white/60 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg transition">
+          <h3 className="text-4xl font-bold text-[#D4AF37]">500+</h3>
+          <p className="text-[#2E3B4E] mt-2">Companies Incorporated</p>
+        </div>
+        <div className="p-6 bg-white/60 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg transition">
+          <h3 className="text-4xl font-bold text-[#D4AF37]">100%</h3>
+          <p className="text-[#2E3B4E] mt-2">Client Satisfaction Rate</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+);
 }
