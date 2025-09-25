@@ -143,7 +143,7 @@ export default function Home() {
   return (
     <main className="bg-brand-light">
   {/* Header with brand name */}
-    <header className="fixed top-4 left-6 z-50">
+    <header className="fixed top-4 left-6 z-100">
     <h1 className="text-xl md:text-2xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
       Incorvia
     </h1>
