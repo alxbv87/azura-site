@@ -179,7 +179,7 @@ export default function Home() {
               Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country. Our proactive approach ensures you are always ahead of regulatory changes and positioned for long-term success.
             </p>
           </div>
-          <div className="relative h-[600px] w-full">
+          <div className="relative h-[300px] w-full">
             <Image
               src="/city.jpg"
               alt="San Jose"
