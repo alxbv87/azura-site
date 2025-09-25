@@ -144,7 +144,7 @@ export default function Home() {
     <main className="bg-brand-light">
   {/* Header with brand name */}
     <header className="fixed top-4 left-6 z-50">
-    <h1 className="text-xl md:text-2xl font-bold font-sans text-white">
+    <h1 className="text-xl md:text-2xl font-bold font-sans text-white border-b-2 border-brand-gold pb-1">
       Incorvia
     </h1>
   </header>
