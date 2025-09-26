@@ -17,7 +17,7 @@ const services = [
   {
     title: "Regulatory Compliance",
     desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law.",
-    imageSrc: "/images/compliance.jpg",
+    imageSrc: "/images/compliance.png",
   },
   {
     title: "Real Estate Advisory",
