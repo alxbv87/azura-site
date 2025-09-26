@@ -22,12 +22,12 @@ const services = [
   {
     title: "Real Estate Advisory",
     desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones.",
-    imageSrc: "/images/real-estate.jpg",
+    imageSrc: "/images/real-estate.png",
   },
   {
     title: "Accounting & Tax",
     desc: "Streamlined tax planning, accounting, and reporting services designed for global standards.",
-    imageSrc: "/images/accounting.jpg",
+    imageSrc: "/images/accounting.jpeg",
   },
   {
     title: "Immigration Support",
