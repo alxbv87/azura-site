@@ -7,7 +7,7 @@ const services = [
   {
     title: "Company Incorporation",
     desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance.",
-    imageSrc: "/images/incorporation.jpg",
+    imageSrc: "/images/incorporation.png",
   },
   {
     title: "Corporate Structuring",
