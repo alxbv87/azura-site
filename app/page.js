@@ -176,10 +176,12 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E]">
+    // CHANGE: Set the main background and default text color for the whole page
+    <main className="bg-[#1B263B] font-sans text-[#F7F9FB]/90">
       {/* Header */}
       <header className="fixed top-4 left-6 z-50">
-        <h1 className="text-xl md:text-2xl font-bold text-[#1B263B]">Incorvia</h1>
+         {/* CHANGE: Header text is now always white */}
+        <h1 className="text-xl md:text-2xl font-bold text-white">Incorvia</h1>
       </header>
 
       {/* Hero */}
@@ -210,12 +212,15 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
+       {/* CHANGE: Removed background color to inherit from <main> */}
+      <section id="about" className="py-20 md:py-32">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
           <div>
             <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">Our Company</p>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B] mb-6">Local Expertise, Global Vision</h2>
-            <p className="text-lg leading-relaxed mb-8 text-[#2E3B4E]">
+            {/* CHANGE: Heading text color is now white */}
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Local Expertise, Global Vision</h2>
+            {/* The paragraph text will inherit the light color from the <main> tag */}
+            <p className="text-lg leading-relaxed mb-8">
               Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country. Our proactive approach ensures you are always ahead of regulatory changes and positioned for long-term success.
             </p>
           </div>
@@ -235,18 +240,24 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section id="services" className="py-20 md:py-32 bg-white">
+      {/* CHANGE: Removed background color to inherit from <main> */}
+      <section id="services" className="py-20 md:py-32">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B]">Our Core Services</h2>
-            <p className="mt-4 text-lg text-[#2E3B4E]">A comprehensive suite of services for establishing and managing your business in Costa Rica.</p>
+            {/* CHANGE: Heading text color is now white */}
+            <h2 className="text-4xl md:text-5xl font-bold text-white">Our Core Services</h2>
+            {/* The paragraph text will inherit the light color from the <main> tag */}
+            <p className="mt-4 text-lg">A comprehensive suite of services for establishing and managing your business in Costa Rica.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
-              <div key={service.title} className="p-8 rounded-lg bg-[#F7F9FB] border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-shadow">
-                <h3 className="text-2xl font-semibold text-[#1B263B] mb-3">{service.title}</h3>
-                <p className="text-[#2E3B4E]">{service.desc}</p>
+              // CHANGE: Updated the service card design for the dark theme
+              <div key={service.title} className="p-8 rounded-lg bg-[#2E3B4E] border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-shadow">
+                {/* CHANGE: Card heading text is now white */}
+                <h3 className="text-2xl font-semibold text-white mb-3">{service.title}</h3>
+                {/* The card paragraph text will inherit the light color from the <main> tag */}
+                <p>{service.desc}</p>
               </div>
             ))}
           </div>
