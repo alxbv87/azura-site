@@ -13,29 +13,30 @@ const services = [
   { title: "Immigration Support", desc: "End-to-end visa and residency support for executives, investors, and employees." },
 ];
 
-// Images for About slideshow
+// About slideshow images
 const aboutImages = ["/city.jpg", "/business.jpg", "/teamwork.jpg", "/skyline.jpg"];
 
-// 3D Network Component
-const ThreeNetwork = () => {
+// 3D Network Background Component
+const ThreeNetworkBackground = () => {
   const mountRef = useRef(null);
 
   useEffect(() => {
-    const currentMount = mountRef.current;
-    if (!currentMount) return;
+    const mount = mountRef.current;
+    if (!mount) return;
 
-    // Scene
     const scene = new THREE.Scene();
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      mount.clientWidth / mount.clientHeight,
+      0.1,
+      1000
+    );
     camera.position.z = 6;
 
-    // Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    currentMount.appendChild(renderer.domElement);
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
+    mount.appendChild(renderer.domElement);
 
     // Hubs
     const hubCount = 150;
@@ -48,17 +49,17 @@ const ThreeNetwork = () => {
     const hubs = new THREE.Points(hubGeometry, hubMaterial);
     scene.add(hubs);
 
-    // Lines
+    // Connections
     const linesGeometry = new THREE.BufferGeometry();
     const linePositions = [];
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.2 });
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.15 });
+
     for (let i = 0; i < hubCount; i++) {
       for (let j = i + 1; j < hubCount; j++) {
         const dx = hubPositions[i * 3] - hubPositions[j * 3];
         const dy = hubPositions[i * 3 + 1] - hubPositions[j * 3 + 1];
         const dz = hubPositions[i * 3 + 2] - hubPositions[j * 3 + 2];
-        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (distance < 3) {
+        if (Math.sqrt(dx * dx + dy * dy + dz * dz) < 3) {
           linePositions.push(
             hubPositions[i * 3], hubPositions[i * 3 + 1], hubPositions[i * 3 + 2],
             hubPositions[j * 3], hubPositions[j * 3 + 1], hubPositions[j * 3 + 2]
@@ -66,43 +67,47 @@ const ThreeNetwork = () => {
         }
       }
     }
+
     linesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
     const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
     scene.add(linesMesh);
 
-    // Mouse
+    // Mouse interaction
     let mouseX = 0, mouseY = 0;
-    const onMouseMove = (event) => {
-      mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-      mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+    const onMouseMove = (e) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
     };
     window.addEventListener('mousemove', onMouseMove);
 
-    // Animate
+    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
       hubs.rotation.y += 0.0008;
       linesMesh.rotation.y += 0.0005;
+
       camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
       camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
+
       renderer.render(scene, camera);
     };
     animate();
 
-    // Resize
-    const onWindowResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+    // Handle resize
+    const onResize = () => {
+      camera.aspect = mount.clientWidth / mount.clientHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(mount.clientWidth, mount.clientHeight);
     };
-    window.addEventListener('resize', onWindowResize);
+    window.addEventListener('resize', onResize);
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', onWindowResize);
+      window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMouseMove);
-      if (currentMount) currentMount.removeChild(renderer.domElement);
+      if (mount) mount.removeChild(renderer.domElement);
+
       hubGeometry.dispose();
       hubMaterial.dispose();
       linesGeometry.dispose();
@@ -111,40 +116,35 @@ const ThreeNetwork = () => {
     };
   }, []);
 
-  return <div ref={mountRef} className="fixed top-0 left-0 w-screen h-screen -z-10" />;
+  return <div ref={mountRef} className="absolute top-0 left-0 right-0 bottom-0 z-0" />;
 };
 
-// Main Page Component
+// Main Home Component
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % aboutImages.length);
-    }, 4000);
+    const interval = setInterval(() => setCurrentIndex((prev) => (prev + 1) % aboutImages.length), 4000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <main className="relative bg-[#F7F9FB] font-sans text-[#2E3B4E]">
+    <main className="relative font-sans text-[#2E3B4E] min-h-screen overflow-hidden">
       {/* 3D Background */}
-      <ThreeNetwork />
+      <ThreeNetworkBackground />
 
       {/* Header */}
       <header className="fixed top-4 left-6 z-50">
-        <h1 className="text-xl md:text-2xl font-bold text-[#1B263B]">Incorvia</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-[#F7F9FB] drop-shadow-lg">Incorvia</h1>
       </header>
 
       {/* Hero */}
-      <section
-        id="home"
-        className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden"
-      >
-        <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
+      <section className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left px-6 md:px-12">
+        <div className="relative z-10 md:w-1/2 flex flex-col items-center md:items-start">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
             Seamless Business Incorporation <br /> in Costa Rica
           </h1>
-          <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md">
+          <p className="text-lg md:text-xl text-white/90 mb-8 max-w-md">
             Your strategic partners for navigating the complexities of company formation and achieving ambitious growth in Costa Rica.
           </p>
           <a
@@ -157,13 +157,13 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section id="about" className="py-20 md:py-32 relative z-10">
+      <section id="about" className="relative py-20 md:py-32 z-10 bg-white/90">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
           <div>
             <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">Our Company</p>
             <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B] mb-6">Local Expertise, Global Vision</h2>
             <p className="text-lg leading-relaxed mb-8 text-[#2E3B4E]">
-              Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country. Our proactive approach ensures you are always ahead of regulatory changes and positioned for long-term success.
+              Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country.
             </p>
           </div>
 
@@ -182,7 +182,7 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section id="services" className="py-20 md:py-32 relative z-10 bg-white">
+      <section id="services" className="relative py-20 md:py-32 z-10 bg-white/90">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B]">Our Core Services</h2>
@@ -191,7 +191,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
-              <div key={service.title} className="p-8 rounded-lg bg-[#F7F9FB] border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-shadow">
+              <div key={service.title} className="p-8 rounded-lg bg-white/90 border border-[#D4AF37]/30 shadow-md hover:shadow-xl transition-shadow">
                 <h3 className="text-2xl font-semibold text-[#1B263B] mb-3">{service.title}</h3>
                 <p className="text-[#2E3B4E]">{service.desc}</p>
               </div>
