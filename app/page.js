@@ -32,7 +32,7 @@ const services = [
   {
     title: "Immigration Support",
     desc: "End-to-end visa and residency support for executives, investors, and employees.",
-    imageSrc: "/images/immigration.jpg",
+    imageSrc: "/images/immigration.png",
   },
 ];
 
