@@ -41,7 +41,7 @@ const ConstellationHero = () => {
 
     const particlesMaterial = new THREE.PointsMaterial({
       size: 0.05,
-      color: 0xffffff,
+      color: 0xD4AF37,
     });
 
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
