@@ -67,8 +67,8 @@ const aboutImages = [
   "/skyline.jpg",
 ];
 
-// Globe Component
-const ThreeGlobe = () => {
+// ======= Constellation Hero Component =======
+const ConstellationHero = () => {
   const mountRef = useRef(null);
 
   useEffect(() => {
@@ -77,119 +77,145 @@ const ThreeGlobe = () => {
 
     const scene = new THREE.Scene();
 
-    // Camera
     const camera = new THREE.PerspectiveCamera(
       75,
       currentMount.clientWidth / currentMount.clientHeight,
       0.1,
       1000
     );
-    camera.position.z = 6;
+    camera.position.z = 5;
 
-    // Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
-    // Globe
-    const geometry = new THREE.SphereGeometry(2.2, 64, 64);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x1B263B, // dark blue
-      wireframe: true,
-    });
-    const sphere = new THREE.Mesh(geometry, material);
-    scene.add(sphere);
-
-    // Glow
-    const glowGeometry = new THREE.SphereGeometry(2.4, 64, 64);
-    const glowMaterial = new THREE.MeshBasicMaterial({
-      color: 0xD4AF37, // gold
-      transparent: true,
-      opacity: 0.15,
-    });
-    const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-    scene.add(glow);
-
     // Particles
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCnt = 1000;
-    const posArray = new Float32Array(particlesCnt * 3);
-    for (let i = 0; i < particlesCnt * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 12;
-    }
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.01,
-      color: 0x218380, // teal
-    });
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particlesMesh);
+    const PARTICLE_COUNT = 600;
+    const positions = new Float32Array(PARTICLE_COUNT * 3);
 
-    // Mouse interactivity
-    let mouseX = 0, mouseY = 0;
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const x = (Math.random() - 0.5) * 1.5;
+      const z = (Math.random() - 0.5) * 2.5;
+      const y = (Math.random() - 0.5) * 0.2;
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+    }
+
+    const particlesGeometry = new THREE.BufferGeometry();
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const particlesMaterial = new THREE.PointsMaterial({
+      color: 0xD4AF37, // gold
+      size: 0.03,
+    });
+
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particles);
+
+    // Lines
+    const linesMaterial = new THREE.LineBasicMaterial({
+      color: 0x218380, // teal
+      transparent: true,
+      opacity: 0.2,
+    });
+
+    const maxDistance = 0.35;
+    const lineGeometry = new THREE.BufferGeometry();
+    const linePositions = new Float32Array(PARTICLE_COUNT * PARTICLE_COUNT * 3);
+    const lineMesh = new THREE.LineSegments(lineGeometry, linesMaterial);
+    scene.add(lineMesh);
+
+    // Mouse interaction
+    const mouse = new THREE.Vector2();
+    const raycaster = new THREE.Raycaster();
+
     const onMouseMove = (event) => {
-      mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-      mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     };
     window.addEventListener('mousemove', onMouseMove);
 
-    // Animate
     const animate = () => {
       requestAnimationFrame(animate);
 
-      sphere.rotation.y += 0.001;
-      particlesMesh.rotation.y += 0.0005;
+      const positions = particlesGeometry.attributes.position.array;
+      particles.rotation.y += 0.001;
 
-      camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
-      camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
-      camera.lookAt(scene.position);
+      // Update lines
+      let ptr = 0;
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const xi = positions[i * 3];
+        const yi = positions[i * 3 + 1];
+        const zi = positions[i * 3 + 2];
+        for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+          const xj = positions[j * 3];
+          const yj = positions[j * 3 + 1];
+          const zj = positions[j * 3 + 2];
+          const dx = xi - xj;
+          const dy = yi - yj;
+          const dz = zi - zj;
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          if (dist < maxDistance) {
+            linePositions[ptr++] = xi;
+            linePositions[ptr++] = yi;
+            linePositions[ptr++] = zi;
+            linePositions[ptr++] = xj;
+            linePositions[ptr++] = yj;
+            linePositions[ptr++] = zj;
+          }
+        }
+      }
+      lineGeometry.setDrawRange(0, ptr / 3);
+      lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+      lineGeometry.attributes.position.needsUpdate = true;
+
+      // Hover ripple
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObject(particles);
+      if (intersects.length > 0) {
+        const index = intersects[0].index;
+        if (index !== undefined) {
+          positions[index * 3 + 1] += 0.05 * Math.sin(Date.now() * 0.005);
+          particlesGeometry.attributes.position.needsUpdate = true;
+        }
+      }
 
       renderer.render(scene, camera);
     };
     animate();
 
-    // Resize
-    const onWindowResize = () => {
+    const onResize = () => {
       camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     };
-    window.addEventListener('resize', onWindowResize);
+    window.addEventListener('resize', onResize);
 
-    // Cleanup
     return () => {
-      window.removeEventListener('resize', onWindowResize);
       window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('resize', onResize);
       if (currentMount) currentMount.removeChild(renderer.domElement);
-
-      geometry.dispose();
-      material.dispose();
-      glowGeometry.dispose();
-      glowMaterial.dispose();
       particlesGeometry.dispose();
       particlesMaterial.dispose();
+      lineGeometry.dispose();
+      linesMaterial.dispose();
       renderer.dispose();
     };
   }, []);
 
-  return (
-    <div
-      ref={mountRef}
-      id="hero-canvas-container"
-      className="absolute top-0 left-0 right-0 bottom-0 z-0"
-    />
-  );
+  return <div ref={mountRef} className="absolute top-0 left-0 right-0 bottom-0 z-0" />;
 };
 
+// ======= Home Page =======
 export default function Home() {
   const [activeTeamMember, setActiveTeamMember] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Slideshow logic for About images
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % aboutImages.length);
-    }, 4000); // 2s per image
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
@@ -203,37 +229,25 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-<section
-  id="home"
-  className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
->
-  {/* Left side: text + CTA */}
-  <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
-    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
-      Seamless Business Incorporation <br /> in Costa Rica
-    </h1>
-    <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md">
-      Your strategic partners for navigating the complexities of company
-      formation and achieving ambitious growth in Costa Rica.
-    </p>
-    <a
-      href="#services"
-      className="bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition"
-    >
-      Explore Our Services
-    </a>
-  </div>
-
-  {/* Right side: 3D animation */}
-  <div className="relative w-full md:w-1/2 h-[400px] md:h-[600px] mt-12 md:mt-0">
-    <ThreeGlobe />
-  </div>
-</section>
+      <section
+        id="home"
+        className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
+      >
+        <ConstellationHero />
+        <div className="relative z-10 p-6">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight drop-shadow-lg">
+            Seamless Business Incorporation <br /> in Costa Rica.
+          </h1>
+          <p className="mt-6 text-lg md:text-xl text-[#F7F9FB]/90 max-w-3xl mx-auto">
+            Your strategic partners for navigating the complexities of company
+            formation and achieving ambitious growth in Costa Rica.
+          </p>
+        </div>
+      </section>
 
       {/* About with slideshow */}
       <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
-          {/* Text */}
           <div>
             <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">
               Our Company
@@ -253,7 +267,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Slideshow */}
           <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-lg shadow-2xl">
             {aboutImages.map((src, idx) => (
               <Image
