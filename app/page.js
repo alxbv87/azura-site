@@ -3,8 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import * as THREE from 'three';
 
-
-
 // Services Data
 const services = [
   {
@@ -41,14 +39,15 @@ const aboutImages = [
   "/skyline.jpg",
 ];
 
-// Globe Component
-const ThreeGlobe = () => {
+// New 3D Network Component
+const ThreeNetwork = () => {
   const mountRef = useRef(null);
 
   useEffect(() => {
     const currentMount = mountRef.current;
     if (!currentMount) return;
 
+    // Scene
     const scene = new THREE.Scene();
 
     // Camera
@@ -65,41 +64,59 @@ const ThreeGlobe = () => {
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
-    // Globe
-    const geometry = new THREE.SphereGeometry(2.2, 64, 64);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x1B263B, // dark blue
-      wireframe: true,
-    });
-    const sphere = new THREE.Mesh(geometry, material);
-    scene.add(sphere);
-
-    // Glow
-    const glowGeometry = new THREE.SphereGeometry(2.4, 64, 64);
-    const glowMaterial = new THREE.MeshBasicMaterial({
-      color: 0xD4AF37, // gold
-      transparent: true,
-      opacity: 0.15,
-    });
-    const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-    scene.add(glow);
-
-    // Particles
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCnt = 1000;
-    const posArray = new Float32Array(particlesCnt * 3);
-    for (let i = 0; i < particlesCnt * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 12;
+    // Hubs (points representing corporate locations)
+    const hubCount = 150;
+    const hubGeometry = new THREE.BufferGeometry();
+    const hubPositions = new Float32Array(hubCount * 3);
+    for (let i = 0; i < hubCount * 3; i++) {
+      hubPositions[i] = (Math.random() - 0.5) * 12;
     }
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.01,
-      color: 0x218380, // teal
-    });
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particlesMesh);
+    hubGeometry.setAttribute('position', new THREE.BufferAttribute(hubPositions, 3));
 
-    // Mouse interactivity
+    const hubMaterial = new THREE.PointsMaterial({
+      color: 0xD4AF37, // gold
+      size: 0.05,
+    });
+
+    const hubs = new THREE.Points(hubGeometry, hubMaterial);
+    scene.add(hubs);
+
+    // Connections (lines)
+    const linesGeometry = new THREE.BufferGeometry();
+    const linePositions = [];
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0x218380, // teal
+      transparent: true,
+      opacity: 0.2,
+    });
+
+    for (let i = 0; i < hubCount; i++) {
+      for (let j = i + 1; j < hubCount; j++) {
+        const dx = hubPositions[i * 3] - hubPositions[j * 3];
+        const dy = hubPositions[i * 3 + 1] - hubPositions[j * 3 + 1];
+        const dz = hubPositions[i * 3 + 2] - hubPositions[j * 3 + 2];
+        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        if (distance < 3) {
+          linePositions.push(
+            hubPositions[i * 3],
+            hubPositions[i * 3 + 1],
+            hubPositions[i * 3 + 2],
+            hubPositions[j * 3],
+            hubPositions[j * 3 + 1],
+            hubPositions[j * 3 + 2]
+          );
+        }
+      }
+    }
+
+    linesGeometry.setAttribute(
+      'position',
+      new THREE.Float32BufferAttribute(linePositions, 3)
+    );
+    const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
+    scene.add(linesMesh);
+
+    // Mouse interaction
     let mouseX = 0, mouseY = 0;
     const onMouseMove = (event) => {
       mouseX = (event.clientX / window.innerWidth) * 2 - 1;
@@ -110,9 +127,8 @@ const ThreeGlobe = () => {
     // Animate
     const animate = () => {
       requestAnimationFrame(animate);
-
-      sphere.rotation.y += 0.001;
-      particlesMesh.rotation.y += 0.0005;
+      hubs.rotation.y += 0.0008;
+      linesMesh.rotation.y += 0.0005;
 
       camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
       camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
@@ -136,34 +152,26 @@ const ThreeGlobe = () => {
       window.removeEventListener('mousemove', onMouseMove);
       if (currentMount) currentMount.removeChild(renderer.domElement);
 
-      geometry.dispose();
-      material.dispose();
-      glowGeometry.dispose();
-      glowMaterial.dispose();
-      particlesGeometry.dispose();
-      particlesMaterial.dispose();
+      hubGeometry.dispose();
+      hubMaterial.dispose();
+      linesGeometry.dispose();
+      lineMaterial.dispose();
       renderer.dispose();
     };
   }, []);
 
-  return (
-    <div
-      ref={mountRef}
-      id="hero-canvas-container"
-      className="absolute top-0 left-0 right-0 bottom-0 z-0"
-    />
-  );
+  return <div ref={mountRef} className="absolute top-0 left-0 right-0 bottom-0 z-0" />;
 };
 
+// Main Page Component
 export default function Home() {
-  const [activeTeamMember, setActiveTeamMember] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Slideshow logic for About images
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % aboutImages.length);
-    }, 4000); // 2s per image
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
@@ -171,63 +179,47 @@ export default function Home() {
     <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E]">
       {/* Header */}
       <header className="fixed top-4 left-6 z-50">
-        <h1 className="text-xl md:text-2xl font-bold text-[#1B263B]">
-          Incorvia
-        </h1>
+        <h1 className="text-xl md:text-2xl font-bold text-[#1B263B]">Incorvia</h1>
       </header>
 
       {/* Hero */}
-<section
-  id="home"
-  className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
->
-  {/* Left side: text + CTA */}
-  <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
-    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
-      Seamless Business Incorporation <br /> in Costa Rica
-    </h1>
-    <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md">
-      Your strategic partners for navigating the complexities of company
-      formation and achieving ambitious growth in Costa Rica.
-    </p>
-    <a
-      href="#services"
-      className="bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition"
-    >
-      Explore Our Services
-    </a>
-  </div>
+      <section
+        id="home"
+        className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
+      >
+        {/* Left side */}
+        <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
+            Seamless Business Incorporation <br /> in Costa Rica
+          </h1>
+          <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md">
+            Your strategic partners for navigating the complexities of company formation and achieving ambitious growth in Costa Rica.
+          </p>
+          <a
+            href="#services"
+            className="bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition"
+          >
+            Explore Our Services
+          </a>
+        </div>
 
-  {/* Right side: 3D animation */}
-  <div className="relative w-full md:w-1/2 h-[400px] md:h-[600px] mt-12 md:mt-0">
-    <ThreeGlobe />
-  </div>
-</section>
+        {/* Right side: 3D Network */}
+        <div className="relative w-full md:w-1/2 h-[400px] md:h-[600px] mt-12 md:mt-0">
+          <ThreeNetwork />
+        </div>
+      </section>
 
-      {/* About with slideshow */}
+      {/* About */}
       <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
-          {/* Text */}
           <div>
-            <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">
-              Our Company
-            </p>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B] mb-6">
-              Local Expertise, Global Vision
-            </h2>
+            <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">Our Company</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B] mb-6">Local Expertise, Global Vision</h2>
             <p className="text-lg leading-relaxed mb-8 text-[#2E3B4E]">
-              Incorvia is a premier incorporation services company based in San
-              José, dedicated to providing sophisticated solutions for
-              international businesses and investors. We combine our deep-rooted
-              understanding of Costa Rican corporate regulations with a global
-              perspective, offering a strategic advantage to clients looking to
-              establish, operate, and thrive in this dynamic country. Our proactive
-              approach ensures you are always ahead of regulatory changes and
-              positioned for long-term success.
+              Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country. Our proactive approach ensures you are always ahead of regulatory changes and positioned for long-term success.
             </p>
           </div>
 
-          {/* Slideshow */}
           <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-lg shadow-2xl">
             {aboutImages.map((src, idx) => (
               <Image
@@ -235,9 +227,7 @@ export default function Home() {
                 src={src}
                 alt="About Incorvia"
                 fill
-                className={`object-cover transition-opacity duration-1000 ${
-                  idx === currentIndex ? "opacity-100" : "opacity-0"
-                }`}
+                className={`object-cover transition-opacity duration-1000 ${idx === currentIndex ? 'opacity-100' : 'opacity-0'}`}
               />
             ))}
           </div>
@@ -248,23 +238,14 @@ export default function Home() {
       <section id="services" className="py-20 md:py-32 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B]">
-              Our Core Services
-            </h2>
-            <p className="mt-4 text-lg text-[#2E3B4E]">
-              A comprehensive suite of services for establishing and managing
-              your business in Costa Rica.
-            </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B]">Our Core Services</h2>
+            <p className="mt-4 text-lg text-[#2E3B4E]">A comprehensive suite of services for establishing and managing your business in Costa Rica.</p>
           </div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
-              <div
-                key={service.title}
-                className="p-8 rounded-lg bg-[#F7F9FB] border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-shadow"
-              >
-                <h3 className="text-2xl font-semibold text-[#1B263B] mb-3">
-                  {service.title}
-                </h3>
+              <div key={service.title} className="p-8 rounded-lg bg-[#F7F9FB] border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-shadow">
+                <h3 className="text-2xl font-semibold text-[#1B263B] mb-3">{service.title}</h3>
                 <p className="text-[#2E3B4E]">{service.desc}</p>
               </div>
             ))}
