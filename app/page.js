@@ -197,14 +197,6 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section
-        id="home"
-        className="relative h-screen flex flex-col items-center justify-center text-center px-6"
-      >
-        {/* Fullscreen Constellation Background */}
-        <ConstellationBG />
-
-       {/* Hero */}
 <section
   id="home"
   className="relative h-screen flex flex-col items-center justify-center text-center px-6"
