@@ -1,37 +1,40 @@
 'use client';
 import { useEffect, useRef } from 'react';
-// CHANGE: Removed useState and Image imports as they are no longer needed
 import * as THREE from 'three';
 
-// Services Data
+// CHANGE: Added an 'imageSrc' property to each service object
 const services = [
   {
     title: "Company Incorporation",
     desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance.",
+    imageSrc: "/images/incorporation.jpg",
   },
   {
     title: "Corporate Structuring",
     desc: "Tailored entity structuring solutions for multinational corporations and foreign investors.",
+    imageSrc: "/images/structuring.jpg",
   },
   {
     title: "Regulatory Compliance",
     desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law.",
+    imageSrc: "/images/compliance.jpg",
   },
   {
     title: "Real Estate Advisory",
     desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones.",
+    imageSrc: "/images/real-estate.jpg",
   },
   {
     title: "Accounting & Tax",
     desc: "Streamlined tax planning, accounting, and reporting services designed for global standards.",
+    imageSrc: "/images/accounting.jpg",
   },
   {
     title: "Immigration Support",
     desc: "End-to-end visa and residency support for executives, investors, and employees.",
+    imageSrc: "/images/immigration.jpg",
   },
 ];
-
-// CHANGE: The aboutImages array has been removed as it's no longer used.
 
 // 3D Network Component
 const ThreeNetwork = () => {
@@ -162,7 +165,6 @@ const ThreeNetwork = () => {
 
 // Main Page Component
 export default function Home() {
-  // CHANGE: Removed the useState and useEffect for the slideshow.
 
   return (
     <main className="bg-[#1B263B] font-sans text-[#F7F9FB]/90">
@@ -203,7 +205,6 @@ export default function Home() {
                 Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients.
               </p>
             </div>
-            {/* CHANGE: The slideshow div has been removed from here. */}
           </div>
         </section>
 
@@ -216,9 +217,21 @@ export default function Home() {
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {services.map((service) => (
-                <div key={service.title} className="p-8 rounded-lg bg-[#2E3B4E] border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-shadow">
-                  <h3 className="text-2xl font-semibold text-white mb-3">{service.title}</h3>
-                  <p>{service.desc}</p>
+                // CHANGE: This div now uses an inline style to set the background image with a dark overlay.
+                // The solid background color class has been removed.
+                <div 
+                  key={service.title} 
+                  className="p-8 rounded-lg border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-end min-h-[300px]"
+                  style={{
+                    background: `linear-gradient(rgba(27, 38, 59, 0.9), rgba(27, 38, 59, 0.7)), url(${service.imageSrc})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                >
+                  <div>
+                    <h3 className="text-2xl font-semibold text-white mb-3">{service.title}</h3>
+                    <p>{service.desc}</p>
+                  </div>
                 </div>
               ))}
             </div>
