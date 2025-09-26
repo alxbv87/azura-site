@@ -5,70 +5,27 @@ import * as THREE from 'three';
 
 // Team Data
 const teamData = [
-  {
-    name: "Johnathan Hayes",
-    title: "Managing Director",
-    bio: "With over two decades of experience in international business and corporate structuring, Johnathan provides strategic leadership to the company and its clients. His guidance is sought by multinational corporations and investors entering the Costa Rican market.",
-    img: "/team1.jpg",
-  },
-  {
-    name: "Samantha Carter",
-    title: "Head of Corporate Services",
-    bio: "Samantha is a leading authority on entity structuring for foreign-owned companies in Costa Rica. She guides clients through every step of the incorporation process, from initial filing to ongoing compliance.",
-    img: "/team2.jpg",
-  },
-  {
-    name: "Michael Chen",
-    title: "Lead, Real Estate & FTZ",
-    bio: "Michael's expertise lies in navigating the complexities of Costa Rican real estate transactions and advising clients on leveraging the benefits of the country's Free Trade Zone (FTZ) regime.",
-    img: "/team3.jpg",
-  },
-  {
-    name: "Eleanor Vance",
-    title: "Senior Compliance Specialist",
-    bio: "Eleanor is adept at navigating the ever-evolving Costa Rican regulatory landscape. She ensures clients maintain perfect compliance, mitigating risk and ensuring operational integrity.",
-    img: "/team4.jpg",
-  },
+  { name: "Johnathan Hayes", title: "Managing Director", bio: "With over two decades...", img: "/team1.jpg" },
+  { name: "Samantha Carter", title: "Head of Corporate Services", bio: "Samantha is a leading authority...", img: "/team2.jpg" },
+  { name: "Michael Chen", title: "Lead, Real Estate & FTZ", bio: "Michael's expertise lies in...", img: "/team3.jpg" },
+  { name: "Eleanor Vance", title: "Senior Compliance Specialist", bio: "Eleanor is adept at navigating...", img: "/team4.jpg" },
 ];
 
 // Services Data
 const services = [
-  {
-    title: "Company Incorporation",
-    desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance.",
-  },
-  {
-    title: "Corporate Structuring",
-    desc: "Tailored entity structuring solutions for multinational corporations and foreign investors.",
-  },
-  {
-    title: "Regulatory Compliance",
-    desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law.",
-  },
-  {
-    title: "Real Estate Advisory",
-    desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones.",
-  },
-  {
-    title: "Accounting & Tax",
-    desc: "Streamlined tax planning, accounting, and reporting services designed for global standards.",
-  },
-  {
-    title: "Immigration Support",
-    desc: "End-to-end visa and residency support for executives, investors, and employees.",
-  },
+  { title: "Company Incorporation", desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance." },
+  { title: "Corporate Structuring", desc: "Tailored entity structuring solutions for multinational corporations and foreign investors." },
+  { title: "Regulatory Compliance", desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law." },
+  { title: "Real Estate Advisory", desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones." },
+  { title: "Accounting & Tax", desc: "Streamlined tax planning, accounting, and reporting services designed for global standards." },
+  { title: "Immigration Support", desc: "End-to-end visa and residency support for executives, investors, and employees." },
 ];
 
 // Images for About slideshow
-const aboutImages = [
-  "/city.jpg",
-  "/business.jpg",
-  "/teamwork.jpg",
-  "/skyline.jpg",
-];
+const aboutImages = ["/city.jpg","/business.jpg","/teamwork.jpg","/skyline.jpg"];
 
-// ======= Constellation Hero Component =======
-const ConstellationHero = () => {
+// Fullscreen Constellation Background
+const ConstellationBG = () => {
   const mountRef = useRef(null);
 
   useEffect(() => {
@@ -76,111 +33,76 @@ const ConstellationHero = () => {
     if (!currentMount) return;
 
     const scene = new THREE.Scene();
-
     const camera = new THREE.PerspectiveCamera(
       75,
       currentMount.clientWidth / currentMount.clientHeight,
       0.1,
       1000
     );
-    camera.position.z = 5;
+    camera.position.z = 15;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
-    // Particles
-    const PARTICLE_COUNT = 600;
-    const positions = new Float32Array(PARTICLE_COUNT * 3);
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const x = (Math.random() - 0.5) * 1.5;
-      const z = (Math.random() - 0.5) * 2.5;
-      const y = (Math.random() - 0.5) * 0.2;
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
+    // Particles (nodes)
+    const particleCount = 500;
+    const positions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 30;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 15;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
     }
+    const particleGeometry = new THREE.BufferGeometry();
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-    const particlesGeometry = new THREE.BufferGeometry();
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    const particlesMaterial = new THREE.PointsMaterial({
-      color: 0xD4AF37, // gold
-      size: 0.03,
+    const particleMaterial = new THREE.PointsMaterial({
+      color: 0xD4AF37,
+      size: 0.15,
     });
 
-    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
     scene.add(particles);
 
-    // Lines
-    const linesMaterial = new THREE.LineBasicMaterial({
-      color: 0x218380, // teal
-      transparent: true,
-      opacity: 0.2,
-    });
-
-    const maxDistance = 0.35;
+    // Lines between close particles
+    const maxDistance = 3;
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.4 });
     const lineGeometry = new THREE.BufferGeometry();
-    const linePositions = new Float32Array(PARTICLE_COUNT * PARTICLE_COUNT * 3);
-    const lineMesh = new THREE.LineSegments(lineGeometry, linesMaterial);
-    scene.add(lineMesh);
+    const linePositions = new Float32Array(particleCount * particleCount * 3); // max, will trim later
+    const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+    scene.add(lines);
 
-    // Mouse interaction
-    const mouse = new THREE.Vector2();
-    const raycaster = new THREE.Raycaster();
-
-    const onMouseMove = (event) => {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    };
-    window.addEventListener('mousemove', onMouseMove);
-
-    const animate = () => {
-      requestAnimationFrame(animate);
-
-      const positions = particlesGeometry.attributes.position.array;
-      particles.rotation.y += 0.001;
-
-      // Update lines
+    const updateLines = () => {
+      const positionsArray = particleGeometry.attributes.position.array;
       let ptr = 0;
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const xi = positions[i * 3];
-        const yi = positions[i * 3 + 1];
-        const zi = positions[i * 3 + 2];
-        for (let j = i + 1; j < PARTICLE_COUNT; j++) {
-          const xj = positions[j * 3];
-          const yj = positions[j * 3 + 1];
-          const zj = positions[j * 3 + 2];
-          const dx = xi - xj;
-          const dy = yi - yj;
-          const dz = zi - zj;
-          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+      for (let i = 0; i < particleCount; i++) {
+        for (let j = i + 1; j < particleCount; j++) {
+          const dx = positionsArray[i*3] - positionsArray[j*3];
+          const dy = positionsArray[i*3+1] - positionsArray[j*3+1];
+          const dz = positionsArray[i*3+2] - positionsArray[j*3+2];
+          const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
           if (dist < maxDistance) {
-            linePositions[ptr++] = xi;
-            linePositions[ptr++] = yi;
-            linePositions[ptr++] = zi;
-            linePositions[ptr++] = xj;
-            linePositions[ptr++] = yj;
-            linePositions[ptr++] = zj;
+            linePositions[ptr++] = positionsArray[i*3];
+            linePositions[ptr++] = positionsArray[i*3+1];
+            linePositions[ptr++] = positionsArray[i*3+2];
+            linePositions[ptr++] = positionsArray[j*3];
+            linePositions[ptr++] = positionsArray[j*3+1];
+            linePositions[ptr++] = positionsArray[j*3+2];
           }
         }
       }
-      lineGeometry.setDrawRange(0, ptr / 3);
-      lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+      lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions.slice(0, ptr), 3));
+      lineGeometry.computeBoundingSphere();
       lineGeometry.attributes.position.needsUpdate = true;
+    };
 
-      // Hover ripple
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObject(particles);
-      if (intersects.length > 0) {
-        const index = intersects[0].index;
-        if (index !== undefined) {
-          positions[index * 3 + 1] += 0.05 * Math.sin(Date.now() * 0.005);
-          particlesGeometry.attributes.position.needsUpdate = true;
-        }
-      }
+    updateLines();
 
+    // Animate
+    const animate = () => {
+      requestAnimationFrame(animate);
+      particles.rotation.y += 0.0008;
+      lines.rotation.y += 0.0008;
       renderer.render(scene, camera);
     };
     animate();
@@ -193,25 +115,24 @@ const ConstellationHero = () => {
     window.addEventListener('resize', onResize);
 
     return () => {
-      window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('resize', onResize);
       if (currentMount) currentMount.removeChild(renderer.domElement);
-      particlesGeometry.dispose();
-      particlesMaterial.dispose();
+      particleGeometry.dispose();
+      particleMaterial.dispose();
       lineGeometry.dispose();
-      linesMaterial.dispose();
+      lineMaterial.dispose();
       renderer.dispose();
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute top-0 left-0 right-0 bottom-0 z-0" />;
+  return <div ref={mountRef} className="fixed top-0 left-0 w-full h-screen -z-10" />;
 };
 
-// ======= Home Page =======
 export default function Home() {
   const [activeTeamMember, setActiveTeamMember] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Slideshow logic for About images
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % aboutImages.length);
@@ -220,7 +141,9 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E]">
+    <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E] relative">
+      <ConstellationBG />
+
       {/* Header */}
       <header className="fixed top-4 left-6 z-50">
         <h1 className="text-xl md:text-2xl font-bold text-[#1B263B]">
@@ -229,16 +152,12 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section
-        id="home"
-        className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
-      >
-        <ConstellationHero />
-        <div className="relative z-10 p-6">
+      <section className="relative h-screen flex items-center justify-center text-center px-6">
+        <div className="relative z-10">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight drop-shadow-lg">
             Seamless Business Incorporation <br /> in Costa Rica.
           </h1>
-          <p className="mt-6 text-lg md:text-xl text-[#F7F9FB]/90 max-w-3xl mx-auto">
+          <p className="mt-6 text-lg md:text-xl text-white/90 max-w-3xl mx-auto">
             Your strategic partners for navigating the complexities of company
             formation and achieving ambitious growth in Costa Rica.
           </p>
@@ -246,7 +165,7 @@ export default function Home() {
       </section>
 
       {/* About with slideshow */}
-      <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
+      <section id="about" className="py-20 md:py-32 bg-[#F7F9FB] relative z-10">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
           <div>
             <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">
@@ -284,7 +203,7 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section id="services" className="py-20 md:py-32 bg-white">
+      <section id="services" className="py-20 md:py-32 bg-white relative z-10">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B]">
