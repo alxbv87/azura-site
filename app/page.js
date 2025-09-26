@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import * as THREE from 'three';
-import ConstellationHero from './ConstellationHero'; // path may vary
+import ConstellationHero from '../components/ConstellationHero'; // path may vary
 
 
 // Team Data
