@@ -5,189 +5,167 @@ import * as THREE from 'three';
 
 // Services Data
 const services = [
-  {
-    title: "Company Incorporation",
-    desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance.",
-  },
-  {
-    title: "Corporate Structuring",
-    desc: "Tailored entity structuring solutions for multinational corporations and foreign investors.",
-  },
-  {
-    title: "Regulatory Compliance",
-    desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law.",
-  },
-  {
-    title: "Real Estate Advisory",
-    desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones.",
-  },
-  {
-    title: "Accounting & Tax",
-    desc: "Streamlined tax planning, accounting, and reporting services designed for global standards.",
-  },
-  {
-    title: "Immigration Support",
-    desc: "End-to-end visa and residency support for executives, investors, and employees.",
-  },
+  { title: "Company Incorporation", desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance." },
+  { title: "Corporate Structuring", desc: "Tailored entity structuring solutions for multinational corporations and foreign investors." },
+  { title: "Regulatory Compliance", desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law." },
+  { title: "Real Estate Advisory", desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones." },
+  { title: "Accounting & Tax", desc: "Streamlined tax planning, accounting, and reporting services designed for global standards." },
+  { title: "Immigration Support", desc: "End-to-end visa and residency support for executives, investors, and employees." },
 ];
 
-// Images for About slideshow
-const aboutImages = [
-  "/city.jpg",
-  "/business.jpg",
-  "/teamwork.jpg",
-  "/skyline.jpg",
-];
+// About Images
+const aboutImages = ["/city.jpg","/business.jpg","/teamwork.jpg","/skyline.jpg"];
 
-// New 3D Network Component
-const ThreeNetwork = () => {
+// Hybrid Globe + Network + Particle Flow
+const ThreeHybrid = () => {
   const mountRef = useRef(null);
 
   useEffect(() => {
-    const currentMount = mountRef.current;
-    if (!currentMount) return;
+    const mount = mountRef.current;
+    if (!mount) return;
 
-    // Scene
     const scene = new THREE.Scene();
 
     // Camera
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      currentMount.clientWidth / currentMount.clientHeight,
-      0.1,
-      1000
-    );
+    const camera = new THREE.PerspectiveCamera(75, mount.clientWidth / mount.clientHeight, 0.1, 1000);
     camera.position.z = 6;
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
-    currentMount.appendChild(renderer.domElement);
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
+    mount.appendChild(renderer.domElement);
 
-    // Hubs (points representing corporate locations)
-    const hubCount = 150;
-    const hubGeometry = new THREE.BufferGeometry();
+    // Globe
+    const globeGeometry = new THREE.SphereGeometry(2, 64, 64);
+    const globeMaterial = new THREE.MeshBasicMaterial({ color: 0x1B263B, wireframe: true });
+    const globe = new THREE.Mesh(globeGeometry, globeMaterial);
+    scene.add(globe);
+
+    // Hubs / nodes
+    const hubCount = 120;
     const hubPositions = new Float32Array(hubCount * 3);
-    for (let i = 0; i < hubCount * 3; i++) {
-      hubPositions[i] = (Math.random() - 0.5) * 12;
+    for (let i = 0; i < hubCount; i++) {
+      const phi = Math.random() * Math.PI;
+      const theta = Math.random() * 2 * Math.PI;
+      const r = 2.2; // slightly above globe radius
+      hubPositions[i*3] = r * Math.sin(phi) * Math.cos(theta);
+      hubPositions[i*3+1] = r * Math.cos(phi);
+      hubPositions[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
     }
+    const hubGeometry = new THREE.BufferGeometry();
     hubGeometry.setAttribute('position', new THREE.BufferAttribute(hubPositions, 3));
-
-    const hubMaterial = new THREE.PointsMaterial({
-      color: 0xD4AF37, // gold
-      size: 0.05,
-    });
-
+    const hubMaterial = new THREE.PointsMaterial({ color: 0xD4AF37, size: 0.05 });
     const hubs = new THREE.Points(hubGeometry, hubMaterial);
     scene.add(hubs);
 
-    // Connections (lines)
-    const linesGeometry = new THREE.BufferGeometry();
+    // Lines between hubs
     const linePositions = [];
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x218380, // teal
-      transparent: true,
-      opacity: 0.2,
-    });
-
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.2 });
     for (let i = 0; i < hubCount; i++) {
-      for (let j = i + 1; j < hubCount; j++) {
-        const dx = hubPositions[i * 3] - hubPositions[j * 3];
-        const dy = hubPositions[i * 3 + 1] - hubPositions[j * 3 + 1];
-        const dz = hubPositions[i * 3 + 2] - hubPositions[j * 3 + 2];
-        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (distance < 3) {
+      for (let j = i+1; j < hubCount; j++) {
+        const dx = hubPositions[i*3]-hubPositions[j*3];
+        const dy = hubPositions[i*3+1]-hubPositions[j*3+1];
+        const dz = hubPositions[i*3+2]-hubPositions[j*3+2];
+        const dist = Math.sqrt(dx*dx+dy*dy+dz*dz);
+        if (dist<1.2) {
           linePositions.push(
-            hubPositions[i * 3],
-            hubPositions[i * 3 + 1],
-            hubPositions[i * 3 + 2],
-            hubPositions[j * 3],
-            hubPositions[j * 3 + 1],
-            hubPositions[j * 3 + 2]
+            hubPositions[i*3], hubPositions[i*3+1], hubPositions[i*3+2],
+            hubPositions[j*3], hubPositions[j*3+1], hubPositions[j*3+2]
           );
         }
       }
     }
+    const linesGeometry = new THREE.BufferGeometry();
+    linesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+    const lines = new THREE.LineSegments(linesGeometry, lineMaterial);
+    scene.add(lines);
 
-    linesGeometry.setAttribute(
-      'position',
-      new THREE.Float32BufferAttribute(linePositions, 3)
-    );
-    const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
-    scene.add(linesMesh);
+    // Particles flowing along lines
+    const particleCount = 300;
+    const particlePositions = new Float32Array(particleCount*3);
+    const particleSpeeds = [];
+    for(let i=0;i<particleCount;i++){
+      const lineIdx = Math.floor(Math.random()*linePositions.length/6)*6;
+      particlePositions[i*3] = linePositions[lineIdx];
+      particlePositions[i*3+1] = linePositions[lineIdx+1];
+      particlePositions[i*3+2] = linePositions[lineIdx+2];
+      particleSpeeds.push(Math.random()*0.01+0.002);
+    }
+    const particleGeometry = new THREE.BufferGeometry();
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions,3));
+    const particleMaterial = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.03 });
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particles);
 
     // Mouse interaction
-    let mouseX = 0, mouseY = 0;
-    const onMouseMove = (event) => {
-      mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-      mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-    };
+    let mouseX=0, mouseY=0;
+    const onMouseMove = (e)=>{mouseX=(e.clientX/window.innerWidth)*2-1; mouseY=-(e.clientY/window.innerHeight)*2+1;}
     window.addEventListener('mousemove', onMouseMove);
 
     // Animate
     const animate = () => {
       requestAnimationFrame(animate);
-      hubs.rotation.y += 0.0008;
-      linesMesh.rotation.y += 0.0005;
 
-      camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
-      camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
+      globe.rotation.y += 0.001;
+      hubs.rotation.y += 0.002;
+      lines.rotation.y += 0.001;
+
+      // Update particle positions along lines
+      for(let i=0;i<particleCount;i++){
+        let idx = Math.floor(Math.random()*linePositions.length/6)*6;
+        particlePositions[i*3] += (linePositions[idx+3]-linePositions[idx])*particleSpeeds[i];
+        particlePositions[i*3+1] += (linePositions[idx+4]-linePositions[idx+1])*particleSpeeds[i];
+        particlePositions[i*3+2] += (linePositions[idx+5]-linePositions[idx+2])*particleSpeeds[i];
+      }
+      particleGeometry.attributes.position.needsUpdate = true;
+
+      camera.position.x += (mouseX*2 - camera.position.x)*0.05;
+      camera.position.y += (mouseY*2 - camera.position.y)*0.05;
       camera.lookAt(scene.position);
 
-      renderer.render(scene, camera);
-    };
+      renderer.render(scene,camera);
+    }
     animate();
 
     // Resize
-    const onWindowResize = () => {
-      camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
-    };
-    window.addEventListener('resize', onWindowResize);
+    const onResize = () => { camera.aspect=mount.clientWidth/mount.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(mount.clientWidth,mount.clientHeight);}
+    window.addEventListener('resize',onResize);
 
     // Cleanup
-    return () => {
-      window.removeEventListener('resize', onWindowResize);
-      window.removeEventListener('mousemove', onMouseMove);
-      if (currentMount) currentMount.removeChild(renderer.domElement);
-
+    return ()=>{
+      window.removeEventListener('resize',onResize);
+      window.removeEventListener('mousemove',onMouseMove);
+      if(mount) mount.removeChild(renderer.domElement);
+      globeGeometry.dispose();
+      globeMaterial.dispose();
       hubGeometry.dispose();
       hubMaterial.dispose();
       linesGeometry.dispose();
       lineMaterial.dispose();
+      particleGeometry.dispose();
+      particleMaterial.dispose();
       renderer.dispose();
-    };
-  }, []);
+    }
+
+  },[]);
 
   return <div ref={mountRef} className="absolute top-0 left-0 right-0 bottom-0 z-0" />;
-};
+}
 
-// Main Page Component
-export default function Home() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+// Main Page
+export default function Home(){
+  const [currentIndex,setCurrentIndex] = useState(0);
 
-  // Slideshow logic for About images
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % aboutImages.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+  useEffect(()=>{
+    const interval = setInterval(()=>{setCurrentIndex(prev=>(prev+1)%aboutImages.length);},4000);
+    return ()=>clearInterval(interval);
+  },[]);
 
   return (
     <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E]">
-      {/* Header */}
-      <header className="fixed top-4 left-6 z-50">
-        <h1 className="text-xl md:text-2xl font-bold text-[#1B263B]">Incorvia</h1>
-      </header>
+      <header className="fixed top-4 left-6 z-50"><h1 className="text-xl md:text-2xl font-bold text-[#1B263B]">Incorvia</h1></header>
 
-      {/* Hero */}
-      <section
-        id="home"
-        className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
-      >
-        {/* Left side */}
+      <section id="home" className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]">
         <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
             Seamless Business Incorporation <br /> in Costa Rica
@@ -195,17 +173,11 @@ export default function Home() {
           <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md">
             Your strategic partners for navigating the complexities of company formation and achieving ambitious growth in Costa Rica.
           </p>
-          <a
-            href="#services"
-            className="bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition"
-          >
-            Explore Our Services
-          </a>
+          <a href="#services" className="bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition">Explore Our Services</a>
         </div>
 
-        {/* Right side: 3D Network */}
         <div className="relative w-full md:w-1/2 h-[400px] md:h-[600px] mt-12 md:mt-0">
-          <ThreeNetwork />
+          <ThreeHybrid />
         </div>
       </section>
 
@@ -219,16 +191,9 @@ export default function Home() {
               Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country. Our proactive approach ensures you are always ahead of regulatory changes and positioned for long-term success.
             </p>
           </div>
-
           <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-lg shadow-2xl">
-            {aboutImages.map((src, idx) => (
-              <Image
-                key={idx}
-                src={src}
-                alt="About Incorvia"
-                fill
-                className={`object-cover transition-opacity duration-1000 ${idx === currentIndex ? 'opacity-100' : 'opacity-0'}`}
-              />
+            {aboutImages.map((src, idx)=>(
+              <Image key={idx} src={src} alt="About Incorvia" fill className={`object-cover transition-opacity duration-1000 ${idx===currentIndex?'opacity-100':'opacity-0'}`}/>
             ))}
           </div>
         </div>
@@ -241,9 +206,8 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B]">Our Core Services</h2>
             <p className="mt-4 text-lg text-[#2E3B4E]">A comprehensive suite of services for establishing and managing your business in Costa Rica.</p>
           </div>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
+            {services.map(service=>(
               <div key={service.title} className="p-8 rounded-lg bg-[#F7F9FB] border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-shadow">
                 <h3 className="text-2xl font-semibold text-[#1B263B] mb-3">{service.title}</h3>
                 <p className="text-[#2E3B4E]">{service.desc}</p>
