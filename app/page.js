@@ -3,33 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import * as THREE from 'three';
 
-// Team Data
-const teamData = [
-  {
-    name: "Johnathan Hayes",
-    title: "Managing Director",
-    bio: "With over two decades of experience in international business and corporate structuring, Johnathan provides strategic leadership to the company and its clients. His guidance is sought by multinational corporations and investors entering the Costa Rican market.",
-    img: "/team1.jpg",
-  },
-  {
-    name: "Samantha Carter",
-    title: "Head of Corporate Services",
-    bio: "Samantha is a leading authority on entity structuring for foreign-owned companies in Costa Rica. She guides clients through every step of the incorporation process, from initial filing to ongoing compliance.",
-    img: "/team2.jpg",
-  },
-  {
-    name: "Michael Chen",
-    title: "Lead, Real Estate & FTZ",
-    bio: "Michael's expertise lies in navigating the complexities of Costa Rican real estate transactions and advising clients on leveraging the benefits of the country's Free Trade Zone (FTZ) regime.",
-    img: "/team3.jpg",
-  },
-  {
-    name: "Eleanor Vance",
-    title: "Senior Compliance Specialist",
-    bio: "Eleanor is adept at navigating the ever-evolving Costa Rican regulatory landscape. She ensures clients maintain perfect compliance, mitigating risk and ensuring operational integrity.",
-    img: "/team4.jpg",
-  },
-];
+
 
 // Services Data
 const services = [
