@@ -1,42 +1,48 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react'; // Re-added useState
 import * as THREE from 'three';
 
-// CHANGE: Added an 'imageSrc' property to each service object
+// CHANGE: Added a 'slideDesc' property to each service object with the new descriptions
 const services = [
   {
     title: "Company Incorporation",
     desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance.",
-    imageSrc: "/images/incorporation.png",
+    imageSrc: "/images/incorporation.jpg",
+    slideDesc: "We streamline the entire incorporation process, transforming a complex bureaucratic challenge into a clear, straightforward path. Our team handles every detail, from name registration to final documentation, ensuring your Costa Rican entity is established swiftly and in full compliance with all local regulations."
   },
   {
     title: "Corporate Structuring",
     desc: "Tailored entity structuring solutions for multinational corporations and foreign investors.",
-    imageSrc: "/images/structuring.png",
+    imageSrc: "/images/structuring.jpg",
+    slideDesc: "The right structure is the foundation of success. We specialize in designing bespoke corporate frameworks tailored to your international operations. Our focus is on creating tax-efficient, liability-protected, and operationally agile structures that support your long-term growth and investment goals in the region."
   },
   {
     title: "Regulatory Compliance",
     desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law.",
-    imageSrc: "/images/compliance.png",
+    imageSrc: "/images/compliance.jpg",
+    slideDesc: "Navigating Costa Rican corporate law requires constant vigilance. Our ongoing compliance services act as your proactive safeguard, managing all mandatory reporting, corporate governance, and regulatory updates. We ensure your business remains in impeccable legal standing, freeing you to focus on your core operations."
   },
   {
     title: "Real Estate Advisory",
     desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones.",
-    imageSrc: "/images/real-estate.png",
+    imageSrc: "/images/real-estate.jpg",
+    slideDesc: "Unlock the full potential of your real estate investments with our expert guidance. We provide comprehensive advisory from due diligence and transaction support to maximizing benefits within Costa Rica’s Free Trade Zones. We help you navigate the market with confidence, ensuring every transaction is secure and strategically sound."
   },
   {
     title: "Accounting & Tax",
     desc: "Streamlined tax planning, accounting, and reporting services designed for global standards.",
     imageSrc: "/images/accounting.jpg",
+    slideDesc: "Achieve financial clarity and efficiency with our integrated accounting and tax services. We operate according to global standards, providing meticulous bookkeeping, strategic tax planning, and transparent financial reporting. Our goal is to optimize your fiscal position while ensuring flawless compliance."
   },
   {
     title: "Immigration Support",
     desc: "End-to-end visa and residency support for executives, investors, and employees.",
-    imageSrc: "/images/immigration.png",
+    imageSrc: "/images/immigration.jpg",
+    slideDesc: "Seamlessly relocate your key personnel and their families to Costa Rica with our end-to-end immigration support. We manage the entire visa and residency application process for executives, investors, and employees, ensuring a smooth and expedited transition so your team can get to work faster."
   },
 ];
 
-// 3D Network Component
+// 3D Network Component (code is unchanged)
 const ThreeNetwork = () => {
   const mountRef = useRef(null);
 
@@ -44,24 +50,13 @@ const ThreeNetwork = () => {
     const currentMount = mountRef.current;
     if (!currentMount) return;
 
-    // Scene
+    // ... (rest of the Three.js code is the same)
     const scene = new THREE.Scene();
-
-    // Camera
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      currentMount.clientWidth / currentMount.clientHeight,
-      0.1,
-      1000
-    );
+    const camera = new THREE.PerspectiveCamera(75, currentMount.clientWidth / currentMount.clientHeight, 0.1, 1000);
     camera.position.z = 6;
-
-    // Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
-
-    // Hubs (points)
     const hubCount = 150;
     const hubGeometry = new THREE.BufferGeometry();
     const hubPositions = new Float32Array(hubCount * 3);
@@ -69,24 +64,12 @@ const ThreeNetwork = () => {
       hubPositions[i] = (Math.random() - 0.5) * 12;
     }
     hubGeometry.setAttribute('position', new THREE.BufferAttribute(hubPositions, 3));
-
-    const hubMaterial = new THREE.PointsMaterial({
-      color: 0xD4AF37, // gold
-      size: 0.05,
-    });
-
+    const hubMaterial = new THREE.PointsMaterial({ color: 0xD4AF37, size: 0.05, });
     const hubs = new THREE.Points(hubGeometry, hubMaterial);
     scene.add(hubs);
-
-    // Connections (lines)
     const linesGeometry = new THREE.BufferGeometry();
     const linePositions = [];
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x218380, // teal
-      transparent: true,
-      opacity: 0.2,
-    });
-
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.2, });
     for (let i = 0; i < hubCount; i++) {
       for (let j = i + 1; j < hubCount; j++) {
         const dx = hubPositions[i * 3] - hubPositions[j * 3];
@@ -94,48 +77,29 @@ const ThreeNetwork = () => {
         const dz = hubPositions[i * 3 + 2] - hubPositions[j * 3 + 2];
         const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
         if (distance < 3) {
-          linePositions.push(
-            hubPositions[i * 3],
-            hubPositions[i * 3 + 1],
-            hubPositions[i * 3 + 2],
-            hubPositions[j * 3],
-            hubPositions[j * 3 + 1],
-            hubPositions[j * 3 + 2]
-          );
+          linePositions.push(hubPositions[i * 3], hubPositions[i * 3 + 1], hubPositions[i * 3 + 2], hubPositions[j * 3], hubPositions[j * 3 + 1], hubPositions[j * 3 + 2]);
         }
       }
     }
-
-    linesGeometry.setAttribute(
-      'position',
-      new THREE.Float32BufferAttribute(linePositions, 3)
-    );
+    linesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
     const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
     scene.add(linesMesh);
-
-    // Mouse interaction
     let mouseX = 0, mouseY = 0;
     const onMouseMove = (event) => {
       mouseX = (event.clientX / window.innerWidth) * 2 - 1;
       mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
     };
     window.addEventListener('mousemove', onMouseMove);
-
-    // Animate
     const animate = () => {
       requestAnimationFrame(animate);
       hubs.rotation.y += 0.0008;
       linesMesh.rotation.y += 0.0005;
-
       camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
       camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
-
       renderer.render(scene, camera);
     };
     animate();
-
-    // Resize
     const onWindowResize = () => {
       if (!currentMount) return;
       camera.aspect = window.innerWidth / window.innerHeight;
@@ -144,13 +108,11 @@ const ThreeNetwork = () => {
     };
     window.addEventListener('resize', onWindowResize);
     onWindowResize();
-
-    // Cleanup
     return () => {
       window.removeEventListener('resize', onWindowResize);
       window.removeEventListener('mousemove', onMouseMove);
       if (currentMount && renderer.domElement) {
-          currentMount.removeChild(renderer.domElement);
+        currentMount.removeChild(renderer.domElement);
       }
       hubGeometry.dispose();
       hubMaterial.dispose();
@@ -165,6 +127,15 @@ const ThreeNetwork = () => {
 
 // Main Page Component
 export default function Home() {
+  // CHANGE: Added state and effect for the new services slideshow
+  const [currentServiceIndex, setCurrentServiceIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentServiceIndex((prevIndex) => (prevIndex + 1) % services.length);
+    }, 6000); // Change slide every 6 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <main className="bg-[#1B263B] font-sans text-[#F7F9FB]/90">
@@ -196,14 +167,29 @@ export default function Home() {
             </a>
           </div>
 
-          {/* Right side: About Section Content */}
+          {/* CHANGE: This is the new slideshow section */}
           <div className="w-full md:w-1/2 mt-16 md:mt-0 md:pl-12">
-            <div>
-              <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">Our Company</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Local Expertise, Global Vision</h2>
-              <p className="text-base leading-relaxed mb-8">
-                Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients.
-              </p>
+            <div className="relative h-64"> {/* Container to manage slide positioning and height */}
+              {services.map((service, index) => (
+                <div 
+                  key={service.title} 
+                  className={`absolute top-0 left-0 w-full transition-opacity duration-1000 ${index === currentServiceIndex ? 'opacity-100' : 'opacity-0'}`}
+                >
+                  <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">Our Core Services</p>
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{service.title}</h2>
+                  <p className="text-base leading-relaxed">{service.slideDesc}</p>
+                </div>
+              ))}
+            </div>
+             {/* Navigation Dots */}
+            <div className="flex justify-center md:justify-start space-x-3 mt-8">
+              {services.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentServiceIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-colors ${index === currentServiceIndex ? 'bg-white' : 'bg-gray-500 hover:bg-gray-400'}`}
+                />
+              ))}
             </div>
           </div>
         </section>
@@ -217,8 +203,6 @@ export default function Home() {
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {services.map((service) => (
-                // CHANGE: This div now uses an inline style to set the background image with a dark overlay.
-                // The solid background color class has been removed.
                 <div 
                   key={service.title} 
                   className="p-8 rounded-lg border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-end min-h-[300px]"
