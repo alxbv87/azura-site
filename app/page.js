@@ -5,41 +5,18 @@ import * as THREE from 'three';
 
 // Services Data
 const services = [
-  {
-    title: "Company Incorporation",
-    desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance.",
-  },
-  {
-    title: "Corporate Structuring",
-    desc: "Tailored entity structuring solutions for multinational corporations and foreign investors.",
-  },
-  {
-    title: "Regulatory Compliance",
-    desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law.",
-  },
-  {
-    title: "Real Estate Advisory",
-    desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones.",
-  },
-  {
-    title: "Accounting & Tax",
-    desc: "Streamlined tax planning, accounting, and reporting services designed for global standards.",
-  },
-  {
-    title: "Immigration Support",
-    desc: "End-to-end visa and residency support for executives, investors, and employees.",
-  },
+  { title: "Company Incorporation", desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance." },
+  { title: "Corporate Structuring", desc: "Tailored entity structuring solutions for multinational corporations and foreign investors." },
+  { title: "Regulatory Compliance", desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law." },
+  { title: "Real Estate Advisory", desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones." },
+  { title: "Accounting & Tax", desc: "Streamlined tax planning, accounting, and reporting services designed for global standards." },
+  { title: "Immigration Support", desc: "End-to-end visa and residency support for executives, investors, and employees." },
 ];
 
 // Images for About slideshow
-const aboutImages = [
-  "/city.jpg",
-  "/business.jpg",
-  "/teamwork.jpg",
-  "/skyline.jpg",
-];
+const aboutImages = ["/city.jpg", "/business.jpg", "/teamwork.jpg", "/skyline.jpg"];
 
-// New 3D Network Component
+// 3D Network Component
 const ThreeNetwork = () => {
   const mountRef = useRef(null);
 
@@ -51,45 +28,30 @@ const ThreeNetwork = () => {
     const scene = new THREE.Scene();
 
     // Camera
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      currentMount.clientWidth / currentMount.clientHeight,
-      0.1,
-      1000
-    );
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 6;
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     currentMount.appendChild(renderer.domElement);
 
-    // Hubs (points representing corporate locations)
+    // Hubs
     const hubCount = 150;
     const hubGeometry = new THREE.BufferGeometry();
     const hubPositions = new Float32Array(hubCount * 3);
-    for (let i = 0; i < hubCount * 3; i++) {
-      hubPositions[i] = (Math.random() - 0.5) * 12;
-    }
+    for (let i = 0; i < hubCount * 3; i++) hubPositions[i] = (Math.random() - 0.5) * 12;
     hubGeometry.setAttribute('position', new THREE.BufferAttribute(hubPositions, 3));
 
-    const hubMaterial = new THREE.PointsMaterial({
-      color: 0xD4AF37, // gold
-      size: 0.05,
-    });
-
+    const hubMaterial = new THREE.PointsMaterial({ color: 0xD4AF37, size: 0.05 });
     const hubs = new THREE.Points(hubGeometry, hubMaterial);
     scene.add(hubs);
 
-    // Connections (lines)
+    // Lines
     const linesGeometry = new THREE.BufferGeometry();
     const linePositions = [];
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x218380, // teal
-      transparent: true,
-      opacity: 0.2,
-    });
-
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.2 });
     for (let i = 0; i < hubCount; i++) {
       for (let j = i + 1; j < hubCount; j++) {
         const dx = hubPositions[i * 3] - hubPositions[j * 3];
@@ -98,25 +60,17 @@ const ThreeNetwork = () => {
         const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
         if (distance < 3) {
           linePositions.push(
-            hubPositions[i * 3],
-            hubPositions[i * 3 + 1],
-            hubPositions[i * 3 + 2],
-            hubPositions[j * 3],
-            hubPositions[j * 3 + 1],
-            hubPositions[j * 3 + 2]
+            hubPositions[i * 3], hubPositions[i * 3 + 1], hubPositions[i * 3 + 2],
+            hubPositions[j * 3], hubPositions[j * 3 + 1], hubPositions[j * 3 + 2]
           );
         }
       }
     }
-
-    linesGeometry.setAttribute(
-      'position',
-      new THREE.Float32BufferAttribute(linePositions, 3)
-    );
+    linesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
     const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
     scene.add(linesMesh);
 
-    // Mouse interaction
+    // Mouse
     let mouseX = 0, mouseY = 0;
     const onMouseMove = (event) => {
       mouseX = (event.clientX / window.innerWidth) * 2 - 1;
@@ -129,20 +83,18 @@ const ThreeNetwork = () => {
       requestAnimationFrame(animate);
       hubs.rotation.y += 0.0008;
       linesMesh.rotation.y += 0.0005;
-
       camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
       camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
-
       renderer.render(scene, camera);
     };
     animate();
 
     // Resize
     const onWindowResize = () => {
-      camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
+      camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
+      renderer.setSize(window.innerWidth, window.innerHeight);
     };
     window.addEventListener('resize', onWindowResize);
 
@@ -151,7 +103,6 @@ const ThreeNetwork = () => {
       window.removeEventListener('resize', onWindowResize);
       window.removeEventListener('mousemove', onMouseMove);
       if (currentMount) currentMount.removeChild(renderer.domElement);
-
       hubGeometry.dispose();
       hubMaterial.dispose();
       linesGeometry.dispose();
@@ -160,14 +111,13 @@ const ThreeNetwork = () => {
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute top-0 left-0 right-0 bottom-0 z-0" />;
+  return <div ref={mountRef} className="fixed top-0 left-0 w-screen h-screen -z-10" />;
 };
 
 // Main Page Component
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Slideshow logic for About images
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % aboutImages.length);
@@ -176,7 +126,10 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E]">
+    <main className="relative bg-[#F7F9FB] font-sans text-[#2E3B4E]">
+      {/* 3D Background */}
+      <ThreeNetwork />
+
       {/* Header */}
       <header className="fixed top-4 left-6 z-50">
         <h1 className="text-xl md:text-2xl font-bold text-[#1B263B]">Incorvia</h1>
@@ -185,9 +138,8 @@ export default function Home() {
       {/* Hero */}
       <section
         id="home"
-        className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
+        className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden"
       >
-        {/* Left side */}
         <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
             Seamless Business Incorporation <br /> in Costa Rica
@@ -202,15 +154,10 @@ export default function Home() {
             Explore Our Services
           </a>
         </div>
-
-        {/* Right side: 3D Network */}
-        <div className="relative w-full md:w-1/2 h-[400px] md:h-[600px] mt-12 md:mt-0">
-          <ThreeNetwork />
-        </div>
       </section>
 
       {/* About */}
-      <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
+      <section id="about" className="py-20 md:py-32 relative z-10">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
           <div>
             <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">Our Company</p>
@@ -235,7 +182,7 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section id="services" className="py-20 md:py-32 bg-white">
+      <section id="services" className="py-20 md:py-32 relative z-10 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B]">Our Core Services</h2>
