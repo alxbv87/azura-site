@@ -163,7 +163,6 @@ const ThreeNetwork = () => {
     };
   }, []);
 
-  // CHANGE: The component is now fixed to the viewport and sits in the background
   return <div ref={mountRef} className="fixed top-0 left-0 right-0 bottom-0 z-0" />;
 };
 
@@ -180,54 +179,45 @@ export default function Home() {
   }, []);
 
   return (
-    // Set a fallback background color
     <main className="bg-[#1B263B] font-sans text-[#F7F9FB]/90">
-      {/* CHANGE: The animation component is now the first thing, acting as a background */}
       <ThreeNetwork />
       
-      {/* CHANGE: All content is wrapped in a div to place it on top of the animation */}
       <div className="relative z-10">
         <header className="fixed top-4 left-6 z-50">
           <h1 className="text-xl md:text-2xl font-bold text-white">Incorvia</h1>
         </header>
 
-        {/* Hero */}
+        {/* Hero and About Section Merged */}
         <section
           id="home"
-          // CHANGE: Removed the background gradient to make the section transparent
-          className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden"
+          className="relative min-h-screen flex flex-col md:flex-row items-center justify-center p-6 md:p-12"
         >
-          {/* Left side */}
-          <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
+          {/* Left side: Hero Text */}
+          <div className="w-full md:w-1/2 flex flex-col justify-center text-center md:text-left">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
               Seamless Business Incorporation <br /> in Costa Rica
             </h1>
-            <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md">
+            <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md mx-auto md:mx-0">
               Your strategic partners for navigating the complexities of company formation and achieving ambitious growth in Costa Rica.
             </p>
             <a
               href="#services"
-              className="bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition"
+              className="bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition self-center md:self-start"
             >
               Explore Our Services
             </a>
           </div>
 
-          {/* Right side: This div is now just a spacer */}
-          <div className="relative w-full md:w-1/2 h-[400px] md:h-[600px] mt-12 md:mt-0" />
-        </section>
-
-        {/* About */}
-        <section id="about" className="py-20 md:py-32 bg-transparent">
-          <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
+          {/* Right side: About Section Content */}
+          <div className="w-full md:w-1/2 mt-16 md:mt-0 md:pl-12">
             <div>
               <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">Our Company</p>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Local Expertise, Global Vision</h2>
-              <p className="text-lg leading-relaxed mb-8">
-                Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country. Our proactive approach ensures you are always ahead of regulatory changes and positioned for long-term success.
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Local Expertise, Global Vision</h2>
+              <p className="text-base leading-relaxed mb-8">
+                Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients.
               </p>
             </div>
-            <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-lg shadow-2xl">
+            <div className="relative h-[250px] md:h-[300px] w-full overflow-hidden rounded-lg shadow-2xl">
               {aboutImages.map((src, idx) => (
                 <Image
                   key={idx}
@@ -241,7 +231,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Services */}
+        {/* The original About section has been removed from here */}
+
+        {/* Services Section */}
         <section id="services" className="py-20 md:py-32 bg-transparent">
           <div className="container mx-auto px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
