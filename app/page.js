@@ -27,7 +27,7 @@ const services = [
   {
     title: "Accounting & Tax",
     desc: "Streamlined tax planning, accounting, and reporting services designed for global standards.",
-    imageSrc: "/images/accounting.jpeg",
+    imageSrc: "/images/accounting.jpg",
   },
   {
     title: "Immigration Support",
