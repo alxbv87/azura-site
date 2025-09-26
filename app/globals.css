@@ -19,4 +19,6 @@ body {
   background: theme('colors.brand-accent');
   border-radius: 4px;
 }
-
+html {
+  scroll-behavior: smooth;
+}
