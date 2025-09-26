@@ -207,7 +207,7 @@ export default function Home() {
       {/* Hero */}
 <section
   id="home"
-  className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden"
+  className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-[#1B263B]"
 >
   {/* Full-screen background */}
   <ConstellationHero />
