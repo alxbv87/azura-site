@@ -39,7 +39,7 @@ const aboutImages = [
   "/skyline.jpg",
 ];
 
-// New 3D Network Component
+// 3D Network Component
 const ThreeNetwork = () => {
   const mountRef = useRef(null);
 
@@ -64,7 +64,7 @@ const ThreeNetwork = () => {
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
-    // Hubs (points representing corporate locations)
+    // Hubs (points)
     const hubCount = 150;
     const hubGeometry = new THREE.BufferGeometry();
     const hubPositions = new Float32Array(hubCount * 3);
@@ -140,18 +140,21 @@ const ThreeNetwork = () => {
 
     // Resize
     const onWindowResize = () => {
-      camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
+      if (!currentMount) return;
+      camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
+      renderer.setSize(window.innerWidth, window.innerHeight);
     };
     window.addEventListener('resize', onWindowResize);
+    onWindowResize(); // Set initial size
 
     // Cleanup
     return () => {
       window.removeEventListener('resize', onWindowResize);
       window.removeEventListener('mousemove', onMouseMove);
-      if (currentMount) currentMount.removeChild(renderer.domElement);
-
+      if (currentMount && renderer.domElement) {
+          currentMount.removeChild(renderer.domElement);
+      }
       hubGeometry.dispose();
       hubMaterial.dispose();
       linesGeometry.dispose();
@@ -160,7 +163,8 @@ const ThreeNetwork = () => {
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute top-0 left-0 right-0 bottom-0 z-0" />;
+  // CHANGE: The component is now fixed to the viewport and sits in the background
+  return <div ref={mountRef} className="fixed top-0 left-0 right-0 bottom-0 z-0" />;
 };
 
 // Main Page Component
@@ -176,93 +180,85 @@ export default function Home() {
   }, []);
 
   return (
-    // CHANGE: Set the main background and default text color for the whole page
+    // Set a fallback background color
     <main className="bg-[#1B263B] font-sans text-[#F7F9FB]/90">
-      {/* Header */}
-      <header className="fixed top-4 left-6 z-50">
-         {/* CHANGE: Header text is now always white */}
-        <h1 className="text-xl md:text-2xl font-bold text-white">Incorvia</h1>
-      </header>
+      {/* CHANGE: The animation component is now the first thing, acting as a background */}
+      <ThreeNetwork />
+      
+      {/* CHANGE: All content is wrapped in a div to place it on top of the animation */}
+      <div className="relative z-10">
+        <header className="fixed top-4 left-6 z-50">
+          <h1 className="text-xl md:text-2xl font-bold text-white">Incorvia</h1>
+        </header>
 
-      {/* Hero */}
-      <section
-        id="home"
-        className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
-      >
-        {/* Left side */}
-        <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
-            Seamless Business Incorporation <br /> in Costa Rica
-          </h1>
-          <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md">
-            Your strategic partners for navigating the complexities of company formation and achieving ambitious growth in Costa Rica.
-          </p>
-          <a
-            href="#services"
-            className="bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition"
-          >
-            Explore Our Services
-          </a>
-        </div>
-
-        {/* Right side: 3D Network */}
-        <div className="relative w-full md:w-1/2 h-[400px] md:h-[600px] mt-12 md:mt-0">
-          <ThreeNetwork />
-        </div>
-      </section>
-
-      {/* About */}
-       {/* CHANGE: Removed background color to inherit from <main> */}
-      <section id="about" className="py-20 md:py-32">
-        <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
-          <div>
-            <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">Our Company</p>
-            {/* CHANGE: Heading text color is now white */}
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Local Expertise, Global Vision</h2>
-            {/* The paragraph text will inherit the light color from the <main> tag */}
-            <p className="text-lg leading-relaxed mb-8">
-              Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country. Our proactive approach ensures you are always ahead of regulatory changes and positioned for long-term success.
+        {/* Hero */}
+        <section
+          id="home"
+          // CHANGE: Removed the background gradient to make the section transparent
+          className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden"
+        >
+          {/* Left side */}
+          <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
+              Seamless Business Incorporation <br /> in Costa Rica
+            </h1>
+            <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md">
+              Your strategic partners for navigating the complexities of company formation and achieving ambitious growth in Costa Rica.
             </p>
+            <a
+              href="#services"
+              className="bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition"
+            >
+              Explore Our Services
+            </a>
           </div>
 
-          <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-lg shadow-2xl">
-            {aboutImages.map((src, idx) => (
-              <Image
-                key={idx}
-                src={src}
-                alt="About Incorvia"
-                fill
-                className={`object-cover transition-opacity duration-1000 ${idx === currentIndex ? 'opacity-100' : 'opacity-0'}`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+          {/* Right side: This div is now just a spacer */}
+          <div className="relative w-full md:w-1/2 h-[400px] md:h-[600px] mt-12 md:mt-0" />
+        </section>
 
-      {/* Services */}
-      {/* CHANGE: Removed background color to inherit from <main> */}
-      <section id="services" className="py-20 md:py-32">
-        <div className="container mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            {/* CHANGE: Heading text color is now white */}
-            <h2 className="text-4xl md:text-5xl font-bold text-white">Our Core Services</h2>
-            {/* The paragraph text will inherit the light color from the <main> tag */}
-            <p className="mt-4 text-lg">A comprehensive suite of services for establishing and managing your business in Costa Rica.</p>
+        {/* About */}
+        <section id="about" className="py-20 md:py-32 bg-transparent">
+          <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
+            <div>
+              <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">Our Company</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Local Expertise, Global Vision</h2>
+              <p className="text-lg leading-relaxed mb-8">
+                Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients looking to establish, operate, and thrive in this dynamic country. Our proactive approach ensures you are always ahead of regulatory changes and positioned for long-term success.
+              </p>
+            </div>
+            <div className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-lg shadow-2xl">
+              {aboutImages.map((src, idx) => (
+                <Image
+                  key={idx}
+                  src={src}
+                  alt="About Incorvia"
+                  fill
+                  className={`object-cover transition-opacity duration-1000 ${idx === currentIndex ? 'opacity-100' : 'opacity-0'}`}
+                />
+              ))}
+            </div>
           </div>
+        </section>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
-              // CHANGE: Updated the service card design for the dark theme
-              <div key={service.title} className="p-8 rounded-lg bg-[#2E3B4E] border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-shadow">
-                {/* CHANGE: Card heading text is now white */}
-                <h3 className="text-2xl font-semibold text-white mb-3">{service.title}</h3>
-                {/* The card paragraph text will inherit the light color from the <main> tag */}
-                <p>{service.desc}</p>
-              </div>
-            ))}
+        {/* Services */}
+        <section id="services" className="py-20 md:py-32 bg-transparent">
+          <div className="container mx-auto px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-white">Our Core Services</h2>
+              <p className="mt-4 text-lg">A comprehensive suite of services for establishing and managing your business in Costa Rica.</p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((service) => (
+                <div key={service.title} className="p-8 rounded-lg bg-[#2E3B4E] border border-[#D4AF37]/40 shadow-md hover:shadow-xl transition-shadow">
+                  <h3 className="text-2xl font-semibold text-white mb-3">{service.title}</h3>
+                  <p>{service.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   );
 }
