@@ -42,13 +42,18 @@ const aboutImages = [
 ];
 
 // Globe Component
-const ThreeGlobe = () => {
+'use client';
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
+
+const ThreeNetwork = () => {
   const mountRef = useRef(null);
 
   useEffect(() => {
     const currentMount = mountRef.current;
     if (!currentMount) return;
 
+    // Scene
     const scene = new THREE.Scene();
 
     // Camera
@@ -65,39 +70,57 @@ const ThreeGlobe = () => {
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
-    // Globe
-    const geometry = new THREE.SphereGeometry(2.2, 64, 64);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x1B263B, // dark blue
-      wireframe: true,
-    });
-    const sphere = new THREE.Mesh(geometry, material);
-    scene.add(sphere);
-
-    // Glow
-    const glowGeometry = new THREE.SphereGeometry(2.4, 64, 64);
-    const glowMaterial = new THREE.MeshBasicMaterial({
-      color: 0xD4AF37, // gold
-      transparent: true,
-      opacity: 0.15,
-    });
-    const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-    scene.add(glow);
-
-    // Particles
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCnt = 1000;
-    const posArray = new Float32Array(particlesCnt * 3);
-    for (let i = 0; i < particlesCnt * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 12;
+    // Points / hubs
+    const hubCount = 150;
+    const hubGeometry = new THREE.BufferGeometry();
+    const hubPositions = new Float32Array(hubCount * 3);
+    for (let i = 0; i < hubCount * 3; i++) {
+      hubPositions[i] = (Math.random() - 0.5) * 12; // spread across space
     }
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.01,
-      color: 0x218380, // teal
+    hubGeometry.setAttribute('position', new THREE.BufferAttribute(hubPositions, 3));
+
+    const hubMaterial = new THREE.PointsMaterial({
+      color: 0xD4AF37, // gold hubs
+      size: 0.05,
     });
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particlesMesh);
+
+    const hubs = new THREE.Points(hubGeometry, hubMaterial);
+    scene.add(hubs);
+
+    // Connecting lines
+    const linesGeometry = new THREE.BufferGeometry();
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0x218380, // teal lines
+      transparent: true,
+      opacity: 0.2,
+    });
+
+    const linePositions = [];
+    for (let i = 0; i < hubCount; i++) {
+      for (let j = i + 1; j < hubCount; j++) {
+        const dx = hubPositions[i * 3] - hubPositions[j * 3];
+        const dy = hubPositions[i * 3 + 1] - hubPositions[j * 3 + 1];
+        const dz = hubPositions[i * 3 + 2] - hubPositions[j * 3 + 2];
+        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        if (distance < 3) { // only connect nearby hubs
+          linePositions.push(
+            hubPositions[i * 3],
+            hubPositions[i * 3 + 1],
+            hubPositions[i * 3 + 2],
+            hubPositions[j * 3],
+            hubPositions[j * 3 + 1],
+            hubPositions[j * 3 + 2]
+          );
+        }
+      }
+    }
+    linesGeometry.setAttribute(
+      'position',
+      new THREE.Float32BufferAttribute(linePositions, 3)
+    );
+
+    const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
+    scene.add(linesMesh);
 
     // Mouse interactivity
     let mouseX = 0, mouseY = 0;
@@ -111,9 +134,11 @@ const ThreeGlobe = () => {
     const animate = () => {
       requestAnimationFrame(animate);
 
-      sphere.rotation.y += 0.001;
-      particlesMesh.rotation.y += 0.0005;
+      // slow rotation for subtle motion
+      hubs.rotation.y += 0.0008;
+      linesMesh.rotation.y += 0.0005;
 
+      // smooth camera movement with mouse
       camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
       camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
@@ -136,12 +161,10 @@ const ThreeGlobe = () => {
       window.removeEventListener('mousemove', onMouseMove);
       if (currentMount) currentMount.removeChild(renderer.domElement);
 
-      geometry.dispose();
-      material.dispose();
-      glowGeometry.dispose();
-      glowMaterial.dispose();
-      particlesGeometry.dispose();
-      particlesMaterial.dispose();
+      hubGeometry.dispose();
+      hubMaterial.dispose();
+      linesGeometry.dispose();
+      lineMaterial.dispose();
       renderer.dispose();
     };
   }, []);
@@ -149,15 +172,13 @@ const ThreeGlobe = () => {
   return (
     <div
       ref={mountRef}
-      id="hero-canvas-container"
       className="absolute top-0 left-0 right-0 bottom-0 z-0"
     />
   );
 };
 
-export default function Home() {
-  const [activeTeamMember, setActiveTeamMember] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default ThreeNetwork;
+
 
   // Slideshow logic for About images
   useEffect(() => {
@@ -273,4 +294,4 @@ export default function Home() {
       </section>
     </main>
   );
-}
+
