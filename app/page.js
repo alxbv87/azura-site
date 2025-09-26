@@ -67,8 +67,8 @@ const aboutImages = [
   "/skyline.jpg",
 ];
 
-// Fullscreen Constellation Background
-const ConstellationBG = () => {
+// ======= Constellation Hero Component =======
+const ConstellationHero = () => {
   const mountRef = useRef(null);
 
   useEffect(() => {
@@ -76,75 +76,111 @@ const ConstellationBG = () => {
     if (!currentMount) return;
 
     const scene = new THREE.Scene();
+
     const camera = new THREE.PerspectiveCamera(
       75,
       currentMount.clientWidth / currentMount.clientHeight,
       0.1,
       1000
     );
-    camera.position.z = 15;
+    camera.position.z = 5;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
-    // Particles (nodes)
-    const particleCount = 500;
-    const positions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 30;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 15;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
-    }
-    const particleGeometry = new THREE.BufferGeometry();
-    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    // Particles
+    const PARTICLE_COUNT = 600;
+    const positions = new Float32Array(PARTICLE_COUNT * 3);
 
-    const particleMaterial = new THREE.PointsMaterial({
-      color: 0xD4AF37,
-      size: 0.15,
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const x = (Math.random() - 0.5) * 1.5;
+      const z = (Math.random() - 0.5) * 2.5;
+      const y = (Math.random() - 0.5) * 0.2;
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+    }
+
+    const particlesGeometry = new THREE.BufferGeometry();
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const particlesMaterial = new THREE.PointsMaterial({
+      color: 0xD4AF37, // gold
+      size: 0.03,
     });
 
-    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
 
-    // Lines between close particles
-    const maxDistance = 3;
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.4 });
+    // Lines
+    const linesMaterial = new THREE.LineBasicMaterial({
+      color: 0x218380, // teal
+      transparent: true,
+      opacity: 0.2,
+    });
+
+    const maxDistance = 0.35;
     const lineGeometry = new THREE.BufferGeometry();
-    const linePositions = new Float32Array(particleCount * particleCount * 3);
-    const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
-    scene.add(lines);
+    const linePositions = new Float32Array(PARTICLE_COUNT * PARTICLE_COUNT * 3);
+    const lineMesh = new THREE.LineSegments(lineGeometry, linesMaterial);
+    scene.add(lineMesh);
 
-    const updateLines = () => {
-      const positionsArray = particleGeometry.attributes.position.array;
-      let ptr = 0;
-      for (let i = 0; i < particleCount; i++) {
-        for (let j = i + 1; j < particleCount; j++) {
-          const dx = positionsArray[i*3] - positionsArray[j*3];
-          const dy = positionsArray[i*3+1] - positionsArray[j*3+1];
-          const dz = positionsArray[i*3+2] - positionsArray[j*3+2];
-          const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
-          if (dist < maxDistance) {
-            linePositions[ptr++] = positionsArray[i*3];
-            linePositions[ptr++] = positionsArray[i*3+1];
-            linePositions[ptr++] = positionsArray[i*3+2];
-            linePositions[ptr++] = positionsArray[j*3];
-            linePositions[ptr++] = positionsArray[j*3+1];
-            linePositions[ptr++] = positionsArray[j*3+2];
-          }
-        }
-      }
-      lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions.slice(0, ptr), 3));
-      lineGeometry.computeBoundingSphere();
-      lineGeometry.attributes.position.needsUpdate = true;
+    // Mouse interaction
+    const mouse = new THREE.Vector2();
+    const raycaster = new THREE.Raycaster();
+
+    const onMouseMove = (event) => {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     };
-
-    updateLines();
+    window.addEventListener('mousemove', onMouseMove);
 
     const animate = () => {
       requestAnimationFrame(animate);
-      particles.rotation.y += 0.0008;
-      lines.rotation.y += 0.0008;
+
+      const positions = particlesGeometry.attributes.position.array;
+      particles.rotation.y += 0.001;
+
+      // Update lines
+      let ptr = 0;
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const xi = positions[i * 3];
+        const yi = positions[i * 3 + 1];
+        const zi = positions[i * 3 + 2];
+        for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+          const xj = positions[j * 3];
+          const yj = positions[j * 3 + 1];
+          const zj = positions[j * 3 + 2];
+          const dx = xi - xj;
+          const dy = yi - yj;
+          const dz = zi - zj;
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          if (dist < maxDistance) {
+            linePositions[ptr++] = xi;
+            linePositions[ptr++] = yi;
+            linePositions[ptr++] = zi;
+            linePositions[ptr++] = xj;
+            linePositions[ptr++] = yj;
+            linePositions[ptr++] = zj;
+          }
+        }
+      }
+      lineGeometry.setDrawRange(0, ptr / 3);
+      lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+      lineGeometry.attributes.position.needsUpdate = true;
+
+      // Hover ripple
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObject(particles);
+      if (intersects.length > 0) {
+        const index = intersects[0].index;
+        if (index !== undefined) {
+          positions[index * 3 + 1] += 0.05 * Math.sin(Date.now() * 0.005);
+          particlesGeometry.attributes.position.needsUpdate = true;
+        }
+      }
+
       renderer.render(scene, camera);
     };
     animate();
@@ -157,19 +193,21 @@ const ConstellationBG = () => {
     window.addEventListener('resize', onResize);
 
     return () => {
+      window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('resize', onResize);
       if (currentMount) currentMount.removeChild(renderer.domElement);
-      particleGeometry.dispose();
-      particleMaterial.dispose();
+      particlesGeometry.dispose();
+      particlesMaterial.dispose();
       lineGeometry.dispose();
-      lineMaterial.dispose();
+      linesMaterial.dispose();
       renderer.dispose();
     };
   }, []);
 
-  return <div ref={mountRef} className="fixed top-0 left-0 w-full h-screen -z-10" />;
+  return <div ref={mountRef} className="absolute top-0 left-0 right-0 bottom-0 z-0" />;
 };
 
+// ======= Home Page =======
 export default function Home() {
   const [activeTeamMember, setActiveTeamMember] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -182,9 +220,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E] relative">
-      <ConstellationBG />
-
+    <main className="bg-[#F7F9FB] font-sans text-[#2E3B4E]">
       {/* Header */}
       <header className="fixed top-4 left-6 z-50">
         <h1 className="text-xl md:text-2xl font-bold text-[#1B263B]">
@@ -193,12 +229,16 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section className="relative h-screen flex items-center justify-center text-center px-6">
-        <div className="relative z-10">
+      <section
+        id="home"
+        className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
+      >
+        <ConstellationHero />
+        <div className="relative z-10 p-6">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight drop-shadow-lg">
             Seamless Business Incorporation <br /> in Costa Rica.
           </h1>
-          <p className="mt-6 text-lg md:text-xl text-white/90 max-w-3xl mx-auto">
+          <p className="mt-6 text-lg md:text-xl text-[#F7F9FB]/90 max-w-3xl mx-auto">
             Your strategic partners for navigating the complexities of company
             formation and achieving ambitious growth in Costa Rica.
           </p>
@@ -206,7 +246,7 @@ export default function Home() {
       </section>
 
       {/* About with slideshow */}
-      <section id="about" className="py-20 md:py-32 bg-[#F7F9FB] relative z-10">
+      <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
           <div>
             <p className="text-sm font-bold tracking-widest uppercase mb-4 text-[#218380]">
@@ -244,7 +284,7 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section id="services" className="py-20 md:py-32 bg-white relative z-10">
+      <section id="services" className="py-20 md:py-32 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-[#1B263B]">
