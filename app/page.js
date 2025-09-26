@@ -207,12 +207,12 @@ export default function Home() {
       {/* Hero */}
 <section
   id="home"
-  className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-[#1B263B]"
+  className="relative h-screen flex items-center justify-center text-center md:text-left overflow-hidden"
 >
-  {/* Full-screen background */}
+  {/* Fondo de constelación */}
   <ConstellationHero />
 
-  {/* Foreground text + CTA */}
+  {/* Texto y CTA */}
   <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
       Seamless Business Incorporation <br /> in Costa Rica
