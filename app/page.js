@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import * as THREE from 'three';
-import ConstellationHero from '../components/ConstellationHero'; // path may vary
+import ConstellationHero from './ConstellationHero'; // path may vary
 
 
 // Team Data
@@ -207,17 +207,14 @@ export default function Home() {
       {/* Hero */}
 <section
   id="home"
-  className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden"
+  className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
 >
-  {/* Fondo de partículas con contorno de Costa Rica */}
-  <ConstellationHero />
-
-  {/* Texto y CTA en primer plano */}
+  {/* Left side: text + CTA */}
   <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
       Seamless Business Incorporation <br /> in Costa Rica
     </h1>
-    <p className="text-lg md:text-xl text-white/90 mb-8 max-w-md">
+    <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md">
       Your strategic partners for navigating the complexities of company
       formation and achieving ambitious growth in Costa Rica.
     </p>
@@ -228,9 +225,12 @@ export default function Home() {
       Explore Our Services
     </a>
   </div>
+
+  {/* Right side: 3D animation */}
+  <div className="relative w-full md:w-1/2 h-[400px] md:h-[600px] mt-12 md:mt-0">
+    <ThreeGlobe />
+  </div>
 </section>
-
-
 
       {/* About with slideshow */}
       <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
