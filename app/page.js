@@ -5,24 +5,67 @@ import * as THREE from 'three';
 
 // Team Data
 const teamData = [
-  { name: "Johnathan Hayes", title: "Managing Director", bio: "With over two decades...", img: "/team1.jpg" },
-  { name: "Samantha Carter", title: "Head of Corporate Services", bio: "Samantha is a leading authority...", img: "/team2.jpg" },
-  { name: "Michael Chen", title: "Lead, Real Estate & FTZ", bio: "Michael's expertise lies in...", img: "/team3.jpg" },
-  { name: "Eleanor Vance", title: "Senior Compliance Specialist", bio: "Eleanor is adept at navigating...", img: "/team4.jpg" },
+  {
+    name: "Johnathan Hayes",
+    title: "Managing Director",
+    bio: "With over two decades of experience in international business and corporate structuring, Johnathan provides strategic leadership to the company and its clients. His guidance is sought by multinational corporations and investors entering the Costa Rican market.",
+    img: "/team1.jpg",
+  },
+  {
+    name: "Samantha Carter",
+    title: "Head of Corporate Services",
+    bio: "Samantha is a leading authority on entity structuring for foreign-owned companies in Costa Rica. She guides clients through every step of the incorporation process, from initial filing to ongoing compliance.",
+    img: "/team2.jpg",
+  },
+  {
+    name: "Michael Chen",
+    title: "Lead, Real Estate & FTZ",
+    bio: "Michael's expertise lies in navigating the complexities of Costa Rican real estate transactions and advising clients on leveraging the benefits of the country's Free Trade Zone (FTZ) regime.",
+    img: "/team3.jpg",
+  },
+  {
+    name: "Eleanor Vance",
+    title: "Senior Compliance Specialist",
+    bio: "Eleanor is adept at navigating the ever-evolving Costa Rican regulatory landscape. She ensures clients maintain perfect compliance, mitigating risk and ensuring operational integrity.",
+    img: "/team4.jpg",
+  },
 ];
 
 // Services Data
 const services = [
-  { title: "Company Incorporation", desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance." },
-  { title: "Corporate Structuring", desc: "Tailored entity structuring solutions for multinational corporations and foreign investors." },
-  { title: "Regulatory Compliance", desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law." },
-  { title: "Real Estate Advisory", desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones." },
-  { title: "Accounting & Tax", desc: "Streamlined tax planning, accounting, and reporting services designed for global standards." },
-  { title: "Immigration Support", desc: "End-to-end visa and residency support for executives, investors, and employees." },
+  {
+    title: "Company Incorporation",
+    desc: "End-to-end support for registering your business in Costa Rica, ensuring full compliance.",
+  },
+  {
+    title: "Corporate Structuring",
+    desc: "Tailored entity structuring solutions for multinational corporations and foreign investors.",
+  },
+  {
+    title: "Regulatory Compliance",
+    desc: "Ongoing compliance services to keep your operations aligned with Costa Rican law.",
+  },
+  {
+    title: "Real Estate Advisory",
+    desc: "Expert guidance on real estate transactions and leveraging Costa Rica’s Free Trade Zones.",
+  },
+  {
+    title: "Accounting & Tax",
+    desc: "Streamlined tax planning, accounting, and reporting services designed for global standards.",
+  },
+  {
+    title: "Immigration Support",
+    desc: "End-to-end visa and residency support for executives, investors, and employees.",
+  },
 ];
 
 // Images for About slideshow
-const aboutImages = ["/city.jpg","/business.jpg","/teamwork.jpg","/skyline.jpg"];
+const aboutImages = [
+  "/city.jpg",
+  "/business.jpg",
+  "/teamwork.jpg",
+  "/skyline.jpg",
+];
 
 // Fullscreen Constellation Background
 const ConstellationBG = () => {
@@ -68,7 +111,7 @@ const ConstellationBG = () => {
     const maxDistance = 3;
     const lineMaterial = new THREE.LineBasicMaterial({ color: 0x218380, transparent: true, opacity: 0.4 });
     const lineGeometry = new THREE.BufferGeometry();
-    const linePositions = new Float32Array(particleCount * particleCount * 3); // max, will trim later
+    const linePositions = new Float32Array(particleCount * particleCount * 3);
     const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
     scene.add(lines);
 
@@ -98,7 +141,6 @@ const ConstellationBG = () => {
 
     updateLines();
 
-    // Animate
     const animate = () => {
       requestAnimationFrame(animate);
       particles.rotation.y += 0.0008;
@@ -132,7 +174,6 @@ export default function Home() {
   const [activeTeamMember, setActiveTeamMember] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Slideshow logic for About images
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % aboutImages.length);
