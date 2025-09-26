@@ -203,21 +203,32 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section
-        id="home"
-        className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
-      >
-        <ThreeGlobe />
-        <div className="relative z-10 p-6">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight drop-shadow-lg">
-            Seamless Business Incorporation <br /> in Costa Rica.
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-[#F7F9FB]/90 max-w-3xl mx-auto">
-            Your strategic partners for navigating the complexities of company
-            formation and achieving ambitious growth in Costa Rica.
-          </p>
-        </div>
-      </section>
+<section
+  id="home"
+  className="relative h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left overflow-hidden bg-gradient-to-b from-[#1B263B] via-[#2E3B4E]/60 to-[#1B263B]"
+>
+  {/* Left side: text + CTA */}
+  <div className="relative z-10 px-6 md:px-12 md:w-1/2 flex flex-col items-center md:items-start">
+    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-6">
+      Seamless Business Incorporation <br /> in Costa Rica
+    </h1>
+    <p className="text-lg md:text-xl text-[#F7F9FB]/90 mb-8 max-w-md">
+      Your strategic partners for navigating the complexities of company
+      formation and achieving ambitious growth in Costa Rica.
+    </p>
+    <a
+      href="#services"
+      className="bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition"
+    >
+      Explore Our Services
+    </a>
+  </div>
+
+  {/* Right side: 3D animation */}
+  <div className="relative w-full md:w-1/2 h-[400px] md:h-[600px] mt-12 md:mt-0">
+    <ThreeGlobe />
+  </div>
+</section>
 
       {/* About with slideshow */}
       <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
