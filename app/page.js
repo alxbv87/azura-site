@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useRef } from 'react';
+// CHANGE: Removed useState and Image imports as they are no longer needed
 import * as THREE from 'three';
 
 // Services Data
@@ -31,13 +31,7 @@ const services = [
   },
 ];
 
-// Images for About slideshow
-const aboutImages = [
-  "/city.jpg",
-  "/business.jpg",
-  "/teamwork.jpg",
-  "/skyline.jpg",
-];
+// CHANGE: The aboutImages array has been removed as it's no longer used.
 
 // 3D Network Component
 const ThreeNetwork = () => {
@@ -146,7 +140,7 @@ const ThreeNetwork = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
     window.addEventListener('resize', onWindowResize);
-    onWindowResize(); // Set initial size
+    onWindowResize();
 
     // Cleanup
     return () => {
@@ -168,15 +162,7 @@ const ThreeNetwork = () => {
 
 // Main Page Component
 export default function Home() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Slideshow logic for About images
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % aboutImages.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+  // CHANGE: Removed the useState and useEffect for the slideshow.
 
   return (
     <main className="bg-[#1B263B] font-sans text-[#F7F9FB]/90">
@@ -217,21 +203,9 @@ export default function Home() {
                 Incorvia is a premier incorporation services company based in San José, dedicated to providing sophisticated solutions for international businesses and investors. We combine our deep-rooted understanding of Costa Rican corporate regulations with a global perspective, offering a strategic advantage to clients.
               </p>
             </div>
-            <div className="relative h-[250px] md:h-[300px] w-full overflow-hidden rounded-lg shadow-2xl">
-              {aboutImages.map((src, idx) => (
-                <Image
-                  key={idx}
-                  src={src}
-                  alt="About Incorvia"
-                  fill
-                  className={`object-cover transition-opacity duration-1000 ${idx === currentIndex ? 'opacity-100' : 'opacity-0'}`}
-                />
-              ))}
-            </div>
+            {/* CHANGE: The slideshow div has been removed from here. */}
           </div>
         </section>
-
-        {/* The original About section has been removed from here */}
 
         {/* Services Section */}
         <section id="services" className="py-20 md:py-32 bg-transparent">
