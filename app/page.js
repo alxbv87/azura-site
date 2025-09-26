@@ -204,23 +204,31 @@ export default function Home() {
         {/* Fullscreen Constellation Background */}
         <ConstellationBG />
 
-        {/* Hero content */}
-        <div className="relative z-10">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight drop-shadow-lg">
-            Seamless Business Incorporation <br /> in Costa Rica.
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-white/90 max-w-3xl mx-auto">
-            Your strategic partners for navigating the complexities of company
-            formation and achieving ambitious growth in Costa Rica.
-          </p>
-          <a
-            href="#services"
-            className="mt-8 inline-block bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition"
-          >
-            Explore Our Services
-          </a>
-        </div>
-      </section>
+       {/* Hero */}
+<section
+  id="home"
+  className="relative h-screen flex flex-col items-center justify-center text-center px-6"
+>
+  {/* Fullscreen Constellation Background */}
+  <ConstellationBG />
+
+  {/* Hero content */}
+  <div className="relative z-10">
+    <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight drop-shadow-lg">
+      Seamless Business Incorporation <br /> in Costa Rica.
+    </h1>
+    <p className="mt-6 text-lg md:text-xl text-white/90 max-w-3xl mx-auto">
+      Your strategic partners for navigating the complexities of company
+      formation and achieving ambitious growth in Costa Rica.
+    </p>
+    <a
+      href="#services"
+      className="mt-8 inline-block bg-[#D4AF37] hover:bg-[#C49E2D] text-white px-8 py-4 rounded-lg font-semibold transition"
+    >
+      Explore Our Services
+    </a>
+  </div>
+</section>
 
       {/* About with slideshow */}
       <section id="about" className="py-20 md:py-32 bg-[#F7F9FB]">
