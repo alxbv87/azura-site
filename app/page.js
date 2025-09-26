@@ -12,7 +12,7 @@ const services = [
   {
     title: "Corporate Structuring",
     desc: "Tailored entity structuring solutions for multinational corporations and foreign investors.",
-    imageSrc: "/images/structuring.jpg",
+    imageSrc: "/images/structuring.png",
   },
   {
     title: "Regulatory Compliance",
